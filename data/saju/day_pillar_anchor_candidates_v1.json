@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "day_pillar_anchor_candidates_v1",
+  "status": "not_for_production",
+  "purpose": "Candidate anchors awaiting independent validation. The calculation engine must reject this dataset for production results.",
+  "candidates": [
+    {
+      "candidate_id": "ANCHOR-2019-01-27-JIAZI",
+      "civil_date": "2019-01-27",
+      "civil_time_basis": "local_civil_date_at_noon",
+      "julian_day_number_at_noon": 2458511,
+      "sexagenary_index_1_based": 1,
+      "stem": "gap",
+      "branch": "ja",
+      "verification_status": "single_source_only",
+      "sources": [
+        {
+          "url": "https://ytliu0.github.io/ChineseCalendar/sexagenary.html",
+          "claim": "The page states that 2019-01-27 was jia-zi and gives JDN noon 2458511.",
+          "accessed_on": "2026-09-14"
+        }
+      ],
+      "required_before_promotion": [
+        "Confirm the date/index with an independent published calendar or implementation.",
+        "Confirm the local-date/JDN-noon convention against kr_standard_v1 day boundary.",
+        "Add 60-day forward and backward regression cases."
+      ]
+    }
+  ]
+}
