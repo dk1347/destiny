@@ -1,0 +1,18 @@
+{
+  "case_id": "DAY-ANCHOR-2019-01-27-CANDIDATE",
+  "status": "pending_independent_verification",
+  "purpose": "Candidate JDN/sexagenary-day anchor. It must not be used as a production assertion until promoted.",
+  "input": {
+    "calendar_type": "solar",
+    "civil_date": "2019-01-27",
+    "calculation_profile_id": "kr_standard_v1"
+  },
+  "candidate_expected": {
+    "julian_day_number_at_noon": 2458511,
+    "sexagenary_index_1_based": 1,
+    "day_stem": "gap",
+    "day_branch": "ja"
+  },
+  "evidence_ref": "data/saju/day_pillar_anchor_candidates_v1.json#ANCHOR-2019-01-27-JIAZI",
+  "promotion_gate": "Two independent sources plus 60-day regression set required."
+}
