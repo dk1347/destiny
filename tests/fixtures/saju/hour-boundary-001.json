@@ -1,0 +1,21 @@
+{
+  "case_id": "HOUR-BOUNDARY-001",
+  "status": "ready",
+  "purpose": "23:00 is mapped to the Zi branch under kr_standard_v1.",
+  "birth_profile": {
+    "calendar_type": "solar",
+    "year": 2000,
+    "month": 1,
+    "day": 2,
+    "hour": 23,
+    "minute": 0,
+    "time_precision": "minute"
+  },
+  "resolved_time": {
+    "legal_local_datetime": "2000-01-02T23:00:00",
+    "resolution_status": "resolved"
+  },
+  "calculation_profile_id": "kr_standard_v1",
+  "expected": {"hour_branch": "ja"},
+  "evidence": {"source": "saju_core_tables_v1", "source_version": "1.0"}
+}
