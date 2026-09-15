@@ -272,7 +272,7 @@ _SOLAR_TERM_IDS = (
 
 
 def _validate_solar_term_instants(data: dict[str, Any], dataset_id: str) -> None:
-    required = {"time_zone", "instant_precision", "coverage_years", "terms"}
+    required = {"time_zone", "instant_precision", "coverage_start", "coverage_end", "terms"}
     if set(data) != required:
         _invalid(dataset_id, "data must contain exactly the solar-term fields")
     try:
@@ -280,23 +280,29 @@ def _validate_solar_term_instants(data: dict[str, Any], dataset_id: str) -> None
             _invalid(dataset_id, "time_zone must be Asia/Seoul")
         if data["instant_precision"] != "minute":
             _invalid(dataset_id, "instant_precision must be minute")
-        years = data["coverage_years"]
-        if not years or any(type(year) is not int for year in years) or years != sorted(set(years)):
-            _invalid(dataset_id, "coverage_years must be unique sorted integers")
+        coverage_start = datetime.fromisoformat(data["coverage_start"])
+        coverage_end = datetime.fromisoformat(data["coverage_end"])
+        if coverage_start.tzinfo is None or coverage_end.tzinfo is None or coverage_start.utcoffset() != timedelta(hours=9) or coverage_end.utcoffset() != timedelta(hours=9) or coverage_start >= coverage_end:
+            _invalid(dataset_id, "coverage bounds must be chronological Asia/Seoul instants")
         terms = data["terms"]
-        expected_ids = list(_SOLAR_TERM_IDS) * len(years)
+        if not terms:
+            _invalid(dataset_id, "terms must not be empty")
+        first_index = _SOLAR_TERM_IDS.index(terms[0]["id"])
+        expected_ids = [_SOLAR_TERM_IDS[(first_index + index) % len(_SOLAR_TERM_IDS)] for index in range(len(terms))]
         if [row["id"] for row in terms] != expected_ids:
-            _invalid(dataset_id, "terms must list every solar term in canonical order for every coverage year")
+            _invalid(dataset_id, "terms must follow the canonical solar-term cycle")
         instants = []
         for row in terms:
             instant = datetime.fromisoformat(row["occurs_at"])
             if instant.tzinfo is None or instant.utcoffset() != timedelta(hours=9):
                 _invalid(dataset_id, "every occurs_at value must include the Asia/Seoul UTC offset")
-            if instant.second or instant.microsecond or instant.year not in years:
-                _invalid(dataset_id, "occurs_at must be minute-precise and within coverage_years")
+            if instant.second or instant.microsecond:
+                _invalid(dataset_id, "occurs_at must be minute-precise")
             instants.append(instant)
         if instants != sorted(instants) or len(set(instants)) != len(instants):
             _invalid(dataset_id, "solar-term instants must be strictly chronological and unique")
+        if instants[0] > coverage_start or instants[-1] > coverage_end:
+            _invalid(dataset_id, "terms must include the boundary active at coverage_start and stay within coverage_end")
     except DatasetError:
         raise
     except (KeyError, TypeError, ValueError) as error:

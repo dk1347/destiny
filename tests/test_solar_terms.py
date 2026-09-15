@@ -33,10 +33,14 @@ def test_solar_term_boundary_uses_the_verified_kst_instant() -> None:
 
 def test_every_verified_solar_term_observes_its_boundary() -> None:
     registry = RuleRegistry(allow_unverified=True)
-    terms = registry.load("solar_term_instants_v1")["data"]["terms"]
+    data = registry.load("solar_term_instants_v1")["data"]
+    terms = data["terms"]
+    coverage_start = datetime.fromisoformat(data["coverage_start"])
 
     for index, row in enumerate(terms):
         instant = datetime.fromisoformat(row["occurs_at"])
+        if instant < coverage_start:
+            continue
         assert solar_term_for_datetime(instant, registry).id == row["id"]
         assert solar_term_for_datetime(instant + timedelta(minutes=1), registry).id == row["id"]
         if index:
@@ -54,6 +58,19 @@ def test_solar_term_lookup_rejects_non_kst_datetime() -> None:
             datetime(2026, 2, 4, 5, 2, tzinfo=timezone.utc),
             RuleRegistry(allow_unverified=True),
         )
+
+
+def test_solar_term_lookup_fails_closed_outside_its_verified_coverage() -> None:
+    registry = RuleRegistry(allow_unverified=True)
+    with pytest.raises(DatasetError, match="SOLAR_TERM_DATA_UNAVAILABLE"):
+        solar_term_for_datetime(
+            datetime(2025, 12, 31, 23, 59, tzinfo=timezone(timedelta(hours=9))),
+            registry,
+        )
+    assert solar_term_for_datetime(
+        datetime(2026, 1, 1, 0, 0, tzinfo=timezone(timedelta(hours=9))),
+        registry,
+    ).id == "dongji"
 
 
 def test_solar_term_dataset_rejects_out_of_order_or_wrong_offset_instant() -> None:
