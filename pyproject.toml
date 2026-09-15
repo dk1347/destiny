@@ -7,3 +7,7 @@ name = "destiny-saju"
 version = "0.1.0"
 description = "Deterministic Saju calculation core for Destiny"
 requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

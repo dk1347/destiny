@@ -1,0 +1,19 @@
+{
+  "schema_version":"1.0","dataset_id":"hidden_stems_v1","dataset_version":"1.0.0",
+  "status":"pending_verification","source":{"type":"classical_rule","reference":"docs/06_ENGINE_CONTRACTS_AND_CORE_RULES.md §5.3"},
+  "license":"internal-derived-no-third-party-copy","generated_at":"2026-09-14T00:00:00Z",
+  "data":{"branch_hidden_stems":{
+    "branch:ja":[{"stem":"stem:gye","role":"main","display_order":1}],
+    "branch:chuk":[{"stem":"stem:gi","role":"main","display_order":1},{"stem":"stem:gye","role":"middle","display_order":2},{"stem":"stem:sin","role":"residual","display_order":3}],
+    "branch:in":[{"stem":"stem:gap","role":"main","display_order":1},{"stem":"stem:byeong","role":"middle","display_order":2},{"stem":"stem:mu","role":"residual","display_order":3}],
+    "branch:myo":[{"stem":"stem:eul","role":"main","display_order":1}],
+    "branch:jin":[{"stem":"stem:mu","role":"main","display_order":1},{"stem":"stem:eul","role":"middle","display_order":2},{"stem":"stem:gye","role":"residual","display_order":3}],
+    "branch:sa":[{"stem":"stem:byeong","role":"main","display_order":1},{"stem":"stem:gyeong","role":"middle","display_order":2},{"stem":"stem:mu","role":"residual","display_order":3}],
+    "branch:o":[{"stem":"stem:jeong","role":"main","display_order":1},{"stem":"stem:gi","role":"middle","display_order":2}],
+    "branch:mi":[{"stem":"stem:gi","role":"main","display_order":1},{"stem":"stem:jeong","role":"middle","display_order":2},{"stem":"stem:eul","role":"residual","display_order":3}],
+    "branch:sin":[{"stem":"stem:gyeong","role":"main","display_order":1},{"stem":"stem:im","role":"middle","display_order":2},{"stem":"stem:mu","role":"residual","display_order":3}],
+    "branch:yu":[{"stem":"stem:sin","role":"main","display_order":1}],
+    "branch:sul":[{"stem":"stem:mu","role":"main","display_order":1},{"stem":"stem:sin","role":"middle","display_order":2},{"stem":"stem:jeong","role":"residual","display_order":3}],
+    "branch:hae":[{"stem":"stem:im","role":"main","display_order":1},{"stem":"stem:gap","role":"middle","display_order":2}]
+  }}
+}
