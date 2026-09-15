@@ -1,13 +1,9 @@
-"""Solar-term data availability gate.
-
-Year and month pillars depend on versioned, production-verified solar-term
-instants. Until that dataset exists, callers receive a specific diagnostic
-instead of a guessed term boundary.
-"""
+"""Solar-term lookup from production-verified local instants."""
 
 from __future__ import annotations
 
-from datetime import datetime
+from dataclasses import dataclass
+from datetime import datetime, timedelta
 
 from .data_registry import DatasetError, RuleRegistry
 from .diagnostics import DiagnosticCode
@@ -16,11 +12,21 @@ from .diagnostics import DiagnosticCode
 _SOLAR_TERM_DATASET_ID = "solar_term_instants_v1"
 
 
-def solar_term_for_datetime(resolved_local_datetime: datetime, registry: RuleRegistry) -> None:
-    """Refuse solar-term lookup until production-verified term instants exist."""
+@dataclass(frozen=True)
+class SolarTerm:
+    id: str
+    occurs_at: datetime
+
+
+def solar_term_for_datetime(resolved_local_datetime: datetime, registry: RuleRegistry) -> SolarTerm:
+    """Return the most recent solar term at an Asia/Seoul local instant."""
 
     if type(resolved_local_datetime) is not datetime:
         raise TypeError("resolved_local_datetime must be a datetime.datetime instance")
+    if resolved_local_datetime.tzinfo is None:
+        raise TypeError("resolved_local_datetime must be timezone-aware")
+    if resolved_local_datetime.utcoffset() != timedelta(hours=9):
+        raise TypeError("resolved_local_datetime must use the Asia/Seoul UTC offset")
     try:
         registry.load(_SOLAR_TERM_DATASET_ID)
     except DatasetError as error:
@@ -28,7 +34,14 @@ def solar_term_for_datetime(resolved_local_datetime: datetime, registry: RuleReg
             DiagnosticCode.SOLAR_TERM_DATA_UNAVAILABLE,
             "production-verified solar-term instants are required",
         ) from error
-    raise DatasetError(
-        DiagnosticCode.SOLAR_TERM_DATA_UNAVAILABLE,
-        "solar-term calculation is not implemented",
-    )
+    terms = [
+        SolarTerm(row["id"], datetime.fromisoformat(row["occurs_at"]))
+        for row in registry.load(_SOLAR_TERM_DATASET_ID)["data"]["terms"]
+    ]
+    active = [term for term in terms if term.occurs_at <= resolved_local_datetime]
+    if not active:
+        raise DatasetError(
+            DiagnosticCode.SOLAR_TERM_DATA_UNAVAILABLE,
+            "no production-verified solar-term instant covers this datetime",
+        )
+    return active[-1]

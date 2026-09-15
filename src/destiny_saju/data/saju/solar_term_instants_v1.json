@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "solar_term_instants_v1",
+  "dataset_version": "1.0.0",
+  "status": "production_verified",
+  "source": {
+    "type": "official_korean_almanac",
+    "reference": "Korea AeroSpace Administration, 2026 Monthly Almanac (official publication); KASI calendar data cross-check: https://astro.kasi.re.kr/life/post/calendardata"
+  },
+  "license": "Official public calendar data; preserve source attribution and verify each annual expansion against the official Monthly Almanac.",
+  "generated_at": "2026-09-16T00:00:00Z",
+  "generated_by": "manual_from_2026_monthly_almanac",
+  "scope": "2026 KST solar-term instants at minute precision only. Lookups outside this verified coverage fail closed.",
+  "data": {
+    "time_zone": "Asia/Seoul",
+    "instant_precision": "minute",
+    "coverage_years": [2026],
+    "terms": [
+      {"id": "sohan", "occurs_at": "2026-01-05T17:23:00+09:00"},
+      {"id": "daehan", "occurs_at": "2026-01-20T10:45:00+09:00"},
+      {"id": "ipchun", "occurs_at": "2026-02-04T05:02:00+09:00"},
+      {"id": "usu", "occurs_at": "2026-02-19T00:52:00+09:00"},
+      {"id": "gyeongchip", "occurs_at": "2026-03-05T22:59:00+09:00"},
+      {"id": "chunbun", "occurs_at": "2026-03-20T23:46:00+09:00"},
+      {"id": "cheongmyeong", "occurs_at": "2026-04-05T03:40:00+09:00"},
+      {"id": "gogu", "occurs_at": "2026-04-20T10:39:00+09:00"},
+      {"id": "ipha", "occurs_at": "2026-05-05T20:49:00+09:00"},
+      {"id": "soman", "occurs_at": "2026-05-21T09:37:00+09:00"},
+      {"id": "mangjong", "occurs_at": "2026-06-06T00:48:00+09:00"},
+      {"id": "haji", "occurs_at": "2026-06-21T17:25:00+09:00"},
+      {"id": "soseo", "occurs_at": "2026-07-07T10:57:00+09:00"},
+      {"id": "daeseo", "occurs_at": "2026-07-23T04:13:00+09:00"},
+      {"id": "ipchu", "occurs_at": "2026-08-07T20:43:00+09:00"},
+      {"id": "cheoseo", "occurs_at": "2026-08-23T11:19:00+09:00"},
+      {"id": "baengno", "occurs_at": "2026-09-07T23:41:00+09:00"},
+      {"id": "chubun", "occurs_at": "2026-09-23T09:05:00+09:00"},
+      {"id": "hallo", "occurs_at": "2026-10-08T15:29:00+09:00"},
+      {"id": "sanggang", "occurs_at": "2026-10-23T18:38:00+09:00"},
+      {"id": "ipdong", "occurs_at": "2026-11-07T18:52:00+09:00"},
+      {"id": "soseol", "occurs_at": "2026-11-22T16:23:00+09:00"},
+      {"id": "daeseol", "occurs_at": "2026-12-07T11:53:00+09:00"},
+      {"id": "dongji", "occurs_at": "2026-12-22T05:50:00+09:00"}
+    ]
+  }
+}
