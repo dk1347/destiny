@@ -1,0 +1,29 @@
+{
+  "case_id": "core-rule-golden-v1",
+  "status": "pending_independent_verification",
+  "evidence_ref": "docs/06_ENGINE_CONTRACTS_AND_CORE_RULES.md",
+  "month_stem_cases": [
+    ["gap","in","byeong"], ["gi","in","byeong"],
+    ["eul","in","mu"], ["gyeong","in","mu"],
+    ["byeong","in","gyeong"], ["sin","in","gyeong"],
+    ["jeong","in","im"], ["im","in","im"],
+    ["mu","in","gap"], ["gye","in","gap"],
+    ["gap","myo","jeong"], ["gap","ja","byeong"], ["gap","chuk","jeong"]
+  ],
+  "hour_stem_cases": [
+    ["gap","ja","gap"], ["gi","ja","gap"],
+    ["eul","ja","byeong"], ["gyeong","ja","byeong"],
+    ["byeong","ja","mu"], ["sin","ja","mu"],
+    ["jeong","ja","gyeong"], ["im","ja","gyeong"],
+    ["mu","ja","im"], ["gye","ja","im"],
+    ["gap","chuk","eul"], ["gap","hae","eul"]
+  ],
+  "ten_god_cases": [
+    ["gap","gap","bigyeon"], ["gap","eul","geopjae"],
+    ["gap","byeong","siksin"], ["gap","jeong","sangwan"],
+    ["gap","mu","pyeonjae"], ["gap","gi","jeongjae"],
+    ["gap","gyeong","pyeongwan"], ["gap","sin","jeonggwan"],
+    ["gap","im","pyeonin"], ["gap","gye","jeongin"],
+    ["eul","gap","geopjae"], ["gye","gap","sangwan"]
+  ]
+}

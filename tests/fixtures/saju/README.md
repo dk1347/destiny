@@ -38,7 +38,7 @@
   "resolved_time": {"legal_local_datetime":"2000-01-02T23:00:00","resolution_status":"resolved"},
   "calculation_profile_id": "kr_standard_v1",
   "expected": {"hour_branch":"ja"},
-  "evidence": {"source":"saju_core_tables_v1","source_version":"1.0"}
+  "evidence": {"source":"core_tables_v1","source_version":"1.0.0"}
 }
 ```
 

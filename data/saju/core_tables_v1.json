@@ -1,8 +1,13 @@
 {
   "schema_version": "1.0",
-  "dataset_id": "saju_core_tables_v1",
-  "status": "draft_for_validation",
+  "dataset_id": "core_tables_v1",
+  "dataset_version": "1.0.0",
+  "status": "pending_verification",
+  "source": {"type":"classical_rule","reference":"docs/04_SAJU_CALCULATION_SPEC.md §6"},
+  "license": "internal-derived-no-third-party-copy",
+  "generated_at": "2026-09-14T00:00:00Z",
   "scope": "Fixed vocabulary and lookup data only; no solar-term instants, calendar conversion, or interpretive weights.",
+  "data": {
   "heavenly_stems": [
     {"id":"gap","korean":"갑","hanja":"甲","order":1,"yin_yang":"yang","element":"wood"},
     {"id":"eul","korean":"을","hanja":"乙","order":2,"yin_yang":"yin","element":"wood"},
@@ -55,4 +60,5 @@
     "Hidden stems, relations, Ten Gods, and fortune-cycle rules are separate versioned datasets.",
     "This data does not decide a day boundary or apply true solar time; Calculation Profile does."
   ]
+  }
 }

@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from .data_registry import load_dataset
-from .hour_branch import HourBranch
+from .branches import EarthlyBranch
+from .data_registry import RuleRegistry
+from .diagnostics import CalculationInputError, DiagnosticCode
 from .stems import HeavenlyStem
 
 
@@ -12,7 +13,9 @@ class HiddenStem:
     display_order: int
 
 
-def hidden_stems_for(branch: HourBranch) -> tuple[HiddenStem, ...]:
-    dataset = load_dataset("hidden_stems_v1", allow_unverified=True)
+def hidden_stems_for(branch: EarthlyBranch, registry: RuleRegistry) -> tuple[HiddenStem, ...]:
+    if not isinstance(branch, EarthlyBranch):
+        raise CalculationInputError(DiagnosticCode.INVALID_BRANCH, "branch")
+    dataset = registry.load("hidden_stems_v1")
     rows = dataset["data"]["branch_hidden_stems"][f"branch:{branch.value}"]
     return tuple(HiddenStem(HeavenlyStem(row["stem"].removeprefix("stem:")), row["role"], row["display_order"]) for row in rows)

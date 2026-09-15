@@ -7,25 +7,13 @@ remain Calculation Profile decisions and must not be inferred here.
 from __future__ import annotations
 
 from datetime import time
-from enum import StrEnum
+from .branches import EarthlyBranch
+
+# Backward-compatible name for callers of the first public API.
+HourBranch = EarthlyBranch
 
 
-class HourBranch(StrEnum):
-    JA = "ja"
-    CHUK = "chuk"
-    IN = "in"
-    MYO = "myo"
-    JIN = "jin"
-    SA = "sa"
-    O = "o"
-    MI = "mi"
-    SIN = "sin"
-    YU = "yu"
-    SUL = "sul"
-    HAE = "hae"
-
-
-_BRANCHES_BY_TWO_HOUR_BLOCK: tuple[HourBranch, ...] = (
+_BRANCHES_BY_TWO_HOUR_BLOCK: tuple[EarthlyBranch, ...] = (
     HourBranch.JA,
     HourBranch.JA,
     HourBranch.CHUK,
@@ -53,7 +41,7 @@ _BRANCHES_BY_TWO_HOUR_BLOCK: tuple[HourBranch, ...] = (
 )
 
 
-def hour_branch_for_time(local_time: time) -> HourBranch:
+def hour_branch_for_time(local_time: time) -> EarthlyBranch:
     """Return the branch for a resolved calculation-basis local time.
 
     The conventional windows are Zi 23:00–00:59, Chou 01:00–02:59,

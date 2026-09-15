@@ -1,21 +1,18 @@
 import unittest
+import json
+from pathlib import Path
 
-from destiny_saju.hour_branch import HourBranch
+from destiny_saju.branches import EarthlyBranch
+from destiny_saju.data_registry import RuleRegistry
 from destiny_saju.hour_stem import hour_stem_for
 from destiny_saju.stems import HeavenlyStem
 
+ROOT = Path(__file__).parents[1]
+REGISTRY = RuleRegistry(ROOT / "data" / "saju", allow_unverified=True)
+GOLDEN = json.loads((ROOT / "tests" / "fixtures" / "saju" / "core-rule-golden-v1.json").read_text(encoding="utf-8"))
 
 class HourStemTests(unittest.TestCase):
-    def test_all_day_stem_and_hour_branch_combinations(self) -> None:
-        starts = {
-            HeavenlyStem.GAP: HeavenlyStem.GAP, HeavenlyStem.GI: HeavenlyStem.GAP,
-            HeavenlyStem.EUL: HeavenlyStem.BYEONG, HeavenlyStem.GYEONG: HeavenlyStem.BYEONG,
-            HeavenlyStem.BYEONG: HeavenlyStem.MU, HeavenlyStem.SIN: HeavenlyStem.MU,
-            HeavenlyStem.JEONG: HeavenlyStem.GYEONG, HeavenlyStem.IM: HeavenlyStem.GYEONG,
-            HeavenlyStem.MU: HeavenlyStem.IM, HeavenlyStem.GYE: HeavenlyStem.IM,
-        }
-        stems = list(HeavenlyStem)
-        for day_stem, start in starts.items():
-            for offset, branch in enumerate(HourBranch):
-                with self.subTest(day_stem=day_stem, branch=branch):
-                    self.assertIs(hour_stem_for(day_stem, branch), stems[(stems.index(start) + offset) % 10])
+    def test_golden_cases(self) -> None:
+        for day, branch, expected in GOLDEN["hour_stem_cases"]:
+            with self.subTest(day=day, branch=branch):
+                self.assertEqual(hour_stem_for(HeavenlyStem(day), EarthlyBranch(branch), REGISTRY), HeavenlyStem(expected))
