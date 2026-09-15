@@ -16,3 +16,6 @@ class HourStemTests(unittest.TestCase):
         for day, branch, expected in GOLDEN["hour_stem_cases"]:
             with self.subTest(day=day, branch=branch):
                 self.assertEqual(hour_stem_for(HeavenlyStem(day), EarthlyBranch(branch), REGISTRY), HeavenlyStem(expected))
+
+    def test_golden_cases_cover_every_hour_branch(self) -> None:
+        self.assertEqual({branch for _, branch, _ in GOLDEN["hour_stem_cases"]}, {branch.value for branch in EarthlyBranch})

@@ -8,7 +8,10 @@
     ["byeong","in","gyeong"], ["sin","in","gyeong"],
     ["jeong","in","im"], ["im","in","im"],
     ["mu","in","gap"], ["gye","in","gap"],
-    ["gap","myo","jeong"], ["gap","ja","byeong"], ["gap","chuk","jeong"]
+    ["gap","myo","jeong"], ["gap","ja","byeong"], ["gap","chuk","jeong"],
+    ["gap","jin","mu"], ["gap","sa","gi"], ["gap","o","gyeong"],
+    ["gap","mi","sin"], ["gap","sin","im"], ["gap","yu","gye"],
+    ["gap","sul","gap"], ["gap","hae","eul"]
   ],
   "hour_stem_cases": [
     ["gap","ja","gap"], ["gi","ja","gap"],
@@ -16,7 +19,10 @@
     ["byeong","ja","mu"], ["sin","ja","mu"],
     ["jeong","ja","gyeong"], ["im","ja","gyeong"],
     ["mu","ja","im"], ["gye","ja","im"],
-    ["gap","chuk","eul"], ["gap","hae","eul"]
+    ["gap","chuk","eul"], ["gap","hae","eul"],
+    ["gap","in","byeong"], ["gap","myo","jeong"], ["gap","jin","mu"],
+    ["gap","sa","gi"], ["gap","o","gyeong"], ["gap","mi","sin"],
+    ["gap","sin","im"], ["gap","yu","gye"], ["gap","sul","gap"]
   ],
   "ten_god_cases": [
     ["gap","gap","bigyeon"], ["gap","eul","geopjae"],

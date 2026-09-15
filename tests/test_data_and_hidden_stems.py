@@ -57,6 +57,30 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
             with self.assertRaisesRegex(DatasetError, "DATASET_SCHEMA_INVALID"):
                 month_stem_for(HeavenlyStem.GAP, EarthlyBranch.CHUK, registry)
 
+    def test_fault_injections_are_rejected_as_schema_errors(self) -> None:
+        source = files("destiny_saju.data.saju")
+        injections = (
+            ("month_stem_rules_v1", lambda data: data["month_branch_order_from_in"].__setitem__(slice(3, 5), reversed(data["month_branch_order_from_in"][3:5]))),
+            ("hour_stem_rules_v1", lambda data: data["hour_branch_order_from_ja"].__setitem__(slice(3, 5), reversed(data["hour_branch_order_from_ja"][3:5]))),
+            ("core_tables_v1", lambda data: data["heavenly_stems"][0].__setitem__("id", "contaminated")),
+            ("core_tables_v1", lambda data: data["heavenly_stems"][0].__setitem__("yin_yang", "neutral")),
+            ("hidden_stems_v1", lambda data: data["branch_hidden_stems"]["branch:ja"][0].__setitem__("role", "contaminated")),
+        )
+        for dataset_id, inject in injections:
+            with self.subTest(dataset_id=dataset_id):
+                with tempfile.TemporaryDirectory() as temporary:
+                    target = Path(temporary)
+                    for resource in source.iterdir():
+                        if resource.name.endswith(".json"):
+                            (target / resource.name).write_bytes(resource.read_bytes())
+                    path = target / f"{dataset_id}.json"
+                    payload = json.loads(path.read_text(encoding="utf-8"))
+                    inject(payload["data"])
+                    path.write_text(json.dumps(payload), encoding="utf-8")
+                    with self.assertRaisesRegex(DatasetError, "DATASET_SCHEMA_INVALID") as error:
+                        RuleRegistry(target, allow_unverified=True).load(dataset_id)
+                    self.assertEqual(error.exception.code.name, "DATASET_SCHEMA_INVALID")
+
     def test_registry_returns_defensive_copies(self) -> None:
         first = TEST_REGISTRY.load("core_tables_v1")
         first["data"]["heavenly_stems"].clear()

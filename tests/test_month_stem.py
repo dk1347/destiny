@@ -16,3 +16,6 @@ class MonthStemTests(unittest.TestCase):
         for year, branch, expected in GOLDEN["month_stem_cases"]:
             with self.subTest(year=year, branch=branch):
                 self.assertEqual(month_stem_for(HeavenlyStem(year), EarthlyBranch(branch), REGISTRY), HeavenlyStem(expected))
+
+    def test_golden_cases_cover_every_month_branch(self) -> None:
+        self.assertEqual({branch for _, branch, _ in GOLDEN["month_stem_cases"]}, {branch.value for branch in EarthlyBranch})

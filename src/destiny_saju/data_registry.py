@@ -6,7 +6,9 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Any
 
+from .branches import EarthlyBranch
 from .diagnostics import DiagnosticCode
+from .stems import HeavenlyStem
 
 
 class DatasetError(ValueError):
@@ -17,6 +19,8 @@ class DatasetError(ValueError):
 
 _VALID_STATUSES = {"draft", "pending_verification", "production_verified", "deprecated"}
 _ELEMENTS = {"wood", "fire", "earth", "metal", "water"}
+_YIN_YANG = {"yin", "yang"}
+_HIDDEN_STEM_ROLES = {"main", "middle", "residual"}
 _RELATIONS = {
     "same_element",
     "day_master_generates_target",
@@ -98,12 +102,12 @@ def _validate_data(payload: dict[str, Any], core: dict[str, Any]) -> None:
         if dataset_id == "core_tables_v1":
             _validate_core(payload["data"], dataset_id)
             return
-        stem_refs, branch_refs = _vocabulary(core)
+        stem_refs, branch_refs, canonical_branch_order = _vocabulary(core)
         data = payload["data"]
         if dataset_id == "month_stem_rules_v1":
-            _validate_stem_start_rules(data, dataset_id, "tiger_start_by_year_stem_group", "year_stems", "in_month_start_stem", "month_branch_order_from_in", "branch:in", stem_refs, branch_refs)
+            _validate_stem_start_rules(data, dataset_id, "tiger_start_by_year_stem_group", "year_stems", "in_month_start_stem", "month_branch_order_from_in", "branch:in", stem_refs, branch_refs, canonical_branch_order[2:] + canonical_branch_order[:2])
         elif dataset_id == "hour_stem_rules_v1":
-            _validate_stem_start_rules(data, dataset_id, "rat_start_by_day_stem_group", "day_stems", "ja_hour_start_stem", "hour_branch_order_from_ja", "branch:ja", stem_refs, branch_refs)
+            _validate_stem_start_rules(data, dataset_id, "rat_start_by_day_stem_group", "day_stems", "ja_hour_start_stem", "hour_branch_order_from_ja", "branch:ja", stem_refs, branch_refs, canonical_branch_order)
         elif dataset_id == "hidden_stems_v1":
             _validate_hidden_stems(data, dataset_id, stem_refs, branch_refs)
         elif dataset_id == "ten_gods_v1":
@@ -122,12 +126,18 @@ def _validate_core(data: dict[str, Any], dataset_id: str) -> None:
             _invalid(dataset_id, "heavenly_stems must contain 10 unique ids")
         if len(branches) != 12 or len({row["id"] for row in branches}) != 12:
             _invalid(dataset_id, "earthly_branches must contain 12 unique ids")
+        if {row["id"] for row in stems} != {stem.value for stem in HeavenlyStem}:
+            _invalid(dataset_id, "heavenly_stems ids must exactly match HeavenlyStem")
+        if {row["id"] for row in branches} != {branch.value for branch in EarthlyBranch}:
+            _invalid(dataset_id, "earthly_branches ids must exactly match EarthlyBranch")
         if {row["order"] for row in stems} != set(range(1, 11)):
             _invalid(dataset_id, "heavenly_stems order must be 1..10")
         if {row["order"] for row in branches} != set(range(1, 13)):
             _invalid(dataset_id, "earthly_branches order must be 1..12")
         if {row["element"] for row in stems + branches} - _ELEMENTS:
             _invalid(dataset_id, "unknown element")
+        if {row["yin_yang"] for row in stems + branches} - _YIN_YANG:
+            _invalid(dataset_id, "yin_yang must be yin or yang")
         relations = data["element_relations"]
         for name in ("generates", "controls"):
             mapping = relations[name]
@@ -153,15 +163,17 @@ def _validate_core(data: dict[str, Any], dataset_id: str) -> None:
         _invalid(dataset_id, str(error))
 
 
-def _vocabulary(core: dict[str, Any]) -> tuple[set[str], set[str]]:
+def _vocabulary(core: dict[str, Any]) -> tuple[set[str], set[str], list[str]]:
     data = core["data"]
+    ordered_branches = sorted(data["earthly_branches"], key=lambda row: row["order"])
     return (
         {f"stem:{row['id']}" for row in data["heavenly_stems"]},
         {f"branch:{row['id']}" for row in data["earthly_branches"]},
+        [f"branch:{row['id']}" for row in ordered_branches],
     )
 
 
-def _validate_stem_start_rules(data: dict[str, Any], dataset_id: str, groups_key: str, members_key: str, start_key: str, order_key: str, first_branch: str, stem_refs: set[str], branch_refs: set[str]) -> None:
+def _validate_stem_start_rules(data: dict[str, Any], dataset_id: str, groups_key: str, members_key: str, start_key: str, order_key: str, first_branch: str, stem_refs: set[str], branch_refs: set[str], expected_order: list[str]) -> None:
     groups = data[groups_key]
     members = [reference for group in groups for reference in group[members_key]]
     starts = [group[start_key] for group in groups]
@@ -172,6 +184,8 @@ def _validate_stem_start_rules(data: dict[str, Any], dataset_id: str, groups_key
         _invalid(dataset_id, f"{start_key} contains an unknown stem")
     if len(order) != 12 or set(order) != branch_refs or len(set(order)) != 12 or order[0] != first_branch:
         _invalid(dataset_id, f"{order_key} must cover every branch once and start with {first_branch}")
+    if order != expected_order:
+        _invalid(dataset_id, f"{order_key} must match the canonical branch cycle")
 
 
 def _validate_hidden_stems(data: dict[str, Any], dataset_id: str, stem_refs: set[str], branch_refs: set[str]) -> None:
@@ -183,6 +197,8 @@ def _validate_hidden_stems(data: dict[str, Any], dataset_id: str, stem_refs: set
             _invalid(dataset_id, f"{branch} must contain 1..3 hidden stems")
         if any(row["stem"] not in stem_refs for row in rows):
             _invalid(dataset_id, f"{branch} contains an unknown stem")
+        if any(row["role"] not in _HIDDEN_STEM_ROLES for row in rows):
+            _invalid(dataset_id, f"{branch} contains an unknown hidden stem role")
         if sum(row["role"] == "main" for row in rows) != 1:
             _invalid(dataset_id, f"{branch} must contain one main stem")
         if [row["display_order"] for row in rows] != list(range(1, len(rows) + 1)):
