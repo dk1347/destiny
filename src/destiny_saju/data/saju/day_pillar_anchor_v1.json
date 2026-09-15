@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "day_pillar_anchor_v1",
+  "dataset_version": "1.0.0",
+  "status": "production_verified",
+  "source": {
+    "type": "official_astronomical_almanac",
+    "reference": "Taiwan Central Weather Administration, 2019 Astronomical Almanac, 2019-01-27 (甲子); https://www.cwa.gov.tw/Data/service/notice/download/publish_20200807103416.pdf",
+    "verification": "Independent calendar services also identify 2019-01-27 and 2019-03-28 as 甲子; values are not copied from those services."
+  },
+  "license": "Taiwan Open Government Data License; attribution required; https://opendata.cwa.gov.tw/about/rules",
+  "generated_at": "2026-09-16T00:00:00Z",
+  "generated_by": "manual_from_official_almanac",
+  "scope": "One Gregorian civil-date anchor. The 60-day cycle is calculated only after this anchor passes schema validation.",
+  "data": {
+    "anchor_date": "2019-01-27",
+    "julian_day_number_at_noon": 2458511,
+    "sexagenary_index_1_based": 1,
+    "day_stem": "stem:gap",
+    "day_branch": "branch:ja"
+  }
+}

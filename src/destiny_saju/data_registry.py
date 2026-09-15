@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import copy
 import json
+from datetime import date
 from importlib.resources import files
 from pathlib import Path
 from typing import Any
@@ -112,6 +113,8 @@ def _validate_data(payload: dict[str, Any], core: dict[str, Any]) -> None:
             _validate_hidden_stems(data, dataset_id, stem_refs, branch_refs)
         elif dataset_id == "ten_gods_v1":
             _validate_ten_gods(data, dataset_id)
+        elif dataset_id == "day_pillar_anchor_v1":
+            _validate_day_pillar_anchor(data, dataset_id, stem_refs, branch_refs)
     except DatasetError:
         raise
     except (KeyError, TypeError, ValueError) as error:
@@ -214,3 +217,45 @@ def _validate_ten_gods(data: dict[str, Any], dataset_id: str) -> None:
         _invalid(dataset_id, "relation_table and display_names must cover all ten gods")
     if data["polarity_rule"] != "same_yin_yang_selects_same_polarity_column":
         _invalid(dataset_id, "unknown polarity_rule")
+
+
+def _gregorian_jdn_at_noon(civil_date: date) -> int:
+    """Return the astronomical Julian day number for Gregorian civil noon."""
+
+    year = civil_date.year
+    month = civil_date.month
+    day = civil_date.day
+    adjustment = (14 - month) // 12
+    year_offset = year + 4800 - adjustment
+    month_offset = month + 12 * adjustment - 3
+    return day + (153 * month_offset + 2) // 5 + 365 * year_offset + year_offset // 4 - year_offset // 100 + year_offset // 400 - 32045
+
+
+def _validate_day_pillar_anchor(
+    data: dict[str, Any], dataset_id: str, stem_refs: set[str], branch_refs: set[str]
+) -> None:
+    required = {"anchor_date", "julian_day_number_at_noon", "sexagenary_index_1_based", "day_stem", "day_branch"}
+    if set(data) != required:
+        _invalid(dataset_id, "data must contain exactly the anchor fields")
+    try:
+        anchor_date = date.fromisoformat(data["anchor_date"])
+        jdn = data["julian_day_number_at_noon"]
+        index = data["sexagenary_index_1_based"]
+        if type(jdn) is not int or type(index) is not int:
+            _invalid(dataset_id, "julian day number and sexagenary index must be integers")
+        if jdn != _gregorian_jdn_at_noon(anchor_date):
+            _invalid(dataset_id, "julian day number does not match anchor_date")
+        if not 1 <= index <= 60:
+            _invalid(dataset_id, "sexagenary_index_1_based must be 1..60")
+        stem = data["day_stem"]
+        branch = data["day_branch"]
+        if stem not in stem_refs or branch not in branch_refs:
+            _invalid(dataset_id, "anchor references an unknown stem or branch")
+        if HeavenlyStem(stem.removeprefix("stem:")).value != list(HeavenlyStem)[(index - 1) % 10].value:
+            _invalid(dataset_id, "day_stem does not match sexagenary index")
+        if EarthlyBranch(branch.removeprefix("branch:")).value != list(EarthlyBranch)[(index - 1) % 12].value:
+            _invalid(dataset_id, "day_branch does not match sexagenary index")
+    except DatasetError:
+        raise
+    except (TypeError, ValueError) as error:
+        _invalid(dataset_id, str(error))
