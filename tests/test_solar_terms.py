@@ -31,6 +31,18 @@ def test_solar_term_boundary_uses_the_verified_kst_instant() -> None:
     assert solar_term_for_datetime(ipchun + timedelta(minutes=1), registry).id == "ipchun"
 
 
+def test_every_verified_solar_term_observes_its_boundary() -> None:
+    registry = RuleRegistry(allow_unverified=True)
+    terms = registry.load("solar_term_instants_v1")["data"]["terms"]
+
+    for index, row in enumerate(terms):
+        instant = datetime.fromisoformat(row["occurs_at"])
+        assert solar_term_for_datetime(instant, registry).id == row["id"]
+        assert solar_term_for_datetime(instant + timedelta(minutes=1), registry).id == row["id"]
+        if index:
+            assert solar_term_for_datetime(instant - timedelta(minutes=1), registry).id == terms[index - 1]["id"]
+
+
 def test_solar_term_lookup_rejects_naive_datetime() -> None:
     with pytest.raises(TypeError, match="timezone-aware"):
         solar_term_for_datetime(datetime(2026, 2, 4, 5, 2), RuleRegistry(allow_unverified=True))
