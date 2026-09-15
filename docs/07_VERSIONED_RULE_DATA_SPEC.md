@@ -59,7 +59,7 @@
 
 ### 2.2 파일 위치 규약
 
-- Production 후보 데이터: `data/saju/<dataset_id>.json`
+- 엔진과 함께 배포되는 Production 후보 데이터: `src/destiny_saju/data/saju/<dataset_id>.json`
 - 아직 검증되지 않았거나 후보만 있는 데이터: `data/saju/<dataset_id>_candidates.json` 또는 §7의 fixture 규약을 따른다.
 - 하나의 `dataset_id`에 대해 동시에 존재하는 production 파일은 하나뿐이어야 한다. 이전 버전은 git 이력으로 추적하며 파일명에 과거 버전을 남기지 않는다.
 
@@ -292,7 +292,7 @@ deprecated            더 이상 production에서 사용하지 않는다. 과거
 
 - `relation_table`은 `relation_element` enum 5개 값이 각각 정확히 한 번씩 등장해야 한다.
 - `same_polarity`/`different_polarity`에 쓰인 ten_god id 10개는 서로 달라야 하며(총 10개), `display_names`에 정의된 키 집합과 정확히 일치해야 한다.
-- 이 데이터셋은 오행 생극 방향(`06` §5.1: `wood→fire→earth→metal→water→wood` 등)을 별도로 포함하지 않는다. `relation_element`를 판정하는 것은 엔진 로직(오행 생극표 참조)의 책임이고, 이 데이터셋은 판정 결과를 십신 이름에 매핑하는 표에 한정한다.
+- 오행 생극 방향(`06` §5.1)은 `core_tables_v1.json`의 `element_relations.generates`와 `element_relations.controls`를 유일한 원본으로 삼는다. 이 데이터셋은 그 판정 결과를 십신 이름에 매핑하는 표에 한정한다.
 - 십신은 일간과 **천간**의 관계로만 산출한다(`06` §5.2). 이 데이터셋에 지지 자체의 십신 매핑을 추가하지 않는다.
 
 ### 5.4 `hidden_stems_v1` — 지장간

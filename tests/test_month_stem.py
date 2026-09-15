@@ -8,7 +8,7 @@ from destiny_saju.month_stem import month_stem_for
 from destiny_saju.stems import HeavenlyStem
 
 ROOT = Path(__file__).parents[1]
-REGISTRY = RuleRegistry(ROOT / "data" / "saju", allow_unverified=True)
+REGISTRY = RuleRegistry(allow_unverified=True)
 GOLDEN = json.loads((ROOT / "tests" / "fixtures" / "saju" / "core-rule-golden-v1.json").read_text(encoding="utf-8"))
 
 class MonthStemTests(unittest.TestCase):

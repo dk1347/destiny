@@ -1,0 +1,85 @@
+{
+    "schema_version": "1.0",
+    "dataset_id": "ten_gods_v1",
+    "dataset_version": "1.0.0",
+    "status": "pending_verification",
+    "source": {
+        "type": "classical_rule",
+        "reference": "docs/06_ENGINE_CONTRACTS_AND_CORE_RULES.md \u00a75.2"
+    },
+    "license": "internal-derived-no-third-party-copy",
+    "generated_at": "2026-09-14T00:00:00Z",
+    "generated_by": "manual",
+    "data": {
+        "relation_table": [
+            {
+                "relation_element": "same_element",
+                "same_polarity": "bigyeon",
+                "different_polarity": "geopjae"
+            },
+            {
+                "relation_element": "day_master_generates_target",
+                "same_polarity": "siksin",
+                "different_polarity": "sangwan"
+            },
+            {
+                "relation_element": "day_master_controls_target",
+                "same_polarity": "pyeonjae",
+                "different_polarity": "jeongjae"
+            },
+            {
+                "relation_element": "target_controls_day_master",
+                "same_polarity": "pyeongwan",
+                "different_polarity": "jeonggwan"
+            },
+            {
+                "relation_element": "target_generates_day_master",
+                "same_polarity": "pyeonin",
+                "different_polarity": "jeongin"
+            }
+        ],
+        "polarity_rule": "same_yin_yang_selects_same_polarity_column",
+        "display_names": {
+            "bigyeon": {
+                "korean": "\ube44\uacac",
+                "hanja": "\u6bd4\u80a9"
+            },
+            "geopjae": {
+                "korean": "\uac81\uc7ac",
+                "hanja": "\u52ab\u8ca1"
+            },
+            "siksin": {
+                "korean": "\uc2dd\uc2e0",
+                "hanja": "\u98df\u795e"
+            },
+            "sangwan": {
+                "korean": "\uc0c1\uad00",
+                "hanja": "\u50b7\u5b98"
+            },
+            "pyeonjae": {
+                "korean": "\ud3b8\uc7ac",
+                "hanja": "\u504f\u8ca1"
+            },
+            "jeongjae": {
+                "korean": "\uc815\uc7ac",
+                "hanja": "\u6b63\u8ca1"
+            },
+            "pyeongwan": {
+                "korean": "\ud3b8\uad00",
+                "hanja": "\u504f\u5b98"
+            },
+            "jeonggwan": {
+                "korean": "\uc815\uad00",
+                "hanja": "\u6b63\u5b98"
+            },
+            "pyeonin": {
+                "korean": "\ud3b8\uc778",
+                "hanja": "\u504f\u5370"
+            },
+            "jeongin": {
+                "korean": "\uc815\uc778",
+                "hanja": "\u6b63\u5370"
+            }
+        }
+    }
+}

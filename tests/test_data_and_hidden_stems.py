@@ -1,4 +1,7 @@
 import unittest
+import json
+import tempfile
+from importlib.resources import files
 from pathlib import Path
 
 from destiny_saju.data_registry import DatasetError, RuleRegistry, load_dataset
@@ -9,17 +12,16 @@ from destiny_saju.hour_stem import hour_stem_for
 from destiny_saju.month_stem import month_stem_for
 from destiny_saju.ten_gods import ten_god_for
 
-DATA_DIR = Path(__file__).parents[1] / "data" / "saju"
-TEST_REGISTRY = RuleRegistry(DATA_DIR, allow_unverified=True)
+TEST_REGISTRY = RuleRegistry(allow_unverified=True)
 
 
 class DatasetAndHiddenStemTests(unittest.TestCase):
     def test_unverified_dataset_is_blocked_by_default(self) -> None:
         with self.assertRaisesRegex(DatasetError, "DATASET_NOT_PRODUCTION_VERIFIED"):
-            load_dataset("hidden_stems_v1", data_dir=DATA_DIR)
+            load_dataset("hidden_stems_v1")
 
     def test_every_calculator_obeys_production_gate(self) -> None:
-        production = RuleRegistry(DATA_DIR)
+        production = RuleRegistry()
         calls = (
             lambda: hidden_stems_for(EarthlyBranch.JA, production),
             lambda: hour_stem_for(HeavenlyStem.GAP, EarthlyBranch.JA, production),
@@ -39,3 +41,24 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
     def test_reference_values(self) -> None:
         self.assertEqual(hidden_stems_for(EarthlyBranch.JA, TEST_REGISTRY)[0].stem, HeavenlyStem.GYE)
         self.assertEqual([row.stem for row in hidden_stems_for(EarthlyBranch.IN, TEST_REGISTRY)], [HeavenlyStem.GAP, HeavenlyStem.BYEONG, HeavenlyStem.MU])
+
+    def test_broken_reference_is_reported_as_dataset_error(self) -> None:
+        source = files("destiny_saju.data.saju")
+        with tempfile.TemporaryDirectory() as temporary:
+            target = Path(temporary)
+            for resource in source.iterdir():
+                if resource.name.endswith(".json"):
+                    (target / resource.name).write_bytes(resource.read_bytes())
+            path = target / "month_stem_rules_v1.json"
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            payload["data"]["month_branch_order_from_in"].remove("branch:chuk")
+            path.write_text(json.dumps(payload), encoding="utf-8")
+            registry = RuleRegistry(target, allow_unverified=True)
+            with self.assertRaisesRegex(DatasetError, "DATASET_SCHEMA_INVALID"):
+                month_stem_for(HeavenlyStem.GAP, EarthlyBranch.CHUK, registry)
+
+    def test_registry_returns_defensive_copies(self) -> None:
+        first = TEST_REGISTRY.load("core_tables_v1")
+        first["data"]["heavenly_stems"].clear()
+        second = TEST_REGISTRY.load("core_tables_v1")
+        self.assertEqual(len(second["data"]["heavenly_stems"]), 10)

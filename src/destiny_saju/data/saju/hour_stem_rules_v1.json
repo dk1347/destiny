@@ -1,0 +1,66 @@
+{
+    "schema_version": "1.0",
+    "dataset_id": "hour_stem_rules_v1",
+    "dataset_version": "1.0.0",
+    "status": "pending_verification",
+    "source": {
+        "type": "classical_rule",
+        "reference": "docs/06_ENGINE_CONTRACTS_AND_CORE_RULES.md \u00a73.2"
+    },
+    "license": "internal-derived-no-third-party-copy",
+    "generated_at": "2026-09-14T00:00:00Z",
+    "generated_by": "manual",
+    "data": {
+        "rat_start_by_day_stem_group": [
+            {
+                "day_stems": [
+                    "stem:gap",
+                    "stem:gi"
+                ],
+                "ja_hour_start_stem": "stem:gap"
+            },
+            {
+                "day_stems": [
+                    "stem:eul",
+                    "stem:gyeong"
+                ],
+                "ja_hour_start_stem": "stem:byeong"
+            },
+            {
+                "day_stems": [
+                    "stem:byeong",
+                    "stem:sin"
+                ],
+                "ja_hour_start_stem": "stem:mu"
+            },
+            {
+                "day_stems": [
+                    "stem:jeong",
+                    "stem:im"
+                ],
+                "ja_hour_start_stem": "stem:gyeong"
+            },
+            {
+                "day_stems": [
+                    "stem:mu",
+                    "stem:gye"
+                ],
+                "ja_hour_start_stem": "stem:im"
+            }
+        ],
+        "hour_branch_order_from_ja": [
+            "branch:ja",
+            "branch:chuk",
+            "branch:in",
+            "branch:myo",
+            "branch:jin",
+            "branch:sa",
+            "branch:o",
+            "branch:mi",
+            "branch:sin",
+            "branch:yu",
+            "branch:sul",
+            "branch:hae"
+        ]
+    }
+}

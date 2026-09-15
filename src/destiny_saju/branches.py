@@ -1,7 +1,7 @@
-from enum import StrEnum
+from enum import Enum
 
 
-class EarthlyBranch(StrEnum):
+class EarthlyBranch(Enum):
     JA = "ja"
     CHUK = "chuk"
     IN = "in"

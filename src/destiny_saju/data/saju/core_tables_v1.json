@@ -1,0 +1,340 @@
+{
+    "schema_version": "1.0",
+    "dataset_id": "core_tables_v1",
+    "dataset_version": "1.0.0",
+    "status": "pending_verification",
+    "source": {
+        "type": "classical_rule",
+        "reference": "docs/04_SAJU_CALCULATION_SPEC.md \u00a76"
+    },
+    "license": "internal-derived-no-third-party-copy",
+    "generated_at": "2026-09-14T00:00:00Z",
+    "generated_by": "manual",
+    "scope": "Fixed vocabulary and lookup data only; no solar-term instants, calendar conversion, or interpretive weights.",
+    "data": {
+        "element_relations": {
+            "generates": {
+                "wood": "fire",
+                "fire": "earth",
+                "earth": "metal",
+                "metal": "water",
+                "water": "wood"
+            },
+            "controls": {
+                "wood": "earth",
+                "earth": "water",
+                "water": "fire",
+                "fire": "metal",
+                "metal": "wood"
+            }
+        },
+        "heavenly_stems": [
+            {
+                "id": "gap",
+                "korean": "\uac11",
+                "hanja": "\u7532",
+                "order": 1,
+                "yin_yang": "yang",
+                "element": "wood"
+            },
+            {
+                "id": "eul",
+                "korean": "\uc744",
+                "hanja": "\u4e59",
+                "order": 2,
+                "yin_yang": "yin",
+                "element": "wood"
+            },
+            {
+                "id": "byeong",
+                "korean": "\ubcd1",
+                "hanja": "\u4e19",
+                "order": 3,
+                "yin_yang": "yang",
+                "element": "fire"
+            },
+            {
+                "id": "jeong",
+                "korean": "\uc815",
+                "hanja": "\u4e01",
+                "order": 4,
+                "yin_yang": "yin",
+                "element": "fire"
+            },
+            {
+                "id": "mu",
+                "korean": "\ubb34",
+                "hanja": "\u620a",
+                "order": 5,
+                "yin_yang": "yang",
+                "element": "earth"
+            },
+            {
+                "id": "gi",
+                "korean": "\uae30",
+                "hanja": "\u5df1",
+                "order": 6,
+                "yin_yang": "yin",
+                "element": "earth"
+            },
+            {
+                "id": "gyeong",
+                "korean": "\uacbd",
+                "hanja": "\u5e9a",
+                "order": 7,
+                "yin_yang": "yang",
+                "element": "metal"
+            },
+            {
+                "id": "sin",
+                "korean": "\uc2e0",
+                "hanja": "\u8f9b",
+                "order": 8,
+                "yin_yang": "yin",
+                "element": "metal"
+            },
+            {
+                "id": "im",
+                "korean": "\uc784",
+                "hanja": "\u58ec",
+                "order": 9,
+                "yin_yang": "yang",
+                "element": "water"
+            },
+            {
+                "id": "gye",
+                "korean": "\uacc4",
+                "hanja": "\u7678",
+                "order": 10,
+                "yin_yang": "yin",
+                "element": "water"
+            }
+        ],
+        "earthly_branches": [
+            {
+                "id": "ja",
+                "korean": "\uc790",
+                "hanja": "\u5b50",
+                "order": 1,
+                "yin_yang": "yang",
+                "element": "water",
+                "animal": "rat"
+            },
+            {
+                "id": "chuk",
+                "korean": "\ucd95",
+                "hanja": "\u4e11",
+                "order": 2,
+                "yin_yang": "yin",
+                "element": "earth",
+                "animal": "ox"
+            },
+            {
+                "id": "in",
+                "korean": "\uc778",
+                "hanja": "\u5bc5",
+                "order": 3,
+                "yin_yang": "yang",
+                "element": "wood",
+                "animal": "tiger"
+            },
+            {
+                "id": "myo",
+                "korean": "\ubb18",
+                "hanja": "\u536f",
+                "order": 4,
+                "yin_yang": "yin",
+                "element": "wood",
+                "animal": "rabbit"
+            },
+            {
+                "id": "jin",
+                "korean": "\uc9c4",
+                "hanja": "\u8fb0",
+                "order": 5,
+                "yin_yang": "yang",
+                "element": "earth",
+                "animal": "dragon"
+            },
+            {
+                "id": "sa",
+                "korean": "\uc0ac",
+                "hanja": "\u5df3",
+                "order": 6,
+                "yin_yang": "yin",
+                "element": "fire",
+                "animal": "snake"
+            },
+            {
+                "id": "o",
+                "korean": "\uc624",
+                "hanja": "\u5348",
+                "order": 7,
+                "yin_yang": "yang",
+                "element": "fire",
+                "animal": "horse"
+            },
+            {
+                "id": "mi",
+                "korean": "\ubbf8",
+                "hanja": "\u672a",
+                "order": 8,
+                "yin_yang": "yin",
+                "element": "earth",
+                "animal": "goat"
+            },
+            {
+                "id": "sin",
+                "korean": "\uc2e0",
+                "hanja": "\u7533",
+                "order": 9,
+                "yin_yang": "yang",
+                "element": "metal",
+                "animal": "monkey"
+            },
+            {
+                "id": "yu",
+                "korean": "\uc720",
+                "hanja": "\u9149",
+                "order": 10,
+                "yin_yang": "yin",
+                "element": "metal",
+                "animal": "rooster"
+            },
+            {
+                "id": "sul",
+                "korean": "\uc220",
+                "hanja": "\u620c",
+                "order": 11,
+                "yin_yang": "yang",
+                "element": "earth",
+                "animal": "dog"
+            },
+            {
+                "id": "hae",
+                "korean": "\ud574",
+                "hanja": "\u4ea5",
+                "order": 12,
+                "yin_yang": "yin",
+                "element": "water",
+                "animal": "pig"
+            }
+        ],
+        "hour_branch_windows_legal_local_time": [
+            {
+                "branch": "ja",
+                "start": "23:00",
+                "end": "00:59"
+            },
+            {
+                "branch": "chuk",
+                "start": "01:00",
+                "end": "02:59"
+            },
+            {
+                "branch": "in",
+                "start": "03:00",
+                "end": "04:59"
+            },
+            {
+                "branch": "myo",
+                "start": "05:00",
+                "end": "06:59"
+            },
+            {
+                "branch": "jin",
+                "start": "07:00",
+                "end": "08:59"
+            },
+            {
+                "branch": "sa",
+                "start": "09:00",
+                "end": "10:59"
+            },
+            {
+                "branch": "o",
+                "start": "11:00",
+                "end": "12:59"
+            },
+            {
+                "branch": "mi",
+                "start": "13:00",
+                "end": "14:59"
+            },
+            {
+                "branch": "sin",
+                "start": "15:00",
+                "end": "16:59"
+            },
+            {
+                "branch": "yu",
+                "start": "17:00",
+                "end": "18:59"
+            },
+            {
+                "branch": "sul",
+                "start": "19:00",
+                "end": "20:59"
+            },
+            {
+                "branch": "hae",
+                "start": "21:00",
+                "end": "22:59"
+            }
+        ],
+        "month_branch_by_major_solar_term": [
+            {
+                "term": "ipchun",
+                "branch": "in"
+            },
+            {
+                "term": "gyeongchip",
+                "branch": "myo"
+            },
+            {
+                "term": "cheongmyeong",
+                "branch": "jin"
+            },
+            {
+                "term": "ipha",
+                "branch": "sa"
+            },
+            {
+                "term": "mangjong",
+                "branch": "o"
+            },
+            {
+                "term": "soseo",
+                "branch": "mi"
+            },
+            {
+                "term": "ipchu",
+                "branch": "sin"
+            },
+            {
+                "term": "baengno",
+                "branch": "yu"
+            },
+            {
+                "term": "hallo",
+                "branch": "sul"
+            },
+            {
+                "term": "ipdong",
+                "branch": "hae"
+            },
+            {
+                "term": "daeseol",
+                "branch": "ja"
+            },
+            {
+                "term": "sohan",
+                "branch": "chuk"
+            }
+        ],
+        "notes": [
+            "Hidden stems, relations, Ten Gods, and fortune-cycle rules are separate versioned datasets.",
+            "This data does not decide a day boundary or apply true solar time; Calculation Profile does."
+        ]
+    }
+}

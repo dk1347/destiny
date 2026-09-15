@@ -7,10 +7,18 @@ on:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
       - run: python -m pip install -e '.[dev]'
       - run: python -m pytest -q
+      - run: python -m build
+      - run: |
+          python -m venv /tmp/destiny-wheel-test
+          /tmp/destiny-wheel-test/bin/pip install dist/*.whl
+          /tmp/destiny-wheel-test/bin/python -c "from destiny_saju import RuleRegistry; RuleRegistry(allow_unverified=True).load('core_tables_v1')"

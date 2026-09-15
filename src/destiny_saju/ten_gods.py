@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum
 
 from .data_registry import RuleRegistry
 from .diagnostics import CalculationInputError, DiagnosticCode
@@ -6,7 +6,7 @@ from .stems import HeavenlyStem
 from .tables import stem_attributes
 
 
-class Element(StrEnum):
+class Element(Enum):
     WOOD = "wood"
     FIRE = "fire"
     EARTH = "earth"
@@ -14,7 +14,7 @@ class Element(StrEnum):
     WATER = "water"
 
 
-class TenGod(StrEnum):
+class TenGod(Enum):
     BIGYEON = "bigyeon"
     GEOPJAE = "geopjae"
     SIKSIN = "siksin"
@@ -35,9 +35,19 @@ def ten_god_for(day_stem: HeavenlyStem, target_stem: HeavenlyStem, registry: Rul
     day_element = Element(day.element)
     target_element = Element(target.element)
     same_polarity = day.yin_yang == target.yin_yang
-    elements = list(Element)
-    delta = (elements.index(target_element) - elements.index(day_element)) % 5
-    relation = {0: "same_element", 1: "day_master_generates_target", 2: "day_master_controls_target", 3: "target_controls_day_master", 4: "target_generates_day_master"}[delta]
+    element_relations = registry.load("core_tables_v1")["data"]["element_relations"]
+    generates = element_relations["generates"]
+    controls = element_relations["controls"]
+    if day_element is target_element:
+        relation = "same_element"
+    elif generates[day_element.value] == target_element.value:
+        relation = "day_master_generates_target"
+    elif controls[day_element.value] == target_element.value:
+        relation = "day_master_controls_target"
+    elif controls[target_element.value] == day_element.value:
+        relation = "target_controls_day_master"
+    else:
+        relation = "target_generates_day_master"
     rows = registry.load("ten_gods_v1")["data"]["relation_table"]
     row = next(item for item in rows if item["relation_element"] == relation)
     return TenGod(row["same_polarity" if same_polarity else "different_polarity"])
