@@ -30,8 +30,22 @@ completeness conditions for:
 - four complete three-harmony groups and their two-branch candidates; and
 - six branch clashes.
 
-Those four categories are the first candidate implementation batch, but they
-remain `pending_verification` until every row has two reviewed sources.
+Those four categories are the first candidate implementation batch. A
+2026-09-16 row-level cross-check found that the bundled participant sets and
+resulting elements agree with the independently presented table in *Mingli
+Tanyuan* (which itself identifies its historical attributions):
+
+- five stem combinations and their elements;
+- six branch combinations and their elements (with `o`/`mi` retained as the
+  traditional sun/moon pairing and represented in this dataset as earth);
+- the four three-harmony groups and their elements; and
+- the six branch clashes.
+
+The bundled two-member three-harmony candidates are a mechanical subset of
+those four reviewed complete groups. This establishes a useful regression
+baseline, but the dataset remains `pending_verification`: the review record
+must still preserve edition/page-level evidence and complete reuse assessment
+before it may become `production_verified`.
 
 ## 3. Explicitly deferred relation types
 
@@ -78,6 +92,14 @@ Before a first `relations_v1` dataset is enabled for production:
   Changing Actions among Jijis,” *Sogang Journal of Philosophy* 31 (2012),
   205–241, DOI: 10.17325/sgjp.2012.31..205:
   https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001716658
+- *Mingli Tanyuan*, vol. 1, sections “Five-combination five elements”,
+  “Six-combination five elements”, “Three-harmony five elements”, and “Six
+  clashes”. It gives all four candidate categories row by row and attributes
+  the traditional material it quotes:
+  https://libokang.com/zh-hant/guji/bazi/%E5%91%BD%E7%90%86%E6%8E%A2%E6%BA%90/
+- *Sanming Tonghui*, vol. 2, preserved primary-text reference for the existing
+  data source:
+  https://zh.wikisource.org/zh-hant/%E4%B8%89%E5%91%BD%E9%80%9A%E6%9C%83/%E5%8D%B7%E4%BA%8C
 - Existing Destiny schema and completeness requirements:
   `docs/07_VERSIONED_RULE_DATA_SPEC.md` §5.5.
 - Existing engine boundary between relation detection and interpretation:
@@ -90,8 +112,7 @@ a single modern textbook as the production authority. It also does not add
 celebrity charts or personally identifying birth data as fixtures.
 
 The two KCI records establish useful independent academic provenance for the
-existence and historical discussion of stem and branch combinations. Their
-public abstracts alone do **not** provide enough row-level detail to approve
-every participant set and resulting element. Obtain and review the full texts
-or another independently citable primary/academic table before adding a
-production dataset.
+existence and historical discussion of stem and branch combinations. The
+row-level cross-check above is deliberately narrower than a release approval:
+it does not resolve source-edition, licensing, or all-school-variation review.
+Do not enable a production dataset until those release records are complete.

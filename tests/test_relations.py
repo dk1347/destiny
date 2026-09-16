@@ -48,6 +48,48 @@ def test_pending_relations_dataset_is_available_only_in_explicit_test_mode() -> 
     assert {finding.relation_id for finding in findings} == {"branch-half-in-o", "branch-clash-myo-yu"}
 
 
+def test_bundled_relations_candidate_rows_match_the_audited_structural_tables() -> None:
+    data = RuleRegistry(allow_unverified=True).load("relations_v1")["data"]
+
+    assert {
+        (row["participants"][0], row["participants"][1], row["resulting_element"])
+        for row in data["stem_combinations"]
+    } == {
+        ("stem:gap", "stem:gi", "earth"),
+        ("stem:eul", "stem:gyeong", "metal"),
+        ("stem:byeong", "stem:sin", "water"),
+        ("stem:jeong", "stem:im", "wood"),
+        ("stem:mu", "stem:gye", "fire"),
+    }
+
+    complete_three_harmonies = {
+        tuple(row["participants"]): row["resulting_element"]
+        for row in data["branch_relations"]
+        if row["relation_type"] == "branch_three_harmony"
+    }
+    assert complete_three_harmonies == {
+        ("branch:sin", "branch:ja", "branch:jin"): "water",
+        ("branch:sa", "branch:yu", "branch:chuk"): "metal",
+        ("branch:in", "branch:o", "branch:sul"): "fire",
+        ("branch:hae", "branch:myo", "branch:mi"): "wood",
+    }
+    assert {
+        frozenset(row["participants"])
+        for row in data["branch_relations"]
+        if row["relation_type"] == "branch_clash"
+    } == {
+        frozenset(pair)
+        for pair in (
+            ("branch:ja", "branch:o"),
+            ("branch:chuk", "branch:mi"),
+            ("branch:in", "branch:sin"),
+            ("branch:myo", "branch:yu"),
+            ("branch:jin", "branch:sul"),
+            ("branch:sa", "branch:hae"),
+        )
+    }
+
+
 def test_relation_lookup_returns_detected_facts_only() -> None:
     registry = _registry_with_relations()
     pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), registry)
