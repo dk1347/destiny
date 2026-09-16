@@ -101,13 +101,18 @@ def test_solar_term_lookup_rejects_non_kst_datetime() -> None:
 
 def test_solar_term_lookup_fails_closed_outside_its_verified_coverage() -> None:
     registry = RuleRegistry(allow_unverified=True)
-    with pytest.raises(DatasetError, match="SOLAR_TERM_DATA_UNAVAILABLE"):
-        solar_term_for_datetime(
-            datetime(2025, 12, 31, 23, 59, tzinfo=timezone(timedelta(hours=9))),
-            registry,
-        )
+    for outside_coverage in (
+        datetime(2025, 12, 31, 23, 59, tzinfo=timezone(timedelta(hours=9))),
+        datetime(2027, 1, 1, 0, 0, tzinfo=timezone(timedelta(hours=9))),
+    ):
+        with pytest.raises(DatasetError, match="SOLAR_TERM_DATA_UNAVAILABLE"):
+            solar_term_for_datetime(outside_coverage, registry)
     assert solar_term_for_datetime(
         datetime(2026, 1, 1, 0, 0, tzinfo=timezone(timedelta(hours=9))),
+        registry,
+    ).id == "dongji"
+    assert solar_term_for_datetime(
+        datetime(2026, 12, 31, 23, 59, tzinfo=timezone(timedelta(hours=9))),
         registry,
     ).id == "dongji"
 
