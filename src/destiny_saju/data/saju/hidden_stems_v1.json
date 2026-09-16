@@ -2,14 +2,18 @@
     "schema_version": "1.0",
     "dataset_id": "hidden_stems_v1",
     "dataset_version": "1.0.0",
-    "status": "pending_verification",
+    "status": "production_verified",
     "source": {
-        "type": "classical_rule",
-        "reference": "docs/06_ENGINE_CONTRACTS_AND_CORE_RULES.md \u00a75.3"
+        "type": "compact_hidden_stems_audit",
+        "audit_record": "docs/22_HIDDEN_STEMS_SCOPE_AUDIT.md",
+        "reviewed_at": "2026-09-16",
+        "review_decision": "approved_for_compact_hidden_stems_only"
     },
-    "license": "internal-derived-no-third-party-copy",
+    "license": "derived factual rule data; source attribution retained; no third-party prose copied",
     "generated_at": "2026-09-14T00:00:00Z",
     "generated_by": "manual",
+    "scope": "Compact hidden-stem convention only; excludes seasonal sa-ryeong durations and expanded seasonal tables.",
+    "status_history": [{"status": "pending_verification", "at": "2026-09-14T00:00:00Z", "by": "manual"}, {"status": "production_verified", "at": "2026-09-16T00:00:00+09:00", "by": "product-owner approval recorded in Codex task"}],
     "data": {
         "branch_hidden_stems": {
             "branch:ja": [

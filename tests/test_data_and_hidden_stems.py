@@ -30,17 +30,19 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
 
     def test_unverified_dataset_is_blocked_by_default(self) -> None:
         with self.assertRaisesRegex(DatasetError, "DATASET_NOT_PRODUCTION_VERIFIED"):
-            load_dataset("hidden_stems_v1")
+            load_dataset("ten_gods_v1")
 
     def test_every_calculator_obeys_production_gate(self) -> None:
         production = RuleRegistry()
         calls = (
-            lambda: hidden_stems_for(EarthlyBranch.JA, production),
             lambda: ten_god_for(HeavenlyStem.GAP, HeavenlyStem.GAP, production),
         )
         for call in calls:
             with self.assertRaisesRegex(DatasetError, "DATASET_NOT_PRODUCTION_VERIFIED"):
                 call()
+
+    def test_compact_hidden_stems_are_available_in_the_production_registry(self) -> None:
+        self.assertEqual(hidden_stems_for(EarthlyBranch.JA, RuleRegistry())[0].stem, HeavenlyStem.GYE)
 
     def test_all_branches_have_one_main_hidden_stem(self) -> None:
         for branch in EarthlyBranch:

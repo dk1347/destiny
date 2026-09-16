@@ -1,8 +1,8 @@
 # Destiny — Hidden-stems Scope Audit
 
 > Product decision (2026-09-16): use the compact hidden-stem convention for
-> the MVP. Keep `hidden_stems_v1` as `pending_verification`; do not promote or
-> silently replace rows until its compact row set has dedicated source review.
+> the MVP. `hidden_stems_v1` is `production_verified` for this compact scope;
+> do not silently replace rows with the separate seasonal model.
 
 ## What the current dataset means
 
@@ -50,8 +50,8 @@ This is not a formatting issue. It reflects two possible dataset scopes:
 
 The calculator must not claim that the compact list implements the seasonal
 `사령` model. The two models should be separate versioned datasets if both are
-needed. Until product chooses the supported semantics and a source supports
-every row under that semantics, production loading remains blocked.
+needed. The compact semantics are selected and all rows are source-audited;
+seasonal semantics remain a separate future dataset.
 
 ## Required next decision
 
