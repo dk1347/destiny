@@ -130,6 +130,15 @@ def test_relation_lookup_returns_detected_facts_only() -> None:
     assert relations_for_pillars(pillars, registry)[0].rule_set_version == "relations_v1@1.0.0"
 
 
+def test_relation_values_reject_malformed_named_values() -> None:
+    from destiny_saju.relations import relations_for_values
+
+    with pytest.raises(TypeError, match="tuples"):
+        relations_for_values([], (), RuleRegistry(allow_unverified=True))  # type: ignore[arg-type]
+    with pytest.raises(TypeError, match="position/value"):
+        relations_for_values((("year_stem",),), (), RuleRegistry(allow_unverified=True))  # type: ignore[arg-type]
+
+
 def test_relations_dataset_rejects_unknown_reference() -> None:
     registry = _registry_with_relations()
     data = registry.load("relations_v1")

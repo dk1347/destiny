@@ -26,13 +26,42 @@ def relations_for_pillars(pillars: FourPillars, registry: RuleRegistry) -> tuple
 
     if not isinstance(pillars, FourPillars):
         raise TypeError("pillars must be a FourPillars instance")
+    return relations_for_values(
+        (("year_stem", pillars.year.stem.value), ("month_stem", pillars.month.stem.value),
+         ("day_stem", pillars.day.stem.value), ("hour_stem", pillars.hour.stem.value)),
+        (("year_branch", pillars.year.branch.value), ("month_branch", pillars.month.branch.value),
+         ("day_branch", pillars.day.branch.value), ("hour_branch", pillars.hour.branch.value)),
+        registry,
+    )
+
+
+def relations_for_values(
+    stems: tuple[tuple[str, str], ...],
+    branches: tuple[tuple[str, str], ...],
+    registry: RuleRegistry,
+) -> tuple[RelationFinding, ...]:
+    """Detect facts for named stem/branch values without interpreting them.
+
+    This is intentionally value-oriented so an annual pillar can be checked
+    against a natal chart without pretending that it is one of the four natal
+    pillars. Callers own their location names (for example ``seun_branch``).
+    """
+
+    if not isinstance(registry, RuleRegistry):
+        raise TypeError("registry must be a RuleRegistry instance")
+    if not isinstance(stems, tuple) or not isinstance(branches, tuple):
+        raise TypeError("stems and branches must be tuples of string position/value pairs")
+    if not all(
+        isinstance(item, tuple)
+        and len(item) == 2
+        and isinstance(item[0], str)
+        and isinstance(item[1], str)
+        for item in stems + branches
+    ):
+        raise TypeError("stems and branches must contain string position/value pairs")
     dataset = registry.load(_DATASET_ID)
     data = dataset["data"]
     findings = []
-    stems = (("year_stem", pillars.year.stem.value), ("month_stem", pillars.month.stem.value),
-             ("day_stem", pillars.day.stem.value), ("hour_stem", pillars.hour.stem.value))
-    branches = (("year_branch", pillars.year.branch.value), ("month_branch", pillars.month.branch.value),
-                ("day_branch", pillars.day.branch.value), ("hour_branch", pillars.hour.branch.value))
     for rows, available, prefix in ((data["stem_combinations"], stems, "stem"), (data["branch_relations"], branches, "branch")):
         for row in rows:
             wanted = tuple(item.removeprefix(f"{prefix}:") for item in row["participants"])
