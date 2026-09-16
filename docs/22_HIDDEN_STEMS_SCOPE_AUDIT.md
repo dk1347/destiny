@@ -1,7 +1,8 @@
 # Destiny — Hidden-stems Scope Audit
 
-> Decision: keep `hidden_stems_v1` as `pending_verification`. Do not promote
-> or silently replace rows until the product selects a hidden-stem convention.
+> Product decision (2026-09-16): use the compact hidden-stem convention for
+> the MVP. Keep `hidden_stems_v1` as `pending_verification`; do not promote or
+> silently replace rows until its compact row set has dedicated source review.
 
 ## What the current dataset means
 
@@ -39,9 +40,10 @@ every row under that semantics, production loading remains blocked.
 
 ## Required next decision
 
-Choose one of the following before further implementation:
+The MVP selection is option 1 below. The other options remain future design
+paths, not current implementation work.
 
-1. **Compact-only MVP:** name the chosen convention and obtain a full
+1. **Compact-only MVP (selected):** name the chosen convention and obtain a full
    row-by-row source for its omissions.
 2. **Seasonal model:** add a new dataset containing `residual/middle/main`
    roles plus each interval or duration, with its solar-term linkage.
