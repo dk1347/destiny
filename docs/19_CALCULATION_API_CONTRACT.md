@@ -26,6 +26,12 @@ rather than guessing which side applies. Lunar conversion, historical timezone
 recovery, and true-solar-time choices enter only after their own resolver
 contracts exist.
 
+## Health check
+
+`GET /healthz` is a liveness endpoint for a deployment platform. It returns
+only `{"status":"ok","service":"destiny-saju"}` and never loads rule data,
+calculates a result, or exposes configuration or user information.
+
 ## Success response
 
 The response body is `SajuResult.as_dict()`. It contains canonical IDs, not

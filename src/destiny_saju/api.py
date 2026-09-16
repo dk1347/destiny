@@ -17,7 +17,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=_runtime_config.allowed_origins,
     allow_credentials=False,
-    allow_methods=["POST"],
+    allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
 
@@ -32,6 +32,13 @@ class SeunRequest(BaseModel):
     birth_local_datetime: datetime
     target_local_datetime: datetime
     calculation_profile_id: str = KR_STANDARD_V1.profile_id
+
+
+@app.get("/healthz")
+def healthz() -> dict[str, str]:
+    """Provide a non-sensitive process liveness signal for deployment checks."""
+
+    return {"status": "ok", "service": "destiny-saju"}
 
 
 def _require_kst(value: datetime, field_name: str) -> None:

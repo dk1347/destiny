@@ -3,7 +3,11 @@ from datetime import datetime, timedelta, timezone
 import pytest
 from fastapi import HTTPException
 
-from destiny_saju.api import CalculationRequest, SeunRequest, calculate, calculate_seun
+from destiny_saju.api import CalculationRequest, SeunRequest, calculate, calculate_seun, healthz
+
+
+def test_healthz_exposes_no_runtime_or_user_data() -> None:
+    assert healthz() == {"status": "ok", "service": "destiny-saju"}
 
 
 def test_api_rejects_non_kst_datetime() -> None:
