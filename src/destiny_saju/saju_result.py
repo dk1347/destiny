@@ -19,6 +19,24 @@ class SajuResult:
     dataset_versions: tuple[tuple[str, str], ...]
     warnings: tuple[str, ...] = ()
 
+    def as_dict(self) -> dict[str, object]:
+        """Return a JSON-ready public result without exposing runtime objects."""
+
+        def pillar(value: object) -> dict[str, str]:
+            return {"stem": value.stem.value, "branch": value.branch.value}  # type: ignore[attr-defined]
+
+        return {
+            "result_version": self.result_version,
+            "calculation_profile_id": self.calculation_profile_id,
+            "status": self.status,
+            "pillars": {
+                "year": pillar(self.pillars.year), "month": pillar(self.pillars.month),
+                "day": pillar(self.pillars.day), "hour": pillar(self.pillars.hour),
+            },
+            "warnings": list(self.warnings),
+            "provenance": {dataset_id: version for dataset_id, version in self.dataset_versions},
+        }
+
 
 def saju_result_for_datetime(
     resolved_local_datetime: datetime,

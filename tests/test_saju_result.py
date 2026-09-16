@@ -13,3 +13,5 @@ def test_result_preserves_profile_and_loaded_rule_versions() -> None:
     assert result.calculation_profile_id == "kr_standard_v1"
     assert ("core_tables_v1", "1.0.0") in result.dataset_versions
     assert ("solar_term_instants_v1", "1.0.0") in result.dataset_versions
+    assert result.as_dict()["pillars"]["year"] == {"stem": "byeong", "branch": "o"}
+    assert result.as_dict()["provenance"]["solar_term_instants_v1"] == "1.0.0"
