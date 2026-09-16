@@ -9,11 +9,13 @@ from .data_registry import DatasetError, RuleRegistry
 from .four_pillars import four_pillars_for_datetime
 from .saju_result import saju_result_for_date, saju_result_for_datetime
 from .seun import seun_for_datetime
+from .runtime_config import api_runtime_config
 
 app = FastAPI(title="Destiny Calculation API")
+_runtime_config = api_runtime_config()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=_runtime_config.allowed_origins,
     allow_credentials=False,
     allow_methods=["POST"],
     allow_headers=["Content-Type"],

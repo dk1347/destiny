@@ -1,7 +1,7 @@
 # Destiny — Runtime Configuration Specification
 
-> Status: design baseline for the future API/Web MVP. No runtime configuration
-> loader is introduced until an executable service exists.
+> Status: guarded internal API baseline. The first public, non-secret API
+> setting is implemented; secrets and public deployment remain out of scope.
 
 ## 1. Purpose
 
@@ -38,7 +38,21 @@ file must not mix those three concerns.
 - No multiprocessing setting inside the deterministic calculation core.
   Concurrency belongs to the future API worker or batch-job layer.
 
-## 5. Initial MVP shape
+## 5. Implemented internal API setting
+
+`DESTINY_ALLOWED_ORIGINS` is an optional comma-separated list of complete
+`http` or `https` origins. It controls which browser origins may call the
+internal API through CORS. It never accepts `*`, paths, query strings, or
+secrets. If absent, it permits only the two local Vite development origins:
+
+```text
+http://localhost:5173,http://127.0.0.1:5173
+```
+
+This is deployment configuration, not calculation rule data. A public
+deployment must set its exact public client origin explicitly.
+
+## 6. Initial MVP shape
 
 When the API is introduced, use a small, validated public config plus a local
 `.env` file excluded from Git. Start with one worker process and ordinary
