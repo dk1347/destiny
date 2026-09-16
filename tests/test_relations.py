@@ -74,6 +74,36 @@ def test_bundled_relations_candidate_rows_match_the_audited_structural_tables() 
         ("branch:hae", "branch:myo", "branch:mi"): "wood",
     }
     assert {
+        frozenset(row["participants"]): row["resulting_element"]
+        for row in data["branch_relations"]
+        if row["relation_type"] == "branch_six_combination"
+    } == {
+        frozenset(("branch:ja", "branch:chuk")): "earth",
+        frozenset(("branch:in", "branch:hae")): "wood",
+        frozenset(("branch:myo", "branch:sul")): "fire",
+        frozenset(("branch:jin", "branch:yu")): "metal",
+        frozenset(("branch:sa", "branch:sin")): "water",
+        frozenset(("branch:o", "branch:mi")): "earth",
+    }
+    assert {
+        frozenset(row["participants"]): row["resulting_element"]
+        for row in data["branch_relations"]
+        if row["relation_type"] == "branch_half_three_harmony_candidate"
+    } == {
+        frozenset(("branch:sin", "branch:ja")): "water",
+        frozenset(("branch:ja", "branch:jin")): "water",
+        frozenset(("branch:sin", "branch:jin")): "water",
+        frozenset(("branch:sa", "branch:yu")): "metal",
+        frozenset(("branch:yu", "branch:chuk")): "metal",
+        frozenset(("branch:sa", "branch:chuk")): "metal",
+        frozenset(("branch:in", "branch:o")): "fire",
+        frozenset(("branch:o", "branch:sul")): "fire",
+        frozenset(("branch:in", "branch:sul")): "fire",
+        frozenset(("branch:hae", "branch:myo")): "wood",
+        frozenset(("branch:myo", "branch:mi")): "wood",
+        frozenset(("branch:hae", "branch:mi")): "wood",
+    }
+    assert {
         frozenset(row["participants"])
         for row in data["branch_relations"]
         if row["relation_type"] == "branch_clash"
