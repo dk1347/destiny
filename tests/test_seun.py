@@ -33,6 +33,9 @@ def test_seun_relations_identify_the_annual_pillar_location_without_interpretati
         finding.relation_id == "branch-half-in-o" and "seun_branch" in finding.participants
         for finding in annual.relations
     )
+    serialized = annual.as_dict()
+    assert serialized["pillar"] == {"stem": "byeong", "branch": "o"}
+    assert any("seun_branch" in relation["participants"] for relation in serialized["relations"])
 
 
 def test_seun_fails_closed_when_required_production_data_is_unverified() -> None:

@@ -57,21 +57,6 @@ def calculate_seun(request: SeunRequest) -> dict[str, object]:
         registry = RuleRegistry()
         natal = four_pillars_for_datetime(request.birth_local_datetime, registry, profile)
         annual = seun_for_datetime(natal, request.target_local_datetime, registry, profile)
-        return {
-            "calendar_year": annual.calendar_year,
-            "calculation_profile_id": annual.calculation_profile_id,
-            "pillar": {"stem": annual.pillar.stem.value, "branch": annual.pillar.branch.value},
-            "relations": [
-                {
-                    "relation_id": finding.relation_id,
-                    "relation_type": finding.relation_type,
-                    "participants": list(finding.participants),
-                    "values": list(finding.values),
-                    "resulting_element": finding.resulting_element,
-                    "rule_set_version": finding.rule_set_version,
-                }
-                for finding in annual.relations
-            ],
-        }
+        return annual.as_dict()
     except DatasetError as error:
         raise HTTPException(503, {"code": error.code.value, "message": "Verified calculation data is unavailable."}) from error

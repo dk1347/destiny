@@ -21,6 +21,26 @@ class Seun:
     pillar: YearPillar
     relations: tuple[RelationFinding, ...]
 
+    def as_dict(self) -> dict[str, object]:
+        """Return a JSON-ready annual-cycle result without interpretation."""
+
+        return {
+            "calendar_year": self.calendar_year,
+            "calculation_profile_id": self.calculation_profile_id,
+            "pillar": {"stem": self.pillar.stem.value, "branch": self.pillar.branch.value},
+            "relations": [
+                {
+                    "relation_id": finding.relation_id,
+                    "relation_type": finding.relation_type,
+                    "participants": list(finding.participants),
+                    "values": list(finding.values),
+                    "resulting_element": finding.resulting_element,
+                    "rule_set_version": finding.rule_set_version,
+                }
+                for finding in self.relations
+            ],
+        }
+
 
 def seun_for_datetime(
     natal_pillars: FourPillars,
