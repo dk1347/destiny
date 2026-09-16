@@ -75,21 +75,69 @@ experiment compares.
 - Measure production time per asset so a small apparent reach gain does not
   hide an unsustainable content cost.
 
-## 6. Run design
+## 6. Cold-start account policy
 
-Start with a two-week organic pilot:
+All currently available social accounts may begin with no followers. This is
+not a failure and must not be treated as a like-for-like reach comparison with
+an established creator account.
+
+The first run answers only:
+
+- which explanation earns a meaningful action from the small audience the
+  platform actually reaches;
+- which format can be produced consistently and understood correctly;
+- whether the public profile and content promise are clear enough to retain
+  an interested visitor.
+
+It does **not** choose a permanent channel winner from early raw views,
+follower count, or one unusually distributed post. Naver Blog also has a
+different discovery cycle from social feeds, so it must not be judged on the
+same two-week exposure window.
+
+Before publishing experiments, complete a small profile baseline on every
+active account:
+
+1. A consistent display name, profile image, one-sentence purpose, and a
+   contact/landing destination.
+2. Clear disclosure that the service is under development; no promise that a
+   beta, reading, or launch date already exists.
+3. One pinned or otherwise visible introduction explaining what Destiny
+   calculates, what AI does not calculate, and the interpretation/safety
+   boundary.
+
+Do not buy followers or run engagement exchanges to escape the cold start;
+they contaminate the experiment and create misleading audience signals.
+
+## 7. Run design
+
+Start with a two-stage organic pilot:
+
+**Stage A — profile baseline (7–10 days):** establish the profile baseline and
+publish the first shared topic in all relevant formats. Record only operational
+issues and comprehension feedback; do not select a channel winner.
+
+**Stage B — content comparison (four weeks after Stage A):** publish the
+remaining topics and compare qualified action, consumption, saves/shares, and
+production cost within each channel. Keep the factual script and CTA aligned.
+
+The initial content plan is:
 
 - three shared topics;
-- one blog post, one Reel, and one carousel per topic;
-- publish at broadly comparable times where feasible;
+- one Naver Blog post and one Instagram carousel per topic;
+- one vertical short video per topic, distributed unchanged to Instagram Reels
+  and TikTok; Facebook receives the same Reel as a secondary distribution
+  surface;
+- publish at broadly comparable times where feasible, but record the actual
+  time rather than assuming it is equivalent across platforms;
 - no paid amplification in the first run;
 - retain post URLs, publication time, content/script version, and CTA version.
 
-This is nine content assets in total. If capacity is limited, begin with the
-first topic in all three formats before making more. Do not judge a channel
-from one post.
+This is nine original content assets (three articles, three carousels, and
+three videos), with the videos distributed to multiple short-form surfaces.
+If capacity is limited, begin with the first topic in all formats before
+making more. Do not judge a channel from one post.
 
-## 7. Review and next decision
+## 8. Review and next decision
 
 At the end of the observation window, record for every asset:
 
@@ -100,10 +148,12 @@ At the end of the observation window, record for every asset:
 - qualitative feedback, separated from personal data.
 
 Select the next-wave channel only if it improves a primary signal without a
-material safety, privacy, or operational-cost problem. Otherwise keep the
-result as `inconclusive` and run a revised topic or format.
+material safety, privacy, or operational-cost problem. For new accounts,
+require repeated evidence across multiple assets rather than a single
+high-reach post. Otherwise keep the result as `inconclusive` and run a revised
+topic or format.
 
-## 8. Required approvals before execution
+## 9. Required approvals before execution
 
 Before publishing the first asset, a product owner must approve:
 
