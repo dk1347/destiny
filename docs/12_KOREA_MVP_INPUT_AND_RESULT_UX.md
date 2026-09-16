@@ -155,6 +155,41 @@ A collapsed `계산 기준 보기` panel shows:
 
 Technical identifiers can appear only as secondary detail for reproducibility.
 
+### 8.4 Annual-cycle facts (when the user asks for a target year)
+
+The annual-cycle view is an optional facts card, not a prediction screen. It
+uses the verified `POST /v1/seun/calculate` response only after the four-pillar
+result is available.
+
+```text
+2026년의 간지
+병오
+
+원국에서 확인된 관계
+연지와 세운 지지: 반삼합 후보 · 화
+```
+
+Rules for the card:
+
+- Ask for a calendar year in plain language: `어느 해를 살펴볼까요?`
+- Present the annual pillar with Korean display labels. Do not expose canonical
+  IDs such as `byeong`, `o`, or `branch-half-in-o` in the primary view.
+- Translate relation types as neutral structural labels: `천간합`, `지지 육합`,
+  `삼합`, `반삼합 후보`, and `충`. A two-branch candidate must retain the word
+  `후보`; it must never be presented as a completed 삼합.
+- Identify the locations that participate, for example `월지와 세운 지지`.
+  Do not rank findings or imply that one is more important.
+- When no supported relation is found, say `현재 지원되는 구조 관계는 확인되지
+  않았어요.` Do not imply that the year has no meaning or no event.
+- Keep this card separate from any future AI interpretation. It must not make
+  claims about luck, health, money, legal matters, safety, or another person's
+  feelings.
+
+Show a compact disclosure below the card:
+
+> 세운은 해당 해의 간지와 원국 사이에서 확인된 구조를 보여 줍니다. 좋고
+> 나쁨을 단정하는 결과는 아니에요.
+
 ## 9. Meaningful alternative choice
 
 Only show this card when a supported alternative profile changes structured
@@ -200,9 +235,9 @@ Never phrase a data limitation as the user's mistake.
 
 ## 12. Implementation boundary
 
-This repository currently contains the calculation library and test fixtures,
-not a web/mobile client, API, account system, calendar conversion service, or
-interpretation service. Before UI code begins, the project needs a selected
-client stack and a service contract that turns validated `RawBirthInput` into
-the existing calculation engine's supported inputs without bypassing dataset
-verification.
+This repository currently contains the calculation library, guarded internal
+API, and test fixtures, not a web/mobile client, account system, calendar
+conversion service, or interpretation service. Before UI code begins, the
+project needs a selected client stack and a service contract that turns
+validated `RawBirthInput` into the existing calculation engine's supported
+inputs without bypassing dataset verification.
