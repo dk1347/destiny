@@ -38,6 +38,38 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
             self.assertEqual(sum(row.role == "main" for row in rows), 1)
             self.assertEqual([row.display_order for row in rows], list(range(1, len(rows) + 1)))
 
+    def test_core_cycles_hour_windows_and_major_term_month_map_match_recorded_audit(self) -> None:
+        core = TEST_REGISTRY.load("core_tables_v1")["data"]
+
+        self.assertEqual(
+            core["element_relations"]["generates"],
+            {"wood": "fire", "fire": "earth", "earth": "metal", "metal": "water", "water": "wood"},
+        )
+        self.assertEqual(
+            core["element_relations"]["controls"],
+            {"wood": "earth", "earth": "water", "water": "fire", "fire": "metal", "metal": "wood"},
+        )
+        self.assertEqual(
+            tuple((row["branch"], row["start"], row["end"]) for row in core["hour_branch_windows_legal_local_time"]),
+            (
+                ("ja", "23:00", "00:59"), ("chuk", "01:00", "02:59"),
+                ("in", "03:00", "04:59"), ("myo", "05:00", "06:59"),
+                ("jin", "07:00", "08:59"), ("sa", "09:00", "10:59"),
+                ("o", "11:00", "12:59"), ("mi", "13:00", "14:59"),
+                ("sin", "15:00", "16:59"), ("yu", "17:00", "18:59"),
+                ("sul", "19:00", "20:59"), ("hae", "21:00", "22:59"),
+            ),
+        )
+        self.assertEqual(
+            tuple((row["term"], row["branch"]) for row in core["month_branch_by_major_solar_term"]),
+            (
+                ("ipchun", "in"), ("gyeongchip", "myo"), ("cheongmyeong", "jin"),
+                ("ipha", "sa"), ("mangjong", "o"), ("soseo", "mi"),
+                ("ipchu", "sin"), ("baengno", "yu"), ("hallo", "sul"),
+                ("ipdong", "hae"), ("daeseol", "ja"), ("sohan", "chuk"),
+            ),
+        )
+
     def test_reference_values(self) -> None:
         self.assertEqual(hidden_stems_for(EarthlyBranch.JA, TEST_REGISTRY)[0].stem, HeavenlyStem.GYE)
         self.assertEqual([row.stem for row in hidden_stems_for(EarthlyBranch.IN, TEST_REGISTRY)], [HeavenlyStem.GAP, HeavenlyStem.BYEONG, HeavenlyStem.MU])
