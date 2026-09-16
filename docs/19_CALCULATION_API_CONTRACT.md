@@ -41,6 +41,8 @@ contains the target calendar year, the annual pillar, and structural
 stem/branch findings relative to the natal four pillars. `participants` marks
 the annual locations as `seun_stem` or `seun_branch`. It does not return luck,
 priority, health, relationship, financial, or other interpretive claims.
+The response also includes provenance for every rule dataset used to calculate
+the result.
 
 ## Error response
 

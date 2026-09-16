@@ -20,6 +20,7 @@ class Seun:
     calculation_profile_id: str
     pillar: YearPillar
     relations: tuple[RelationFinding, ...]
+    dataset_versions: tuple[tuple[str, str], ...]
 
     def as_dict(self) -> dict[str, object]:
         """Return a JSON-ready annual-cycle result without interpretation."""
@@ -39,6 +40,7 @@ class Seun:
                 }
                 for finding in self.relations
             ],
+            "provenance": {dataset_id: version for dataset_id, version in self.dataset_versions},
         }
 
 
@@ -71,4 +73,10 @@ def seun_for_datetime(
          ("seun_branch", pillar.branch.value)),
         registry,
     )
-    return Seun(target_local_datetime.year, profile.profile_id, pillar, relations)
+    return Seun(
+        target_local_datetime.year,
+        profile.profile_id,
+        pillar,
+        relations,
+        registry.loaded_dataset_versions(),
+    )
