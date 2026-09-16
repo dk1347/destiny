@@ -1,6 +1,7 @@
 # Destiny — Calculation API Contract
 
-> Status: framework-neutral MVP contract. No public endpoint exists yet.
+> Status: guarded MVP implementation. `src/destiny_saju/api.py` exposes this
+> contract for internal integration; it is not a deployed public service.
 
 ## Request
 

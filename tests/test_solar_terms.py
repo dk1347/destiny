@@ -31,6 +31,45 @@ def test_solar_term_boundary_uses_the_verified_kst_instant() -> None:
     assert solar_term_for_datetime(ipchun + timedelta(minutes=1), registry).id == "ipchun"
 
 
+def test_2026_solar_term_table_matches_the_recorded_official_kst_audit() -> None:
+    registry = RuleRegistry(allow_unverified=True)
+    terms = registry.load("solar_term_instants_v1")["data"]["terms"]
+    published_2026_terms = (
+        ("sohan", "2026-01-05T17:23:00+09:00"),
+        ("daehan", "2026-01-20T10:45:00+09:00"),
+        ("ipchun", "2026-02-04T05:02:00+09:00"),
+        ("usu", "2026-02-19T00:52:00+09:00"),
+        ("gyeongchip", "2026-03-05T22:59:00+09:00"),
+        ("chunbun", "2026-03-20T23:46:00+09:00"),
+        ("cheongmyeong", "2026-04-05T03:40:00+09:00"),
+        ("gogu", "2026-04-20T10:39:00+09:00"),
+        ("ipha", "2026-05-05T20:49:00+09:00"),
+        ("soman", "2026-05-21T09:37:00+09:00"),
+        ("mangjong", "2026-06-06T00:48:00+09:00"),
+        ("haji", "2026-06-21T17:25:00+09:00"),
+        ("soseo", "2026-07-07T10:57:00+09:00"),
+        ("daeseo", "2026-07-23T04:13:00+09:00"),
+        ("ipchu", "2026-08-07T20:43:00+09:00"),
+        ("cheoseo", "2026-08-23T11:19:00+09:00"),
+        ("baengno", "2026-09-07T23:41:00+09:00"),
+        ("chubun", "2026-09-23T09:05:00+09:00"),
+        ("hallo", "2026-10-08T15:29:00+09:00"),
+        ("sanggang", "2026-10-23T18:38:00+09:00"),
+        ("ipdong", "2026-11-07T18:52:00+09:00"),
+        ("soseol", "2026-11-22T16:23:00+09:00"),
+        ("daeseol", "2026-12-07T11:53:00+09:00"),
+        ("dongji", "2026-12-22T05:50:00+09:00"),
+    )
+
+    recorded_2026_terms = tuple(
+        (term["id"], term["occurs_at"])
+        for term in terms
+        if term["occurs_at"].startswith("2026-")
+    )
+
+    assert recorded_2026_terms == published_2026_terms
+
+
 def test_every_verified_solar_term_observes_its_boundary() -> None:
     registry = RuleRegistry(allow_unverified=True)
     data = registry.load("solar_term_instants_v1")["data"]
