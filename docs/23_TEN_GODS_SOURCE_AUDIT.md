@@ -1,7 +1,8 @@
 # Destiny — Ten Gods Source Audit
 
-> Decision: record independent evidence and retain `ten_gods_v1` as
-> `pending_verification` until a human promotion record is approved.
+> Decision (2026-09-16): approve `ten_gods_v1` as `production_verified` for
+> structural ten-god mapping only. Interpretation and fortune claims remain
+> outside this dataset.
 
 ## What is verified
 
@@ -22,7 +23,7 @@ to the existing 100-pair totality test and 甲 golden cases.
 
 - The evidence validates the ten-god naming/mapping rule, not any
   interpretation or fortune claim.
-- The computation also relies on `core_tables_v1` five-element cycles and
-  stem polarity. That separate pending dataset must be promoted only under its
-  own source review.
-- No dataset status or version is changed by this audit.
+- The computation relies on `core_tables_v1` five-element cycles and stem
+  polarity. That calculation scope was independently promoted on 2026-09-16.
+- The linked dataset metadata records the source locations, approved scope,
+  status history, review date, and promotion decision.

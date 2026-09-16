@@ -2,14 +2,22 @@
     "schema_version": "1.0",
     "dataset_id": "ten_gods_v1",
     "dataset_version": "1.0.0",
-    "status": "pending_verification",
+    "status": "production_verified",
     "source": {
-        "type": "classical_rule",
-        "reference": "docs/06_ENGINE_CONTRACTS_AND_CORE_RULES.md \u00a75.2"
+        "type": "multi_source_ten_gods_audit",
+        "audit_record": "docs/23_TEN_GODS_SOURCE_AUDIT.md",
+        "sources": [
+            "https://sign.hakka.gov.tw/File/Get?filename=%5CAttach%5C1990%5C1%5C322010382571.pdf",
+            "https://libokang.com/zh-hant/guji/bazi/%E5%91%BD%E7%90%86%E6%8E%A2%E6%BA%90/3/"
+        ],
+        "reviewed_at": "2026-09-16",
+        "review_decision": "approved_for_structural_ten_god_mapping"
     },
-    "license": "internal-derived-no-third-party-copy",
+    "license": "derived factual rule data; source attribution retained; no third-party prose copied",
     "generated_at": "2026-09-14T00:00:00Z",
     "generated_by": "manual",
+    "scope": "Structural day-master-to-target stem mapping only; excludes interpretation and fortune claims.",
+    "status_history": [{"status": "pending_verification", "at": "2026-09-14T00:00:00Z", "by": "manual"}, {"status": "production_verified", "at": "2026-09-16T00:00:00+09:00", "by": "product-owner approval recorded in Codex task"}],
     "data": {
         "relation_table": [
             {

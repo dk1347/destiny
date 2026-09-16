@@ -29,8 +29,6 @@ until the common checklist and the explicit promotion record are complete.
 
 | Dataset | Evidence already recorded | Remaining release condition |
 | --- | --- | --- |
-| `hidden_stems_v1` | Compact-only MVP scope, two compact-table comparisons, role/order mapping, and 12-row regression table are recorded in `docs/22_HIDDEN_STEMS_SCOPE_AUDIT.md`. | Preserve the compact-convention source and reuse decision in the promotion record; do not mix it with the separate seasonal model. |
-| `ten_gods_v1` | The five-relationship model and a full 乙 day-master reference row are recorded in `docs/23_TEN_GODS_SOURCE_AUDIT.md` and regression tests. | Complete an approved promotion record after the dependent core-table release decision. |
 | `relations_v1` | Candidate participant sets/elements are cross-checked and locked in `docs/17_RELATIONS_V1_SOURCE_AUDIT.md` and relation tests. | Preserve edition/page-level and reuse evidence; keep interpretation policy out of this dataset; record reviewer decision. |
 
 `core_tables_v1` was promoted to `production_verified` on 2026-09-16 for its
@@ -40,6 +38,13 @@ dataset metadata; display-only animal labels remain outside the approval.
 `month_stem_rules_v1` and `hour_stem_rules_v1` were promoted to
 `production_verified` on 2026-09-16. Their source links and status histories
 are recorded in their respective dataset metadata.
+
+`hidden_stems_v1` was promoted to `production_verified` on 2026-09-16 for
+the compact hidden-stem convention only; the seasonal model remains separate.
+
+`ten_gods_v1` was promoted to `production_verified` on 2026-09-16 for
+structural day-master-to-target mapping only; interpretation remains outside
+the dataset.
 
 ## Promotion record template
 
