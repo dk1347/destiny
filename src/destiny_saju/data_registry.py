@@ -67,6 +67,14 @@ class RuleRegistry:
             self._cache[dataset_id] = payload
         return copy.deepcopy(self._cache[dataset_id])
 
+    def loaded_dataset_versions(self) -> tuple[tuple[str, str], ...]:
+        """Return deterministic provenance for datasets loaded by this registry."""
+
+        return tuple(sorted(
+            (dataset_id, payload["dataset_version"])
+            for dataset_id, payload in self._cache.items()
+        ))
+
     def _read(self, dataset_id: str) -> dict[str, Any]:
         path = self.data_dir.joinpath(f"{dataset_id}.json")
         try:

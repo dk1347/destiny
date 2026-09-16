@@ -87,3 +87,11 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
         first["data"]["heavenly_stems"].clear()
         second = TEST_REGISTRY.load("core_tables_v1")
         self.assertEqual(len(second["data"]["heavenly_stems"]), 10)
+
+    def test_registry_reports_loaded_dataset_versions_deterministically(self) -> None:
+        registry = RuleRegistry(allow_unverified=True)
+        registry.load("ten_gods_v1")
+        self.assertEqual(
+            registry.loaded_dataset_versions(),
+            (("core_tables_v1", "1.0.0"), ("ten_gods_v1", "1.0.0")),
+        )
