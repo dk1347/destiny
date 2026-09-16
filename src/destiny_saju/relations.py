@@ -59,6 +59,8 @@ def relations_for_values(
         for item in stems + branches
     ):
         raise TypeError("stems and branches must contain string position/value pairs")
+    if len({position for position, _ in stems}) != len(stems) or len({position for position, _ in branches}) != len(branches):
+        raise ValueError("stem and branch positions must each be unique")
     dataset = registry.load(_DATASET_ID)
     data = dataset["data"]
     findings = []

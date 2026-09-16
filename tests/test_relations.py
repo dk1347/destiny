@@ -137,6 +137,12 @@ def test_relation_values_reject_malformed_named_values() -> None:
         relations_for_values([], (), RuleRegistry(allow_unverified=True))  # type: ignore[arg-type]
     with pytest.raises(TypeError, match="position/value"):
         relations_for_values((("year_stem",),), (), RuleRegistry(allow_unverified=True))  # type: ignore[arg-type]
+    with pytest.raises(ValueError, match="unique"):
+        relations_for_values(
+            (("year_stem", "gap"), ("year_stem", "gi")),
+            (),
+            RuleRegistry(allow_unverified=True),
+        )
 
 
 def test_relations_dataset_rejects_unknown_reference() -> None:
