@@ -20,6 +20,9 @@ const locationLabels: Record<string, string> = {
 
 function koreanPillar(pillar: Pillar) { return `${stemLabels[pillar.stem]}${branchLabels[pillar.branch]}`; }
 function kstIso(date: string, time: string) { return `${date}T${time}:00+09:00`; }
+function annualRelations(relations: Relation[]) {
+  return relations.filter((relation) => relation.participants.some((location) => location === "seun_stem" || location === "seun_branch"));
+}
 
 export default function App() {
   const [date, setDate] = useState("");
@@ -62,6 +65,6 @@ export default function App() {
       {error && <p className="error">{error}</p>}
     </section>
     {result && <section className="card"><h2>계산 결과</h2><div className="pillars">{Object.entries(result.pillars).map(([position, pillar]) => <div key={position}><small>{{ year: "연주", month: "월주", day: "일주", hour: "시주" }[position]}</small><strong>{koreanPillar(pillar)}</strong></div>)}</div>{result.warnings.map((warning) => <p className="hint" key={warning}>{warning}</p>)}</section>}
-    {result && <section className="card"><h2>세운 살펴보기</h2><p className="hint">어느 해를 살펴볼까요?</p><div className="year-row"><input aria-label="대상 연도" type="number" min="1900" max="2100" value={year} onChange={(event) => setYear(event.target.value)} /><button type="button" onClick={calculateAnnual} disabled={loading}>확인하기</button></div>{annual && <><h3>{annual.calendar_year}년의 간지 <b>{koreanPillar(annual.pillar)}</b></h3>{annual.relations.length ? <ul>{annual.relations.map((relation) => <li key={relation.relation_id}>{relation.participants.map((location) => locationLabels[location]).join("과 ")}: {relationLabels[relation.relation_type]}{relation.resulting_element ? ` · ${elementLabels[relation.resulting_element]}` : ""}</li>)}</ul> : <p>현재 지원되는 구조 관계는 확인되지 않았어요.</p>}<p className="disclosure">세운은 해당 해의 간지와 원국 사이에서 확인된 구조를 보여 줍니다. 좋고 나쁨을 단정하는 결과는 아니에요.</p></>}</section>}
+    {result && <section className="card"><h2>세운 살펴보기</h2><p className="hint">어느 해를 살펴볼까요?</p><div className="year-row"><input aria-label="대상 연도" type="number" min="1900" max="2100" value={year} onChange={(event) => setYear(event.target.value)} /><button type="button" onClick={calculateAnnual} disabled={loading}>확인하기</button></div>{annual && <><h3>{annual.calendar_year}년의 간지 <b>{koreanPillar(annual.pillar)}</b></h3>{annualRelations(annual.relations).length ? <ul>{annualRelations(annual.relations).map((relation) => <li key={relation.relation_id}>{relation.participants.map((location) => locationLabels[location]).join("과 ")}: {relationLabels[relation.relation_type]}{relation.resulting_element ? ` · ${elementLabels[relation.resulting_element]}` : ""}</li>)}</ul> : <p>현재 지원되는 구조 관계는 확인되지 않았어요.</p>}<p className="disclosure">세운은 해당 해의 간지와 원국 사이에서 확인된 구조를 보여 줍니다. 좋고 나쁨을 단정하는 결과는 아니에요.</p></>}</section>}
   </main>;
 }
