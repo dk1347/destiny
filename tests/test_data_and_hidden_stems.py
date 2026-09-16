@@ -42,6 +42,29 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
         self.assertEqual(hidden_stems_for(EarthlyBranch.JA, TEST_REGISTRY)[0].stem, HeavenlyStem.GYE)
         self.assertEqual([row.stem for row in hidden_stems_for(EarthlyBranch.IN, TEST_REGISTRY)], [HeavenlyStem.GAP, HeavenlyStem.BYEONG, HeavenlyStem.MU])
 
+    def test_compact_hidden_stem_table_has_the_recorded_main_middle_residual_rows(self) -> None:
+        expected = {
+            EarthlyBranch.JA: (HeavenlyStem.GYE,),
+            EarthlyBranch.CHUK: (HeavenlyStem.GI, HeavenlyStem.GYE, HeavenlyStem.SIN),
+            EarthlyBranch.IN: (HeavenlyStem.GAP, HeavenlyStem.BYEONG, HeavenlyStem.MU),
+            EarthlyBranch.MYO: (HeavenlyStem.EUL,),
+            EarthlyBranch.JIN: (HeavenlyStem.MU, HeavenlyStem.EUL, HeavenlyStem.GYE),
+            EarthlyBranch.SA: (HeavenlyStem.BYEONG, HeavenlyStem.GYEONG, HeavenlyStem.MU),
+            EarthlyBranch.O: (HeavenlyStem.JEONG, HeavenlyStem.GI),
+            EarthlyBranch.MI: (HeavenlyStem.GI, HeavenlyStem.JEONG, HeavenlyStem.EUL),
+            EarthlyBranch.SIN: (HeavenlyStem.GYEONG, HeavenlyStem.IM, HeavenlyStem.MU),
+            EarthlyBranch.YU: (HeavenlyStem.SIN,),
+            EarthlyBranch.SUL: (HeavenlyStem.MU, HeavenlyStem.SIN, HeavenlyStem.JEONG),
+            EarthlyBranch.HAE: (HeavenlyStem.IM, HeavenlyStem.GAP),
+        }
+
+        for branch, expected_stems in expected.items():
+            with self.subTest(branch=branch):
+                self.assertEqual(
+                    tuple(row.stem for row in hidden_stems_for(branch, TEST_REGISTRY)),
+                    expected_stems,
+                )
+
     def test_broken_reference_is_reported_as_dataset_error(self) -> None:
         source = files("destiny_saju.data.saju")
         with tempfile.TemporaryDirectory() as temporary:

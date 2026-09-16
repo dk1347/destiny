@@ -16,6 +16,21 @@ For example, the current `branch:in` row is `甲(main), 丙(middle), 戊(residua
 It intentionally stores only `癸` for 子, only `乙` for 卯, only `辛` for 酉,
 and `壬(main), 甲(middle)` for 亥.
 
+## Compact-table evidence
+
+Two independently published compact tables were compared with every current
+row on 2026-09-16:
+
+- [*Newly Collated Exploration of Fate Theory*](https://www.vr-d.com/pdf-file/%E5%91%BD%E7%90%86%2F%E5%9B%9B%E5%BA%93%E5%AD%98%E7%9B%AE%E5%AD%90%E5%B9%B3%E6%B1%87%E5%88%8A7%E6%96%B0%E6%A0%A1%E5%91%BD%E7%90%86%E6%8E%A2%E5%8E%9F%28%E6%B8%85%29%E8%A2%81%E6%A0%91%E7%8F%8A%E6%92%B0.pdf)
+  prints the 12-branch set, including `子癸`, `丑己癸辛`, `寅甲丙戊`,
+  through `亥壬甲`.
+- [Earthly-branch hidden-stem table](https://www.zhuxingsheng.com/tools/mingli/dizhi-canggan.html)
+  prints the same 12 rows explicitly labelled `本气`, `中气`, and `余气`.
+
+After mapping those labels to Destiny's `main`, `middle`, and `residual`
+roles, all 12 branch rows and their stored order match. The regression test in
+`tests/test_data_and_hidden_stems.py` locks that comparison in local CI.
+
 ## External comparison and material divergence
 
 The [Learning Institute course material](https://www.lei.or.kr/upfiledata/board/%EB%AA%85%EB%A6%AC%EC%8B%AC%EB%A6%AC%EC%83%81%EB%8B%B4%EC%82%AC_%EC%A0%84%EC%A0%95%ED%9B%88_%EA%B5%90%EC%95%88%EB%AA%A8%EC%9D%8C.pdf)
