@@ -1537,6 +1537,9 @@ Research Track은 Korea MVP 출시를 방해하지 않도록 Production Track과
   three-pillar result, and structural annual-cycle facts.
 - A React/TypeScript internal web MVP covers known-time and date-only input,
   calculated-result display, and annual-cycle display when birth time is known.
+- The API has explicit browser-origin configuration and a non-sensitive
+  `GET /healthz` liveness check. CI validates tests, builds, and an installed
+  wheel on Python 3.11 through 3.13.
 - Public-content assets are drafts only; no content has been published.
 
 
@@ -1569,12 +1572,11 @@ Research Track은 Korea MVP 출시를 방해하지 않도록 Production Track과
 
 ### Integration MVP hardening
 
-1. Define the web MVP's deployment/configuration contract, including a
-   non-local development environment and allowed origins.
-2. Complete mobile accessibility review and date-only boundary recovery UI.
-3. Select a client deployment and privacy-preserving CTA contract before a
+1. Select a client deployment and privacy-preserving CTA contract before a
    public calculator or waitlist is exposed.
-4. Keep Daewoon and AI interpretation outside the first calculator release
+2. Run an end-to-end browser review against a non-local API environment after
+   a client host is selected; configure its exact allowed origin there.
+3. Keep Daewoon and AI interpretation outside the first calculator release
    until their separate rule, safety, and evaluation gates are complete.
 
 
