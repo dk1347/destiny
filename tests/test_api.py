@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 import pytest
 from fastapi import HTTPException
 
-from destiny_saju.api import CalculationRequest, calculate
+from destiny_saju.api import CalculationRequest, SeunRequest, calculate, calculate_seun
 
 
 def test_api_rejects_non_kst_datetime() -> None:
@@ -21,5 +21,36 @@ def test_api_rejects_unknown_profile() -> None:
 def test_api_fails_closed_when_production_data_is_not_verified() -> None:
     with pytest.raises(HTTPException) as error:
         calculate(CalculationRequest(birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9)))) )
+    assert error.value.status_code == 503
+    assert error.value.detail["code"] == "SOLAR_TERM_DATA_UNAVAILABLE"
+
+
+def test_seun_api_rejects_a_non_kst_target_datetime() -> None:
+    with pytest.raises(HTTPException) as error:
+        calculate_seun(SeunRequest(
+            birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9))),
+            target_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone.utc),
+        ))
+    assert error.value.status_code == 422
+    assert error.value.detail["code"] == "INVALID_LOCAL_DATETIME"
+
+
+def test_seun_api_rejects_an_unknown_profile() -> None:
+    with pytest.raises(HTTPException) as error:
+        calculate_seun(SeunRequest(
+            birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9))),
+            target_local_datetime=datetime(2026, 3, 1, 12, 0, tzinfo=timezone(timedelta(hours=9))),
+            calculation_profile_id="unknown",
+        ))
+    assert error.value.status_code == 422
+    assert error.value.detail["code"] == "UNKNOWN_CALCULATION_PROFILE"
+
+
+def test_seun_api_fails_closed_when_production_data_is_not_verified() -> None:
+    with pytest.raises(HTTPException) as error:
+        calculate_seun(SeunRequest(
+            birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9))),
+            target_local_datetime=datetime(2026, 3, 1, 12, 0, tzinfo=timezone(timedelta(hours=9))),
+        ))
     assert error.value.status_code == 503
     assert error.value.detail["code"] == "SOLAR_TERM_DATA_UNAVAILABLE"
