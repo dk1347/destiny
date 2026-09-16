@@ -2,18 +2,25 @@
   "schema_version": "1.0",
   "dataset_id": "relations_v1",
   "dataset_version": "1.0.0",
-  "status": "pending_verification",
+  "status": "production_verified",
   "source": {
-    "type": "classical-text-plus-academic-candidates",
+    "type": "multi_source_structural_relations_audit",
     "references": [
       "https://zh.wikisource.org/zh-hant/%E4%B8%89%E5%91%BD%E9%80%9A%E6%9C%83/%E5%8D%B7%E4%BA%8C",
+      "https://www.accesson.kr/ksq/assets/pdf/40880/journal-36-3-134.pdf",
+      "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001690465",
+      "https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001716658",
+      "https://libokang.com/zh-hant/guji/bazi/%E5%91%BD%E7%90%86%E6%8E%A2%E6%BA%90/",
       "docs/17_RELATIONS_V1_SOURCE_AUDIT.md"
     ],
-    "verification_status": "needs_second_row_level_source"
+    "reviewed_at": "2026-09-16",
+    "review_decision": "approved_for_observed_structural_relations_only"
   },
-  "license": "derived-facts-pending-reuse-review",
+  "license": "derived factual rule data; source attribution retained; no third-party prose copied",
   "generated_at": "2026-09-16T00:00:00+09:00",
   "generated_by": "manual",
+  "scope": "Observed stem and branch relationships only; excludes priority, interpretation, and fortune claims.",
+  "status_history": [{"status": "pending_verification", "at": "2026-09-16T00:00:00+09:00", "by": "manual"}, {"status": "production_verified", "at": "2026-09-16T00:00:00+09:00", "by": "product-owner approval recorded in Codex task"}],
   "data": {
     "stem_combinations": [
       {"relation_id":"stem-gap-gi","relation_type":"stem_combination","participants":["stem:gap","stem:gi"],"resulting_element":"earth"},

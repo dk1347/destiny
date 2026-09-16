@@ -36,15 +36,16 @@ def _registry_with_relations() -> RuleRegistry:
     return registry
 
 
-def test_relation_lookup_requires_a_dataset() -> None:
-    pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), RuleRegistry(allow_unverified=True))
+def test_relation_lookup_rejects_a_nonproduction_dataset() -> None:
+    registry = _registry_with_relations()
+    pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), registry)
     with pytest.raises(DatasetError, match="DATASET_NOT_PRODUCTION_VERIFIED"):
-        relations_for_pillars(pillars, RuleRegistry())
+        relations_for_pillars(pillars, RuleRegistry(registry.data_dir))
 
 
-def test_pending_relations_dataset_is_available_only_in_explicit_test_mode() -> None:
-    pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), RuleRegistry(allow_unverified=True))
-    findings = relations_for_pillars(pillars, RuleRegistry(allow_unverified=True))
+def test_production_relations_dataset_returns_structural_findings() -> None:
+    pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), RuleRegistry())
+    findings = relations_for_pillars(pillars, RuleRegistry())
     assert {finding.relation_id for finding in findings} == {"branch-half-in-o", "branch-clash-myo-yu"}
 
 

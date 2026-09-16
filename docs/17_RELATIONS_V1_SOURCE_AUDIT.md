@@ -1,7 +1,8 @@
 # Destiny — Relations V1 Source Audit
 
-> Status: source-audit and staged-scope decision. This document does not
-> approve a `production_verified` relations dataset.
+> Decision (2026-09-16): approve `relations_v1` as `production_verified` for
+> observed structural relationships only. Priority, interpretation, and
+> fortune claims remain outside this dataset.
 
 ## 1. Decision
 
@@ -42,10 +43,9 @@ Tanyuan* (which itself identifies its historical attributions):
 - the six branch clashes.
 
 The bundled two-member three-harmony candidates are a mechanical subset of
-those four reviewed complete groups. This establishes a useful regression
-baseline, but the dataset remains `pending_verification`: the review record
-must still preserve edition/page-level evidence and complete reuse assessment
-before it may become `production_verified`.
+those four reviewed complete groups. The dataset metadata preserves the
+reviewed source locations, derived-fact reuse boundary, review date, status
+history, and structural-only promotion decision.
 
 ## 3. Explicitly deferred relation types
 
@@ -59,7 +59,8 @@ relation set as “complete 합충형파해 analysis.”
 
 ## 4. Data and test gate
 
-Before a first `relations_v1` dataset is enabled for production:
+The first production release must retain these gates for any corrected or
+expanded relation data:
 
 1. Record source identifiers, editions/pages or stable URLs, access dates, and
    licensing/reuse assessment for every row.
@@ -108,11 +109,10 @@ Before a first `relations_v1` dataset is enabled for production:
 ## 6. Non-decision
 
 This audit does not choose a commercial Manse Ryeok site, a blog, an LLM, or
-a single modern textbook as the production authority. It also does not add
-celebrity charts or personally identifying birth data as fixtures.
+a single modern textbook as the sole production authority. It also does not
+add celebrity charts or personally identifying birth data as fixtures.
 
-The two KCI records establish useful independent academic provenance for the
+The two KCI records establish independent academic provenance for the
 existence and historical discussion of stem and branch combinations. The
-row-level cross-check above is deliberately narrower than a release approval:
-it does not resolve source-edition, licensing, or all-school-variation review.
-Do not enable a production dataset until those release records are complete.
+row-level cross-check is deliberately limited to the stated structural scope;
+school-variant rules and all downstream readings remain excluded.

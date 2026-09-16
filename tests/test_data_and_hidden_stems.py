@@ -29,8 +29,13 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
         self.assertEqual((pillar.stem, pillar.branch), (HeavenlyStem.BYEONG, EarthlyBranch.O))
 
     def test_unverified_dataset_is_blocked_by_default(self) -> None:
-        with self.assertRaisesRegex(DatasetError, "DATASET_NOT_PRODUCTION_VERIFIED"):
-            load_dataset("relations_v1")
+        source = files("destiny_saju.data.saju").joinpath("relations_v1.json")
+        payload = json.loads(source.read_text(encoding="utf-8"))
+        payload["status"] = "pending_verification"
+        with tempfile.TemporaryDirectory() as temporary:
+            Path(temporary, "relations_v1.json").write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaisesRegex(DatasetError, "DATASET_NOT_PRODUCTION_VERIFIED"):
+                RuleRegistry(Path(temporary)).load("relations_v1")
 
     def test_ten_gods_are_available_in_the_production_registry(self) -> None:
         self.assertEqual(ten_god_for(HeavenlyStem.GAP, HeavenlyStem.GAP, RuleRegistry()).value, "bigyeon")

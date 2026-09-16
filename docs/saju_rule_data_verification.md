@@ -29,7 +29,6 @@ until the common checklist and the explicit promotion record are complete.
 
 | Dataset | Evidence already recorded | Remaining release condition |
 | --- | --- | --- |
-| `relations_v1` | Candidate participant sets/elements are cross-checked and locked in `docs/17_RELATIONS_V1_SOURCE_AUDIT.md` and relation tests. | Preserve edition/page-level and reuse evidence; keep interpretation policy out of this dataset; record reviewer decision. |
 
 `core_tables_v1` was promoted to `production_verified` on 2026-09-16 for its
 calculation scope. Its status history and source links are recorded in the
@@ -45,6 +44,10 @@ the compact hidden-stem convention only; the seasonal model remains separate.
 `ten_gods_v1` was promoted to `production_verified` on 2026-09-16 for
 structural day-master-to-target mapping only; interpretation remains outside
 the dataset.
+
+`relations_v1` was promoted to `production_verified` on 2026-09-16 for
+observed structural relations only; priority, interpretation, and fortune
+claims remain outside the dataset.
 
 ## Promotion record template
 

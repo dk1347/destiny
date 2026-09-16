@@ -15,7 +15,7 @@ Use this pack with `docs/saju_rule_data_verification.md` before any
 | `month_stem_rules_v1` | `1.0.0` | `docs/21_MONTH_AND_HOUR_STEM_SOURCE_AUDIT.md`: Five Tigers start groups and canonical In-origin cycle. | `tests/test_month_stem.py` plus data-registry canonical-cycle checks. | **Approved 2026-09-16** for month-stem calculation. |
 | `hour_stem_rules_v1` | `1.0.0` | `docs/21_MONTH_AND_HOUR_STEM_SOURCE_AUDIT.md`: two direct five-group Rat-hour tables and Korean sequence support. | `tests/test_hour_stem.py` plus data-registry canonical-cycle checks. | **Approved 2026-09-16** for hour-stem calculation. |
 | `ten_gods_v1` | `1.0.0` | `docs/23_TEN_GODS_SOURCE_AUDIT.md`: five-relationship model and full 乙 day-master row. | `tests/test_ten_gods.py` locks the 乙 row and all 100 combinations. | **Approved 2026-09-16** for structural ten-god mapping only; interpretations excluded. |
-| `relations_v1` | `1.0.0` | `docs/17_RELATIONS_V1_SOURCE_AUDIT.md`: stem combinations, branch combinations, three-harmony groups/candidates, and clashes. | `tests/test_relations.py` locks every candidate row and detection boundary. | **Pending** — edition/page and reuse record; no interpretation policy here. |
+| `relations_v1` | `1.0.0` | `docs/17_RELATIONS_V1_SOURCE_AUDIT.md`: stem combinations, branch combinations, three-harmony groups/candidates, and clashes. | `tests/test_relations.py` locks every candidate row and detection boundary. | **Approved 2026-09-16** for observed structural relations only; no interpretation policy here. |
 
 ## Approval checklist
 

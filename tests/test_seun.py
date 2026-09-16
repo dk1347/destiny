@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 
-from destiny_saju.data_registry import DatasetError, RuleRegistry
+from destiny_saju.data_registry import RuleRegistry
 from destiny_saju.four_pillars import four_pillars_for_datetime
 from destiny_saju.seun import seun_for_datetime
 
@@ -40,9 +40,10 @@ def test_seun_relations_identify_the_annual_pillar_location_without_interpretati
     assert serialized["provenance"]["relations_v1"] == "1.0.0"
 
 
-def test_seun_fails_closed_when_required_production_data_is_unverified() -> None:
-    registry = RuleRegistry(allow_unverified=True)
+def test_seun_is_available_when_all_required_production_data_is_verified() -> None:
+    registry = RuleRegistry()
     natal = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), registry)
 
-    with pytest.raises(DatasetError, match="DATASET_NOT_PRODUCTION_VERIFIED"):
-        seun_for_datetime(natal, datetime(2026, 2, 4, 5, 2, tzinfo=KST), RuleRegistry())
+    annual = seun_for_datetime(natal, datetime(2026, 2, 4, 5, 2, tzinfo=KST), registry)
+
+    assert annual.pillar.branch.value == "o"
