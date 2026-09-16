@@ -23,6 +23,25 @@ The response body is `SajuResult.as_dict()`. It contains canonical IDs, not
 interpretive prose. The server returns provenance and warnings, but never API
 keys, host paths, raw request logs, or other users' data.
 
+## Annual-cycle request
+
+`POST /v1/seun/calculate` accepts the resolved birth local datetime and a
+resolved target local datetime, plus the optional calculation-profile ID.
+
+```json
+{
+  "birth_local_datetime":"2026-02-04T05:02:00+09:00",
+  "target_local_datetime":"2026-03-01T12:00:00+09:00",
+  "calculation_profile_id":"kr_standard_v1"
+}
+```
+
+Both datetimes must use the Asia/Seoul UTC+09:00 offset. A successful response
+contains the target calendar year, the annual pillar, and structural
+stem/branch findings relative to the natal four pillars. `participants` marks
+the annual locations as `seun_stem` or `seun_branch`. It does not return luck,
+priority, health, relationship, financial, or other interpretive claims.
+
 ## Error response
 
 ```json
@@ -35,6 +54,6 @@ stay server-side.
 
 ## Production gate
 
-The public endpoint uses `RuleRegistry()` only. It must never enable
+Both public endpoints use `RuleRegistry()` only. They must never enable
 `allow_unverified=True`; that flag is limited to tests and explicit internal
-verification jobs. The endpoint does not invoke an LLM.
+verification jobs. The endpoints do not invoke an LLM.
