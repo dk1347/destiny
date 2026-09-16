@@ -1,6 +1,7 @@
 """Deterministic calculation primitives for Destiny Saju."""
 
 from .branches import EarthlyBranch
+from .calculation_profile import CalculationProfile, DayBoundary, KR_STANDARD_V1, MIDNIGHT_V1
 from .data_registry import DatasetError, RuleRegistry
 from .day_pillar import DayPillar, day_pillar_for_date
 from .diagnostics import CalculationInputError, DiagnosticCode
@@ -16,8 +17,8 @@ from .ten_gods import Element, TenGod, ten_god_for
 from .year_pillar import YearPillar, year_pillar_for_datetime
 
 __all__ = [
-    "CalculationInputError", "DatasetError", "DayPillar", "DiagnosticCode", "EarthlyBranch", "FourPillars",
-    "Element", "HeavenlyStem", "HiddenStem", "HourBranch", "RuleRegistry",
+    "CalculationInputError", "CalculationProfile", "DatasetError", "DayBoundary", "DayPillar", "DiagnosticCode", "EarthlyBranch", "FourPillars",
+    "Element", "HeavenlyStem", "HiddenStem", "HourBranch", "KR_STANDARD_V1", "MIDNIGHT_V1", "RuleRegistry",
     "MonthPillar", "SolarTerm", "TenGod", "YearPillar", "day_pillar_for_date", "hidden_stems_for",
     "HourPillar", "four_pillars_for_datetime", "hour_branch_for_time", "hour_stem_for", "month_pillar_for_datetime", "month_stem_for",
     "solar_term_for_datetime", "ten_god_for", "year_pillar_for_datetime",
