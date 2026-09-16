@@ -64,6 +64,7 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
             ("hour_stem_rules_v1", lambda data: data["hour_branch_order_from_ja"].__setitem__(slice(3, 5), reversed(data["hour_branch_order_from_ja"][3:5]))),
             ("core_tables_v1", lambda data: data["heavenly_stems"][0].__setitem__("id", "contaminated")),
             ("core_tables_v1", lambda data: data["heavenly_stems"][0].__setitem__("yin_yang", "neutral")),
+            ("core_tables_v1", lambda data: data["heavenly_stems"][1].__setitem__("yin_yang", "yang")),
             ("hidden_stems_v1", lambda data: data["branch_hidden_stems"]["branch:ja"][0].__setitem__("role", "contaminated")),
         )
         for dataset_id, inject in injections:

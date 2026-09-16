@@ -150,6 +150,12 @@ def _validate_core(data: dict[str, Any], dataset_id: str) -> None:
             _invalid(dataset_id, "unknown element")
         if {row["yin_yang"] for row in stems + branches} - _YIN_YANG:
             _invalid(dataset_id, "yin_yang must be yin or yang")
+        for label, rows in (("heavenly_stems", stems), ("earthly_branches", branches)):
+            if any(
+                row["yin_yang"] != ("yang" if row["order"] % 2 else "yin")
+                for row in rows
+            ):
+                _invalid(dataset_id, f"{label} yin_yang must alternate yang/yin by order")
         relations = data["element_relations"]
         for name in ("generates", "controls"):
             mapping = relations[name]
