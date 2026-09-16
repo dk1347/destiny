@@ -103,7 +103,7 @@ def _validate_data(payload: dict[str, Any], core: dict[str, Any]) -> None:
         if dataset_id == "core_tables_v1":
             _validate_core(payload["data"], dataset_id)
             return
-        stem_refs, branch_refs, canonical_branch_order = _vocabulary(core)
+        stem_refs, branch_refs, canonical_stem_order, canonical_branch_order = _vocabulary(core)
         data = payload["data"]
         if dataset_id == "month_stem_rules_v1":
             _validate_stem_start_rules(data, dataset_id, "tiger_start_by_year_stem_group", "year_stems", "in_month_start_stem", "month_branch_order_from_in", "branch:in", stem_refs, branch_refs, canonical_branch_order[2:] + canonical_branch_order[:2])
@@ -114,7 +114,14 @@ def _validate_data(payload: dict[str, Any], core: dict[str, Any]) -> None:
         elif dataset_id == "ten_gods_v1":
             _validate_ten_gods(data, dataset_id)
         elif dataset_id == "day_pillar_anchor_v1":
-            _validate_day_pillar_anchor(data, dataset_id, stem_refs, branch_refs)
+            _validate_day_pillar_anchor(
+                data,
+                dataset_id,
+                stem_refs,
+                branch_refs,
+                canonical_stem_order,
+                canonical_branch_order,
+            )
         elif dataset_id == "solar_term_instants_v1":
             _validate_solar_term_instants(data, dataset_id)
     except DatasetError:
@@ -168,12 +175,14 @@ def _validate_core(data: dict[str, Any], dataset_id: str) -> None:
         _invalid(dataset_id, str(error))
 
 
-def _vocabulary(core: dict[str, Any]) -> tuple[set[str], set[str], list[str]]:
+def _vocabulary(core: dict[str, Any]) -> tuple[set[str], set[str], list[str], list[str]]:
     data = core["data"]
+    ordered_stems = sorted(data["heavenly_stems"], key=lambda row: row["order"])
     ordered_branches = sorted(data["earthly_branches"], key=lambda row: row["order"])
     return (
         {f"stem:{row['id']}" for row in data["heavenly_stems"]},
         {f"branch:{row['id']}" for row in data["earthly_branches"]},
+        [f"stem:{row['id']}" for row in ordered_stems],
         [f"branch:{row['id']}" for row in ordered_branches],
     )
 
@@ -234,7 +243,8 @@ def _gregorian_jdn_at_noon(civil_date: date) -> int:
 
 
 def _validate_day_pillar_anchor(
-    data: dict[str, Any], dataset_id: str, stem_refs: set[str], branch_refs: set[str]
+    data: dict[str, Any], dataset_id: str, stem_refs: set[str], branch_refs: set[str],
+    canonical_stem_order: list[str], canonical_branch_order: list[str],
 ) -> None:
     required = {"anchor_date", "julian_day_number_at_noon", "sexagenary_index_1_based", "day_stem", "day_branch"}
     if set(data) != required:
@@ -253,9 +263,9 @@ def _validate_day_pillar_anchor(
         branch = data["day_branch"]
         if stem not in stem_refs or branch not in branch_refs:
             _invalid(dataset_id, "anchor references an unknown stem or branch")
-        if HeavenlyStem(stem.removeprefix("stem:")).value != list(HeavenlyStem)[(index - 1) % 10].value:
+        if stem != canonical_stem_order[(index - 1) % 10]:
             _invalid(dataset_id, "day_stem does not match sexagenary index")
-        if EarthlyBranch(branch.removeprefix("branch:")).value != list(EarthlyBranch)[(index - 1) % 12].value:
+        if branch != canonical_branch_order[(index - 1) % 12]:
             _invalid(dataset_id, "day_branch does not match sexagenary index")
     except DatasetError:
         raise
@@ -303,6 +313,10 @@ def _validate_solar_term_instants(data: dict[str, Any], dataset_id: str) -> None
             _invalid(dataset_id, "solar-term instants must be strictly chronological and unique")
         if instants[0] > coverage_start or instants[-1] > coverage_end:
             _invalid(dataset_id, "terms must include the boundary active at coverage_start and stay within coverage_end")
+        if coverage_start - max(instant for instant in instants if instant <= coverage_start) > timedelta(days=20):
+            _invalid(dataset_id, "terms must include a recent boundary active at coverage_start")
+        if any(later - earlier > timedelta(days=20) for earlier, later in zip(instants, instants[1:])):
+            _invalid(dataset_id, "consecutive solar-term instants must be no more than 20 days apart")
     except DatasetError:
         raise
     except (KeyError, TypeError, ValueError) as error:

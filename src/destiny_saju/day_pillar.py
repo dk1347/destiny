@@ -36,4 +36,7 @@ def day_pillar_for_date(civil_date: date, registry: RuleRegistry) -> DayPillar:
     anchor_date = date.fromisoformat(anchor["anchor_date"])
     offset = (civil_date - anchor_date).days
     index = anchor["sexagenary_index_1_based"] - 1 + offset
-    return DayPillar(list(HeavenlyStem)[index % 10], list(EarthlyBranch)[index % 12])
+    core = registry.load("core_tables_v1")["data"]
+    stems = sorted(core["heavenly_stems"], key=lambda row: row["order"])
+    branches = sorted(core["earthly_branches"], key=lambda row: row["order"])
+    return DayPillar(HeavenlyStem(stems[index % 10]["id"]), EarthlyBranch(branches[index % 12]["id"]))

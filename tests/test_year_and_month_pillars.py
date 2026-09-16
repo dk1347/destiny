@@ -18,6 +18,10 @@ def test_year_pillar_changes_at_ipchun_not_new_year() -> None:
     assert year_pillar_for_datetime(boundary - timedelta(minutes=1), registry).branch is EarthlyBranch.SA
     assert year_pillar_for_datetime(boundary, registry).stem is HeavenlyStem.BYEONG
     assert year_pillar_for_datetime(boundary, registry).branch is EarthlyBranch.O
+    # Dongji is a solar term, not another year boundary.  The 2026 year
+    # remains active after the December dongji instant.
+    assert year_pillar_for_datetime(datetime(2026, 12, 22, 5, 50, tzinfo=KST), registry).stem is HeavenlyStem.BYEONG
+    assert year_pillar_for_datetime(datetime(2026, 12, 22, 5, 50, tzinfo=KST), registry).branch is EarthlyBranch.O
 
 
 def test_month_pillar_uses_latest_major_solar_term() -> None:

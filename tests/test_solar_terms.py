@@ -91,6 +91,24 @@ def test_solar_term_dataset_rejects_out_of_order_or_wrong_offset_instant() -> No
             assert error.value.code is DiagnosticCode.DATASET_SCHEMA_INVALID
 
 
+def test_solar_term_dataset_rejects_a_stale_pre_coverage_boundary() -> None:
+    source = files("destiny_saju.data.saju")
+    with tempfile.TemporaryDirectory() as temporary:
+        target = Path(temporary)
+        for resource in source.iterdir():
+            if resource.name.endswith(".json"):
+                (target / resource.name).write_bytes(resource.read_bytes())
+        path = target / "solar_term_instants_v1.json"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        payload["data"]["terms"][0]["occurs_at"] = "2024-12-07T06:05:00+09:00"
+        payload["data"]["terms"][1]["occurs_at"] = "2024-12-22T00:03:00+09:00"
+        path.write_text(json.dumps(payload), encoding="utf-8")
+
+        with pytest.raises(DatasetError) as error:
+            RuleRegistry(target, allow_unverified=True).load("solar_term_instants_v1")
+        assert error.value.code is DiagnosticCode.DATASET_SCHEMA_INVALID
+
+
 def test_solar_term_lookup_rejects_non_datetime_input() -> None:
     with pytest.raises(TypeError, match="resolved_local_datetime"):
         solar_term_for_datetime("2026-02-04T00:00:00", RuleRegistry(allow_unverified=True))  # type: ignore[arg-type]
