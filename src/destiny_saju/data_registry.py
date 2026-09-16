@@ -33,6 +33,21 @@ _TEN_GODS = {
     "bigyeon", "geopjae", "siksin", "sangwan", "pyeonjae",
     "jeongjae", "pyeongwan", "jeonggwan", "pyeonin", "jeongin",
 }
+_RELATION_PARTICIPANT_COUNTS = {
+    "stem_combination": 2,
+    "branch_six_combination": 2,
+    "branch_three_harmony": 3,
+    "branch_half_three_harmony_candidate": 2,
+    "branch_clash": 2,
+    "branch_punishment": 2,
+    "branch_self_punishment": 1,
+    "branch_break": 2,
+    "branch_harm": 2,
+}
+_ELEMENT_BEARING_RELATION_TYPES = {
+    "stem_combination", "branch_six_combination", "branch_three_harmony",
+    "branch_half_three_harmony_candidate",
+}
 
 
 class RuleRegistry:
@@ -113,6 +128,8 @@ def _validate_data(payload: dict[str, Any], core: dict[str, Any]) -> None:
             _validate_hidden_stems(data, dataset_id, stem_refs, branch_refs)
         elif dataset_id == "ten_gods_v1":
             _validate_ten_gods(data, dataset_id)
+        elif dataset_id == "relations_v1":
+            _validate_relations(data, dataset_id, stem_refs, branch_refs)
         elif dataset_id == "day_pillar_anchor_v1":
             _validate_day_pillar_anchor(
                 data,
@@ -234,6 +251,42 @@ def _validate_ten_gods(data: dict[str, Any], dataset_id: str) -> None:
         _invalid(dataset_id, "relation_table and display_names must cover all ten gods")
     if data["polarity_rule"] != "same_yin_yang_selects_same_polarity_column":
         _invalid(dataset_id, "unknown polarity_rule")
+
+
+def _validate_relations(data: dict[str, Any], dataset_id: str, stem_refs: set[str], branch_refs: set[str]) -> None:
+    if set(data) != {"stem_combinations", "branch_relations"}:
+        _invalid(dataset_id, "data must contain stem_combinations and branch_relations")
+    rows = data["stem_combinations"] + data["branch_relations"]
+    if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+        _invalid(dataset_id, "relation collections must contain objects")
+    relation_ids = [row.get("relation_id") for row in rows]
+    if any(not isinstance(relation_id, str) for relation_id in relation_ids) or len(set(relation_ids)) != len(relation_ids):
+        _invalid(dataset_id, "relation_id values must be unique strings")
+    for row in data["stem_combinations"]:
+        _validate_relation_row(row, dataset_id, "stem_combination", stem_refs)
+    for row in data["branch_relations"]:
+        relation_type = row.get("relation_type")
+        if relation_type not in _RELATION_PARTICIPANT_COUNTS or relation_type == "stem_combination":
+            _invalid(dataset_id, "unknown branch relation_type")
+        _validate_relation_row(row, dataset_id, relation_type, branch_refs)
+
+
+def _validate_relation_row(row: dict[str, Any], dataset_id: str, relation_type: str, references: set[str]) -> None:
+    if row.get("relation_type") != relation_type:
+        _invalid(dataset_id, f"relation_type must be {relation_type}")
+    participants = row.get("participants")
+    if not isinstance(participants, list) or len(participants) != _RELATION_PARTICIPANT_COUNTS[relation_type]:
+        _invalid(dataset_id, f"{relation_type} has invalid participant count")
+    if any(reference not in references for reference in participants):
+        _invalid(dataset_id, f"{relation_type} contains an unknown participant")
+    if relation_type != "branch_self_punishment" and len(set(participants)) != len(participants):
+        _invalid(dataset_id, f"{relation_type} participants must be distinct")
+    has_element = "resulting_element" in row
+    if relation_type in _ELEMENT_BEARING_RELATION_TYPES:
+        if row.get("resulting_element") not in _ELEMENTS:
+            _invalid(dataset_id, f"{relation_type} requires a valid resulting_element")
+    elif has_element:
+        _invalid(dataset_id, f"{relation_type} must not have resulting_element")
 
 
 def _gregorian_jdn_at_noon(civil_date: date) -> int:
