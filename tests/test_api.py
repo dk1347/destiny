@@ -10,12 +10,14 @@ def test_api_rejects_non_kst_datetime() -> None:
     with pytest.raises(HTTPException) as error:
         calculate(CalculationRequest(birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone.utc)))
     assert error.value.status_code == 422
+    assert "한국 표준시" in error.value.detail["message"]
 
 
 def test_api_rejects_unknown_profile() -> None:
     with pytest.raises(HTTPException) as error:
         calculate(CalculationRequest(birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9))), calculation_profile_id="unknown"))
     assert error.value.status_code == 422
+    assert "지원하지 않는" in error.value.detail["message"]
 
 
 def test_api_returns_a_production_result_when_required_pillar_data_is_verified() -> None:

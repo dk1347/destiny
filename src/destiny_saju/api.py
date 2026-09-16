@@ -36,14 +36,14 @@ class SeunRequest(BaseModel):
 
 def _require_kst(value: datetime, field_name: str) -> None:
     if value.tzinfo is None or value.utcoffset() != timedelta(hours=9):
-        raise HTTPException(422, {"code": "INVALID_LOCAL_DATETIME", "message": f"Use an Asia/Seoul UTC+09:00 {field_name}."})
+        raise HTTPException(422, {"code": "INVALID_LOCAL_DATETIME", "message": f"{field_name}은 한국 표준시(UTC+09:00)로 입력해 주세요."})
 
 
 def _profile_for(profile_id: str):
     profiles = {KR_STANDARD_V1.profile_id: KR_STANDARD_V1, MIDNIGHT_V1.profile_id: MIDNIGHT_V1}
     profile = profiles.get(profile_id)
     if profile is None:
-        raise HTTPException(422, {"code": "UNKNOWN_CALCULATION_PROFILE", "message": "Unsupported calculation profile."})
+        raise HTTPException(422, {"code": "UNKNOWN_CALCULATION_PROFILE", "message": "지원하지 않는 계산 기준이에요."})
     return profile
 
 
@@ -56,11 +56,11 @@ def calculate(request: CalculationRequest) -> dict[str, object]:
             return saju_result_for_datetime(request.birth_local_datetime, RuleRegistry(), profile).as_dict()
         if request.birth_local_date is not None and request.birth_local_datetime is None:
             return saju_result_for_date(request.birth_local_date, RuleRegistry()).as_dict()
-        raise HTTPException(422, {"code": "INVALID_BIRTH_INPUT", "message": "Provide either a local date or a local datetime."})
+        raise HTTPException(422, {"code": "INVALID_BIRTH_INPUT", "message": "출생일 또는 출생일시 중 하나만 입력해 주세요."})
     except ValueError as error:
         raise HTTPException(422, {"code": "BIRTH_TIME_NEEDED", "message": str(error)}) from error
     except DatasetError as error:
-        raise HTTPException(503, {"code": error.code.value, "message": "Verified calculation data is unavailable."}) from error
+        raise HTTPException(503, {"code": error.code.value, "message": "검증된 계산 데이터를 현재 사용할 수 없어요."}) from error
 
 
 @app.post("/v1/seun/calculate")
@@ -76,4 +76,4 @@ def calculate_seun(request: SeunRequest) -> dict[str, object]:
         annual = seun_for_datetime(natal, request.target_local_datetime, registry, profile)
         return annual.as_dict()
     except DatasetError as error:
-        raise HTTPException(503, {"code": error.code.value, "message": "Verified calculation data is unavailable."}) from error
+        raise HTTPException(503, {"code": error.code.value, "message": "검증된 계산 데이터를 현재 사용할 수 없어요."}) from error
