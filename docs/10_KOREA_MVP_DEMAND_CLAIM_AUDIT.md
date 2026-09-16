@@ -28,7 +28,7 @@ revenue forecasts, or a permanent MVP funnel choice.
 | MKT-02 | Compatibility, romance, reunion, comprehensive Saju, and wealth form a numeric TOP 10 demand ranking. | **Unverified** | These are candidate content families, not a ranked demand list. | Same DataLab materials as MKT-01, plus a documented rule for combining/splitting overlapping keywords. |
 | MKT-03 | Relationship/reunion content has very large cumulative view counts and stronger purchase potential than comprehensive Saju. | **Unverified** | Relationship follow-up is worth an experiment; no conversion advantage is established. | Dated source snapshots or export for the cited store metrics, whether views are free or paid, unique-user definition, tag-deduplication rule, and category-level purchase data. |
 | MKT-04 | The free-to-relationship-to-paid-comprehensive funnel is the best product sequence. | **Needs experiment** | It is the current working funnel in `09_KOREA_MVP_DEMAND_HYPOTHESES.md`, not a conclusion from external data. | A controlled Destiny experiment with pre-defined acquisition, completion, voluntary return, purchase, and contact/refund metrics. |
-| MKT-05 | A stated percentage of consumers uses fortune content for wealth/financial concerns. | **Unverified** | Wealth may be a future topic to test, but it must not drive a financial-product claim. | Original survey publication, questionnaire wording, field dates, population, sample, weighting, and the exact table containing the percentage. |
+| MKT-05 | A stated percentage of consumers is interested in wealth/financial fortune content. | **Partially corroborated** | Wealth is a candidate topic to test. This is stated interest, not purchase intent or a financial-product signal. | Retain the original survey wording and any weighting details; do not infer payment behavior. |
 | MKT-06 | The Korean fortune-app market has the reported MAU, sales, paid-consultation, and demographic values. | **Partially corroborated / not accepted numerically** | A large, content-led fortune service demonstrably exists; the report's precise figures need source-specific verification. | A primary company statement or a directly inspectable report for each figure, including collection date and metric definition. |
 
 ## 3. What is independently corroborated
@@ -83,7 +83,26 @@ No claim from the earlier report may be used to say that a category is
 “number one,” that it has a specific market size, or that it has a superior
 payment conversion rate.
 
-## 6. Next independent cross-check
+## 6. Independent cross-check outcome
+
+A second researcher was asked to validate only MKT-01, MKT-03, and MKT-05
+without producing a new ranking. Its outcome is consistent with this audit:
+
+| Claim | Outcome | Audit consequence |
+| --- | --- | --- |
+| MKT-01: daily fortune has decisively greater search demand than compatibility | **Not found** | Retain as an entry-point experiment, not a demand conclusion. |
+| MKT-03: relationship/reunion converts better than comprehensive Saju | **Not found** | Retain as a follow-up experiment, not a conversion conclusion. |
+| MKT-05: wealth-related fortune interest has a measurable survey percentage | **Partially corroborated** | A current, inspectable source reports wealth fortune as an interest topic, but it is not payment behavior. |
+
+The directly inspected source for MKT-05 is TrendMonitor's *2026 New Year
+Plan and Fortune Service Usage Survey*. It reports that 58.7% of respondents
+selected wealth fortune as a topic of interest when using fortune services
+(multiple response). The page identifies a national sample of 1,000 adults
+aged 19–59 and a field period of 2026-01-05 through 2026-01-07. The result
+must always retain its survey-attitude and multiple-response qualifications.
+See [TrendMonitor's survey page](https://www.trendmonitor.co.kr/tmweb/trend/allTrend/detail.do?bIdx=3318&code=0401&trendType=CKOREA).
+
+## 7. Next independent cross-check
 
 Ask a second researcher to verify only MKT-01, MKT-03, and MKT-05. It must:
 
