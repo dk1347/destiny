@@ -1572,11 +1572,13 @@ Research Track은 Korea MVP 출시를 방해하지 않도록 Production Track과
 
 ### Integration MVP hardening
 
-1. Select a client deployment and privacy-preserving CTA contract before a
-   public calculator or waitlist is exposed.
-2. Run an end-to-end browser review against a non-local API environment after
-   a client host is selected; configure its exact allowed origin there.
-3. Keep Daewoon and AI interpretation outside the first calculator release
+1. Use the approved Render internal-preview shape only after the account and
+   exact preview origin are supplied; configure that exact allowed origin then.
+2. Run an end-to-end browser review against the non-local preview API,
+   including known-time, date-only, and solar-term-boundary recovery paths.
+3. Select the public custom domain and privacy-preserving CTA contract before
+   a public calculator or waitlist is exposed.
+4. Keep Daewoon and AI interpretation outside the first calculator release
    until their separate rule, safety, and evaluation gates are complete.
 
 
