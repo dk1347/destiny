@@ -23,13 +23,18 @@ reproducible approval.
 
 ## Current pending datasets
 
-| Dataset | Evidence still required before promotion |
-| --- | --- |
-| `core_tables_v1` | Independent confirmation of vocabulary order, five-element generation/control cycles, polarity, time windows, and major-term month mapping. |
-| `hidden_stems_v1` | Source decision for each branch's main/middle/residual stems and display ordering. |
-| `month_stem_rules_v1` | Independent confirmation of each year-stem group, In-month start stem, and full canonical branch cycle. |
-| `hour_stem_rules_v1` | Independent confirmation of each day-stem group, Ja-hour start stem, and full canonical branch cycle. |
-| `ten_gods_v1` | Independent confirmation of the relation-to-ten-god mapping and same/different-polarity rule. |
+The listed audit documents and regression tests record evidence progress; they
+are not promotion approvals. Every row below remains unavailable to production
+until the common checklist and the explicit promotion record are complete.
+
+| Dataset | Evidence already recorded | Remaining release condition |
+| --- | --- | --- |
+| `core_tables_v1` | Order, calculation element/polarity attributes, element cycles, hour windows, and major-term mapping are recorded in `docs/24_CORE_TABLES_SOURCE_AUDIT.md` and regression tests. | Preserve an approved field-level source/reuse record, resolve the display-label scope, and record reviewer decision. |
+| `hidden_stems_v1` | Compact-only MVP scope, two compact-table comparisons, role/order mapping, and 12-row regression table are recorded in `docs/22_HIDDEN_STEMS_SCOPE_AUDIT.md`. | Preserve the compact-convention source and reuse decision in the promotion record; do not mix it with the separate seasonal model. |
+| `month_stem_rules_v1` | Two source families and all five Tiger-start groups are recorded in `docs/21_MONTH_AND_HOUR_STEM_SOURCE_AUDIT.md`; canonical ordering is schema-tested. | Record retrieval details, row-by-row reviewer sign-off, and release decision. |
+| `hour_stem_rules_v1` | Two direct historical tables cover all five Rat-hour start groups; canonical ordering is schema-tested. See `docs/21_MONTH_AND_HOUR_STEM_SOURCE_AUDIT.md`. | Record retrieval details, row-by-row reviewer sign-off, and release decision. |
+| `ten_gods_v1` | The five-relationship model and a full 乙 day-master reference row are recorded in `docs/23_TEN_GODS_SOURCE_AUDIT.md` and regression tests. | Complete an approved promotion record after the dependent core-table release decision. |
+| `relations_v1` | Candidate participant sets/elements are cross-checked and locked in `docs/17_RELATIONS_V1_SOURCE_AUDIT.md` and relation tests. | Preserve edition/page-level and reuse evidence; keep interpretation policy out of this dataset; record reviewer decision. |
 
 ## Promotion record template
 
