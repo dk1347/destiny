@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from .calculation_profile import KR_STANDARD_V1, MIDNIGHT_V1
@@ -10,6 +11,13 @@ from .saju_result import saju_result_for_datetime
 from .seun import seun_for_datetime
 
 app = FastAPI(title="Destiny Calculation API")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=False,
+    allow_methods=["POST"],
+    allow_headers=["Content-Type"],
+)
 
 
 class CalculationRequest(BaseModel):
