@@ -1,8 +1,8 @@
 # Destiny — Core Tables Source Audit
 
-> Decision: lock the reviewed lookup values in regression tests, while keeping
-> `core_tables_v1` as `pending_verification` until every field has an approved
-> source record.
+> Decision (2026-09-16): approve `core_tables_v1` as `production_verified`
+> for the calculation scope documented below. Display-only animal labels remain
+> outside this approval.
 
 ## Reviewed slices
 
@@ -19,11 +19,13 @@ windows, all 12 major-term/month-branch pairs, and all 22 calculation
 element/polarity rows as explicit regression values. Existing structural tests
 still protect canonical ordering and Enum vocabulary integrity.
 
-## Still deliberately unapproved
+## Scope boundary
 
 - English animal labels are display vocabulary and have not received a source
   decision.
 - This audit does not decide true-solar time, a day boundary, or interpretive
   meaning.
 
-Accordingly, no core-table value, version, or status changes here.
+The dataset metadata records the review decision, source links, scope, and
+status history. No core-table values or dataset version changed during this
+promotion.

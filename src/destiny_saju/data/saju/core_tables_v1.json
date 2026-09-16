@@ -2,15 +2,37 @@
     "schema_version": "1.0",
     "dataset_id": "core_tables_v1",
     "dataset_version": "1.0.0",
-    "status": "pending_verification",
+    "status": "production_verified",
     "source": {
-        "type": "classical_rule",
-        "reference": "docs/04_SAJU_CALCULATION_SPEC.md \u00a76"
+        "type": "multi_source_calculation_audit",
+        "audit_record": "docs/24_CORE_TABLES_SOURCE_AUDIT.md",
+        "references": [
+            "https://encykorea.aks.ac.kr/Article/E0047325",
+            "https://jicheng.tw/tcm/book/%E6%9D%BE%E5%B3%B0%E8%AA%AA%E7%96%AB/index.html",
+            "https://zh.wikisource.org/wiki/%E9%81%B8%E6%93%87%E7%B4%80%E8%A6%81/%E4%B8%8A%E7%B7%A8",
+            "https://www.kdnavien.co.kr/upload/pr/magazine/20201013064145839.pdf",
+            "https://encykorea.aks.ac.kr/Article/E0025957",
+            "https://www.irum.com/Support/Faq/12815"
+        ],
+        "reviewed_at": "2026-09-16",
+        "review_decision": "approved_for_calculation_scope"
     },
-    "license": "internal-derived-no-third-party-copy",
+    "license": "derived factual lookup data; source attribution retained; no third-party prose or media copied",
     "generated_at": "2026-09-14T00:00:00Z",
     "generated_by": "manual",
-    "scope": "Fixed vocabulary and lookup data only; no solar-term instants, calendar conversion, or interpretive weights.",
+    "scope": "Production-approved fixed calculation vocabulary and lookups: canonical orders, element/polarity attributes, element cycles, legal-local hour windows, and major-term month mapping. English animal labels remain display-only and outside this approval; no solar-term instants, calendar conversion, or interpretive weights.",
+    "status_history": [
+        {
+            "status": "pending_verification",
+            "at": "2026-09-14T00:00:00Z",
+            "by": "manual"
+        },
+        {
+            "status": "production_verified",
+            "at": "2026-09-16T00:00:00+09:00",
+            "by": "product-owner approval recorded in Codex task"
+        }
+    ],
     "data": {
         "element_relations": {
             "generates": {

@@ -44,5 +44,5 @@ def test_seun_fails_closed_when_required_production_data_is_unverified() -> None
     registry = RuleRegistry(allow_unverified=True)
     natal = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), registry)
 
-    with pytest.raises(DatasetError, match="SOLAR_TERM_DATA_UNAVAILABLE"):
+    with pytest.raises(DatasetError, match="DATASET_NOT_PRODUCTION_VERIFIED"):
         seun_for_datetime(natal, datetime(2026, 2, 4, 5, 2, tzinfo=KST), RuleRegistry())

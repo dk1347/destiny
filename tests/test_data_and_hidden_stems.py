@@ -1,6 +1,7 @@
 import unittest
 import json
 import tempfile
+from datetime import datetime, timedelta, timezone
 from importlib.resources import files
 from pathlib import Path
 
@@ -11,11 +12,22 @@ from destiny_saju.stems import HeavenlyStem
 from destiny_saju.hour_stem import hour_stem_for
 from destiny_saju.month_stem import month_stem_for
 from destiny_saju.ten_gods import ten_god_for
+from destiny_saju.year_pillar import year_pillar_for_datetime
 
 TEST_REGISTRY = RuleRegistry(allow_unverified=True)
 
 
 class DatasetAndHiddenStemTests(unittest.TestCase):
+    def test_core_tables_are_available_in_the_production_registry(self) -> None:
+        core = RuleRegistry().load("core_tables_v1")["data"]
+        self.assertEqual(core["heavenly_stems"][0]["id"], "gap")
+        self.assertEqual(core["earthly_branches"][0]["id"], "ja")
+        pillar = year_pillar_for_datetime(
+            datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9))),
+            RuleRegistry(),
+        )
+        self.assertEqual((pillar.stem, pillar.branch), (HeavenlyStem.BYEONG, EarthlyBranch.O))
+
     def test_unverified_dataset_is_blocked_by_default(self) -> None:
         with self.assertRaisesRegex(DatasetError, "DATASET_NOT_PRODUCTION_VERIFIED"):
             load_dataset("hidden_stems_v1")
