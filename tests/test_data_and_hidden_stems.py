@@ -70,6 +70,33 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
             ),
         )
 
+    def test_core_stem_and_branch_calculation_attributes_match_recorded_audit(self) -> None:
+        core = TEST_REGISTRY.load("core_tables_v1")["data"]
+        expected_stems = (
+            ("gap", "wood", "yang"), ("eul", "wood", "yin"),
+            ("byeong", "fire", "yang"), ("jeong", "fire", "yin"),
+            ("mu", "earth", "yang"), ("gi", "earth", "yin"),
+            ("gyeong", "metal", "yang"), ("sin", "metal", "yin"),
+            ("im", "water", "yang"), ("gye", "water", "yin"),
+        )
+        expected_branches = (
+            ("ja", "water", "yang"), ("chuk", "earth", "yin"),
+            ("in", "wood", "yang"), ("myo", "wood", "yin"),
+            ("jin", "earth", "yang"), ("sa", "fire", "yin"),
+            ("o", "fire", "yang"), ("mi", "earth", "yin"),
+            ("sin", "metal", "yang"), ("yu", "metal", "yin"),
+            ("sul", "earth", "yang"), ("hae", "water", "yin"),
+        )
+
+        self.assertEqual(
+            tuple((row["id"], row["element"], row["yin_yang"]) for row in core["heavenly_stems"]),
+            expected_stems,
+        )
+        self.assertEqual(
+            tuple((row["id"], row["element"], row["yin_yang"]) for row in core["earthly_branches"]),
+            expected_branches,
+        )
+
     def test_reference_values(self) -> None:
         self.assertEqual(hidden_stems_for(EarthlyBranch.JA, TEST_REGISTRY)[0].stem, HeavenlyStem.GYE)
         self.assertEqual([row.stem for row in hidden_stems_for(EarthlyBranch.IN, TEST_REGISTRY)], [HeavenlyStem.GAP, HeavenlyStem.BYEONG, HeavenlyStem.MU])
