@@ -23,6 +23,9 @@ function kstIso(date: string, time: string) { return `${date}T${time}:00+09:00`;
 function annualRelations(relations: Relation[]) {
   return relations.filter((relation) => relation.participants.some((location) => location === "seun_stem" || location === "seun_branch"));
 }
+function errorMessage(payload: { detail?: { message?: string }; message?: string }) {
+  return payload.detail?.message ?? payload.message ?? "계산 결과를 만들지 못했어요. 입력한 정보를 다시 확인해 주세요.";
+}
 
 export default function App() {
   const [date, setDate] = useState("");
@@ -42,7 +45,7 @@ export default function App() {
       const input = timeKnown ? { birth_local_datetime: kstIso(date, time) } : { birth_local_date: date };
       const response = await fetch(`${API_BASE}/v1/saju/calculate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input) });
       const payload = await response.json();
-      if (!response.ok) throw new Error(payload.message ?? "계산 결과를 만들지 못했어요.");
+      if (!response.ok) throw new Error(errorMessage(payload));
       setResult(payload);
     } catch (reason) { setError(reason instanceof Error ? reason.message : "계산 결과를 만들지 못했어요."); }
     finally { setLoading(false); }
@@ -54,7 +57,7 @@ export default function App() {
     try {
       const response = await fetch(`${API_BASE}/v1/seun/calculate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ birth_local_datetime: kstIso(date, time), target_local_datetime: `${year}-06-01T12:00:00+09:00` }) });
       const payload = await response.json();
-      if (!response.ok) throw new Error(payload.message ?? "세운 결과를 만들지 못했어요.");
+      if (!response.ok) throw new Error(errorMessage(payload));
       setAnnual(payload);
     } catch (reason) { setError(reason instanceof Error ? reason.message : "세운 결과를 만들지 못했어요."); }
     finally { setLoading(false); }

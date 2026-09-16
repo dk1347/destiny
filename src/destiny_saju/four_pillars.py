@@ -72,5 +72,5 @@ def three_pillars_for_date(local_date: date, registry: RuleRegistry) -> ThreePil
     start_year, end_year = year_pillar_for_datetime(start, registry), year_pillar_for_datetime(end, registry)
     start_month, end_month = month_pillar_for_datetime(start, registry), month_pillar_for_datetime(end, registry)
     if (start_year, start_month) != (end_year, end_month):
-        raise ValueError("A solar-term boundary falls on this date; birth time is needed for a verified result.")
+        raise ValueError("이 날짜는 절기 전환일이라 검증된 결과를 위해 출생시간이 필요해요.")
     return ThreePillars(start_year, start_month, day_pillar_for_date(local_date, registry))

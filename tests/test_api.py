@@ -33,6 +33,14 @@ def test_api_returns_a_partial_result_for_a_stable_date_without_birth_time() -> 
     assert result["pillars"]["hour"] is None
 
 
+def test_api_explains_when_a_date_only_result_needs_birth_time() -> None:
+    with pytest.raises(HTTPException) as error:
+        calculate(CalculationRequest(birth_local_date="2026-02-04"))
+    assert error.value.status_code == 422
+    assert error.value.detail["code"] == "BIRTH_TIME_NEEDED"
+    assert "출생시간" in error.value.detail["message"]
+
+
 def test_seun_api_rejects_a_non_kst_target_datetime() -> None:
     with pytest.raises(HTTPException) as error:
         calculate_seun(SeunRequest(
