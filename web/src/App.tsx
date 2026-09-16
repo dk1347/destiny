@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 
 type Pillar = { stem: string; branch: string };
-type SajuResult = { pillars: Record<string, Pillar>; warnings: string[] };
+type SajuResult = { pillars: Record<string, Pillar | null>; warnings: string[] };
 type Relation = { relation_id: string; relation_type: string; participants: string[]; resulting_element?: string | null };
 type SeunResult = { calendar_year: number; pillar: Pillar; relations: Relation[] };
 
@@ -27,6 +27,7 @@ function annualRelations(relations: Relation[]) {
 export default function App() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+  const [timeKnown, setTimeKnown] = useState(true);
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [result, setResult] = useState<SajuResult>();
   const [annual, setAnnual] = useState<SeunResult>();
@@ -35,10 +36,11 @@ export default function App() {
 
   async function calculate(event: FormEvent) {
     event.preventDefault();
-    if (!date || !time) return;
+    if (!date || (timeKnown && !time)) return;
     setLoading(true); setError(""); setAnnual(undefined);
     try {
-      const response = await fetch(`${API_BASE}/v1/saju/calculate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ birth_local_datetime: kstIso(date, time) }) });
+      const input = timeKnown ? { birth_local_datetime: kstIso(date, time) } : { birth_local_date: date };
+      const response = await fetch(`${API_BASE}/v1/saju/calculate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(input) });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.message ?? "계산 결과를 만들지 못했어요.");
       setResult(payload);
@@ -47,7 +49,7 @@ export default function App() {
   }
 
   async function calculateAnnual() {
-    if (!date || !time) return;
+    if (!date || !timeKnown || !time) return;
     setLoading(true); setError("");
     try {
       const response = await fetch(`${API_BASE}/v1/seun/calculate`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ birth_local_datetime: kstIso(date, time), target_local_datetime: `${year}-06-01T12:00:00+09:00` }) });
@@ -61,10 +63,10 @@ export default function App() {
   return <main>
     <section className="hero"><p>DESTINY</p><h1>내 사주 살펴보기</h1><span>알고 있는 출생 정보만 입력해 주세요.</span></section>
     <section className="card">
-      <form onSubmit={calculate}><label>생년월일<input type="date" value={date} onChange={(event) => setDate(event.target.value)} required /></label><label>태어난 시간<input type="time" value={time} onChange={(event) => setTime(event.target.value)} required /></label><p className="hint">기본 계산은 출생기록의 현지 시각과 절기 기준을 사용해요.</p><button disabled={loading}>{loading ? "계산하고 있어요…" : "사주 계산하기"}</button></form>
+      <form onSubmit={calculate}><label>생년월일<input type="date" value={date} onChange={(event) => setDate(event.target.value)} required /></label><fieldset><legend>태어난 시간을 알고 있나요?</legend><div className="choice-row"><label><input type="radio" name="time-known" checked={timeKnown} onChange={() => setTimeKnown(true)} /> 알아요</label><label><input type="radio" name="time-known" checked={!timeKnown} onChange={() => setTimeKnown(false)} /> 몰라요</label></div></fieldset>{timeKnown ? <label>태어난 시간<input type="time" value={time} onChange={(event) => setTime(event.target.value)} required /></label> : <p className="hint">출생시간 없이 연주·월주·일주를 계산해요. 절기 전환일에는 정확한 시간을 확인해야 할 수 있어요.</p>}<p className="hint">기본 계산은 출생기록의 현지 시각과 절기 기준을 사용해요.</p><button disabled={loading}>{loading ? "계산하고 있어요…" : "사주 계산하기"}</button></form>
       {error && <p className="error">{error}</p>}
     </section>
-    {result && <section className="card"><h2>계산 결과</h2><div className="pillars">{Object.entries(result.pillars).map(([position, pillar]) => <div key={position}><small>{{ year: "연주", month: "월주", day: "일주", hour: "시주" }[position]}</small><strong>{koreanPillar(pillar)}</strong></div>)}</div>{result.warnings.map((warning) => <p className="hint" key={warning}>{warning}</p>)}</section>}
+    {result && <section className="card"><h2>계산 결과</h2><div className="pillars">{Object.entries(result.pillars).filter(([, pillar]) => pillar !== null).map(([position, pillar]) => <div key={position}><small>{{ year: "연주", month: "월주", day: "일주", hour: "시주" }[position]}</small><strong>{koreanPillar(pillar!)}</strong></div>)}</div>{result.warnings.map((warning) => <p className="hint" key={warning}>{warning}</p>)}</section>}
     {result && <section className="card"><h2>세운 살펴보기</h2><p className="hint">어느 해를 살펴볼까요?</p><div className="year-row"><input aria-label="대상 연도" type="number" min="1900" max="2100" value={year} onChange={(event) => setYear(event.target.value)} /><button type="button" onClick={calculateAnnual} disabled={loading}>확인하기</button></div>{annual && <><h3>{annual.calendar_year}년의 간지 <b>{koreanPillar(annual.pillar)}</b></h3>{annualRelations(annual.relations).length ? <ul>{annualRelations(annual.relations).map((relation) => <li key={relation.relation_id}>{relation.participants.map((location) => locationLabels[location]).join("과 ")}: {relationLabels[relation.relation_type]}{relation.resulting_element ? ` · ${elementLabels[relation.resulting_element]}` : ""}</li>)}</ul> : <p>현재 지원되는 구조 관계는 확인되지 않았어요.</p>}<p className="disclosure">세운은 해당 해의 간지와 원국 사이에서 확인된 구조를 보여 줍니다. 좋고 나쁨을 단정하는 결과는 아니에요.</p></>}</section>}
   </main>;
 }
