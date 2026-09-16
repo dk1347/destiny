@@ -27,6 +27,12 @@ def test_api_returns_a_production_result_when_required_pillar_data_is_verified()
     assert result["provenance"]["month_stem_rules_v1"] == "1.0.0"
 
 
+def test_api_returns_a_partial_result_for_a_stable_date_without_birth_time() -> None:
+    result = calculate(CalculationRequest(birth_local_date="2026-02-05"))
+    assert result["status"] == "partial"
+    assert result["pillars"]["hour"] is None
+
+
 def test_seun_api_rejects_a_non_kst_target_datetime() -> None:
     with pytest.raises(HTTPException) as error:
         calculate_seun(SeunRequest(

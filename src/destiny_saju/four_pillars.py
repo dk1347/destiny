@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 
 from .calculation_profile import CalculationProfile, DayBoundary, KR_STANDARD_V1
 from .day_pillar import DayPillar, day_pillar_for_date
@@ -30,6 +30,15 @@ class FourPillars:
     hour: HourPillar
 
 
+@dataclass(frozen=True)
+class ThreePillars:
+    """A date-only result when year/month pillars are stable across the day."""
+
+    year: YearPillar
+    month: MonthPillar
+    day: DayPillar
+
+
 def four_pillars_for_datetime(
     resolved_local_datetime: datetime,
     registry: RuleRegistry,
@@ -50,3 +59,18 @@ def four_pillars_for_datetime(
     hour_branch = hour_branch_for_time(resolved_local_datetime.timetz())
     hour = HourPillar(hour_stem_for(day.stem, hour_branch, registry), hour_branch)
     return FourPillars(year, month, day, hour)
+
+
+def three_pillars_for_date(local_date: date, registry: RuleRegistry) -> ThreePillars:
+    """Return a safe date-only result, never inventing an unknown birth time."""
+
+    if type(local_date) is not date:
+        raise TypeError("local_date must be a datetime.date instance")
+    kst = timezone(timedelta(hours=9))
+    start = datetime.combine(local_date, time.min, kst)
+    end = datetime.combine(local_date, time(23, 59), kst)
+    start_year, end_year = year_pillar_for_datetime(start, registry), year_pillar_for_datetime(end, registry)
+    start_month, end_month = month_pillar_for_datetime(start, registry), month_pillar_for_datetime(end, registry)
+    if (start_year, start_month) != (end_year, end_month):
+        raise ValueError("A solar-term boundary falls on this date; birth time is needed for a verified result.")
+    return ThreePillars(start_year, start_month, day_pillar_for_date(local_date, registry))

@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,7 +7,7 @@ from pydantic import BaseModel
 from .calculation_profile import KR_STANDARD_V1, MIDNIGHT_V1
 from .data_registry import DatasetError, RuleRegistry
 from .four_pillars import four_pillars_for_datetime
-from .saju_result import saju_result_for_datetime
+from .saju_result import saju_result_for_date, saju_result_for_datetime
 from .seun import seun_for_datetime
 
 app = FastAPI(title="Destiny Calculation API")
@@ -21,7 +21,8 @@ app.add_middleware(
 
 
 class CalculationRequest(BaseModel):
-    birth_local_datetime: datetime
+    birth_local_datetime: datetime | None = None
+    birth_local_date: date | None = None
     calculation_profile_id: str = KR_STANDARD_V1.profile_id
 
 
@@ -46,10 +47,16 @@ def _profile_for(profile_id: str):
 
 @app.post("/v1/saju/calculate")
 def calculate(request: CalculationRequest) -> dict[str, object]:
-    _require_kst(request.birth_local_datetime, "datetime")
     profile = _profile_for(request.calculation_profile_id)
     try:
-        return saju_result_for_datetime(request.birth_local_datetime, RuleRegistry(), profile).as_dict()
+        if request.birth_local_datetime is not None and request.birth_local_date is None:
+            _require_kst(request.birth_local_datetime, "datetime")
+            return saju_result_for_datetime(request.birth_local_datetime, RuleRegistry(), profile).as_dict()
+        if request.birth_local_date is not None and request.birth_local_datetime is None:
+            return saju_result_for_date(request.birth_local_date, RuleRegistry()).as_dict()
+        raise HTTPException(422, {"code": "INVALID_BIRTH_INPUT", "message": "Provide either a local date or a local datetime."})
+    except ValueError as error:
+        raise HTTPException(422, {"code": "BIRTH_TIME_NEEDED", "message": str(error)}) from error
     except DatasetError as error:
         raise HTTPException(503, {"code": error.code.value, "message": "Verified calculation data is unavailable."}) from error
 
