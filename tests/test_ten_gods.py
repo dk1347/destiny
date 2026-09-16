@@ -22,6 +22,24 @@ class TenGodTests(unittest.TestCase):
         self.assertEqual(len(results), 100)
         self.assertEqual(set(results), set(TenGod))
 
+    def test_eul_day_master_matches_the_recorded_ten_god_reference_row(self) -> None:
+        expected = (
+            (HeavenlyStem.EUL, TenGod.BIGYEON),
+            (HeavenlyStem.GAP, TenGod.GEOPJAE),
+            (HeavenlyStem.JEONG, TenGod.SIKSIN),
+            (HeavenlyStem.BYEONG, TenGod.SANGWAN),
+            (HeavenlyStem.GI, TenGod.PYEONJAE),
+            (HeavenlyStem.MU, TenGod.JEONGJAE),
+            (HeavenlyStem.SIN, TenGod.PYEONGWAN),
+            (HeavenlyStem.GYEONG, TenGod.JEONGGWAN),
+            (HeavenlyStem.GYE, TenGod.PYEONIN),
+            (HeavenlyStem.IM, TenGod.JEONGIN),
+        )
+
+        for target, ten_god in expected:
+            with self.subTest(target=target):
+                self.assertEqual(ten_god_for(HeavenlyStem.EUL, target, REGISTRY), ten_god)
+
     def test_domain_enums_with_same_value_are_not_equal(self) -> None:
         self.assertNotEqual(HeavenlyStem.SIN, EarthlyBranch.SIN)
         self.assertIsNone({HeavenlyStem.SIN: "stem"}.get(EarthlyBranch.SIN))
