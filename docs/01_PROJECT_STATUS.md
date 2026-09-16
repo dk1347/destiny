@@ -1528,6 +1528,17 @@ Research Track은 Korea MVP 출시를 방해하지 않도록 Production Track과
 
 현재 전체 프로젝트를 중단시키는 Blocking Issue는 없다.
 
+### 2026-09-16 implementation snapshot
+
+- Production-verified deterministic calculation is available for the core
+  tables, verified solar-term coverage, month/hour stems, compact hidden
+  stems, ten gods, and structural relations.
+- The guarded internal API provides four-pillar calculation, a safe date-only
+  three-pillar result, and structural annual-cycle facts.
+- A React/TypeScript internal web MVP covers known-time and date-only input,
+  calculated-result display, and annual-cycle display when birth time is known.
+- Public-content assets are drafts only; no content has been published.
+
 
 
 다음 항목은 병렬 확인 중이다.
@@ -1556,23 +1567,15 @@ Research Track은 Korea MVP 출시를 방해하지 않도록 Production Track과
 
 
 
-다음 공식 문서:
+### Integration MVP hardening
 
-
-
-\*\*02\_KOREA\_MVP\_SCOPE.md\*\*
-
-
-
-목표:
-
-
-
-> Destiny의 첫 번째 실제 제품에서 무엇을 만들고 무엇을 만들지 않을지를 명확하게 정의한다.
-
-
-
-이 문서가 승인된 후 BirthProfile과 Saju Calculation Specification을 구체화한다.
+1. Define the web MVP's deployment/configuration contract, including a
+   non-local development environment and allowed origins.
+2. Complete mobile accessibility review and date-only boundary recovery UI.
+3. Select a client deployment and privacy-preserving CTA contract before a
+   public calculator or waitlist is exposed.
+4. Keep Daewoon and AI interpretation outside the first calculator release
+   until their separate rule, safety, and evaluation gates are complete.
 
 
 
