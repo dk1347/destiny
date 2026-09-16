@@ -70,6 +70,14 @@ Before a first `relations_v1` dataset is enabled for production:
   36(3), 2013. The paper lists the six clashes and discusses disagreement about
   downstream readings:
   https://www.accesson.kr/ksq/assets/pdf/40880/journal-36-3-134.pdf
+- Kim Man-tae, “A Study on Clues for the Combination of the Ten Celestial
+  Stems in Their Relations of Mutual Changes and Actions,” *Sogang Journal of
+  Philosophy* 30 (2012), 97–128, DOI: 10.17325/sgjp.2012.30..97:
+  https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001690465
+- Kim Man-tae, “A Study on Clues for Jiji Combinations as Relations of Mutual
+  Changing Actions among Jijis,” *Sogang Journal of Philosophy* 31 (2012),
+  205–241, DOI: 10.17325/sgjp.2012.31..205:
+  https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART001716658
 - Existing Destiny schema and completeness requirements:
   `docs/07_VERSIONED_RULE_DATA_SPEC.md` §5.5.
 - Existing engine boundary between relation detection and interpretation:
@@ -80,3 +88,10 @@ Before a first `relations_v1` dataset is enabled for production:
 This audit does not choose a commercial Manse Ryeok site, a blog, an LLM, or
 a single modern textbook as the production authority. It also does not add
 celebrity charts or personally identifying birth data as fixtures.
+
+The two KCI records establish useful independent academic provenance for the
+existence and historical discussion of stem and branch combinations. Their
+public abstracts alone do **not** provide enough row-level detail to approve
+every participant set and resulting element. Obtain and review the full texts
+or another independently citable primary/academic table before adding a
+production dataset.
