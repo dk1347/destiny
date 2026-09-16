@@ -42,7 +42,7 @@ Production anchor는 아래 조건을 모두 만족해야 한다.
 
 1. 공개적으로 재현 가능한 날짜·시간대·60갑자 index를 가진다.
 2. 독립된 두 출처와 대조한다.
-3. `kr_standard_v1`의 00:00 일주 경계와 혼동되지 않도록 JDN 기준과 local civil date 변환을 명시한다.
+3. 적용 Calculation Profile의 일주 경계와 혼동되지 않도록 JDN 기준과 local civil date 변환을 명시한다.
 4. anchor와 검증 사례는 코드가 아닌 versioned data asset으로 저장한다.
 
 ## 3. Calendar and time data separation
