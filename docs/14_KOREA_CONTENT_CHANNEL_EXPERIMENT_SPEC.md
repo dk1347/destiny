@@ -17,6 +17,7 @@ entry point exists.
 | Naver Blog | searchable explanatory post | “I want a clear answer before trying a service.” | Durable search-intent content. |
 | Instagram | vertical Reel | “Show me a useful idea quickly.” | New-audience discovery. |
 | Instagram | carousel / illustrated short comic | “Explain it simply enough to save or share.” | Comprehension and shareability. |
+| Instagram Reels + TikTok | vertical comic short | “Answer one personal question through a quick visual story.” | Youth-oriented discovery and format validation. |
 
 Google Blogger and YouTube Shorts are **second-wave candidates**. They are not
 discarded; omitting them in the first run keeps creation capacity focused and
@@ -49,8 +50,28 @@ that a viewer's hidden personal facts are known.
 | Accessibility | headings, plain language, descriptive image alt text where supported. | Korean captions embedded or supplied. | legible text, no colour-only meaning, image description where supported. |
 
 The underlying factual script, CTA wording, and destination must be the same
-for all three variants of a topic. Format—not a changed promise—is what the
+for all variants of a topic. Format—not a changed promise—is what the
 experiment compares.
+
+### 4.1 Vertical comic-short rules
+
+The youth-oriented vertical comic short uses 3–5 visual beats in 15–30
+seconds. It is an adaptation of the same factual script, not a separate
+promise or an interpretation product.
+
+1. Open with a spoken-question title that names a familiar uncertainty, such
+   as `출생시간을 모르면 사주를 못 볼까?`.
+2. Show one concise answer and one visual reason; avoid jargon before the
+   viewer understands why it matters.
+3. State the limit in the final beat, for example that a solar-term boundary
+   can require a known birth time.
+4. End with one neutral action: `계산 기준 알아보기` or `개발 중인 Destiny
+   보기`. Do not promise a reading, luck, or a personal outcome.
+
+Titles may use surprise or a personal question, but must not use exaggerated
+earnings, fear, hidden-secret claims, or certainty about the viewer's future.
+Use the same vertical master for Reels and TikTok, while recording each
+platform's publication and consumption metrics separately.
 
 ## 5. Measurement plan
 
@@ -124,7 +145,7 @@ The initial content plan is:
 
 - three shared topics;
 - one Naver Blog post and one Instagram carousel per topic;
-- one vertical short video per topic, distributed unchanged to Instagram Reels
+- one vertical comic short per topic, distributed unchanged to Instagram Reels
   and TikTok; Facebook receives the same Reel as a secondary distribution
   surface;
 - publish at broadly comparable times where feasible, but record the actual
@@ -133,7 +154,8 @@ The initial content plan is:
 - retain post URLs, publication time, content/script version, and CTA version.
 
 This is nine original content assets (three articles, three carousels, and
-three videos), with the videos distributed to multiple short-form surfaces.
+three vertical comic shorts), with the shorts distributed to multiple
+short-form surfaces.
 If capacity is limited, begin with the first topic in all formats before
 making more. Do not judge a channel from one post.
 
