@@ -13,6 +13,14 @@ Use **Render** for the first internal preview:
 3. no database, account system, analytics identifier, or stored birth input in
    this phase.
 
+### Hosting-cost policy
+
+- **Preparation and internal verification:** free plans are acceptable. The
+  preview may have cold starts and is not a user-facing reliability promise.
+- **Service operation after public release:** paid compute is acceptable and
+  required for the API before users are invited. Do not expose a public
+  calculator that depends on a free instance waking from idle.
+
 The client receives the API URL through `VITE_API_BASE`. The API deployment
 sets `DESTINY_ALLOWED_ORIGINS` to that static site's exact HTTPS origin. No
 wildcard origin is permitted.

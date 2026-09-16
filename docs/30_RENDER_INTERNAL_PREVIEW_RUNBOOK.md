@@ -4,6 +4,9 @@
 > release until the conditions in `29_INTERNAL_PREVIEW_DEPLOYMENT_DECISION.md`
 > are complete.
 
+> Cost policy: use the Free plan only while preparing and internally testing.
+> Before a public calculator is shared, move the API to paid compute.
+
 ## Preconditions
 
 - The GitHub repository branch to deploy is `fix/v3-data-integrity`.
