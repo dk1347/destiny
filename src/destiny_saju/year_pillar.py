@@ -10,6 +10,7 @@ from .data_registry import DatasetError, RuleRegistry
 from .diagnostics import DiagnosticCode
 from .solar_terms import solar_term_for_datetime
 from .stems import HeavenlyStem
+from .tables import ordered_branches, ordered_stems
 
 
 _JIA_ZI_YEAR = 1984
@@ -43,7 +44,6 @@ def year_pillar_for_datetime(resolved_local_datetime: datetime, registry: RuleRe
     if resolved_local_datetime < ipchun_instants[0]:
         sexagenary_year -= 1
     offset = sexagenary_year - _JIA_ZI_YEAR
-    core = registry.load("core_tables_v1")["data"]
-    stems = sorted(core["heavenly_stems"], key=lambda row: row["order"])
-    branches = sorted(core["earthly_branches"], key=lambda row: row["order"])
-    return YearPillar(HeavenlyStem(stems[offset % 10]["id"]), EarthlyBranch(branches[offset % 12]["id"]))
+    stems = ordered_stems(registry)
+    branches = ordered_branches(registry)
+    return YearPillar(stems[offset % 10], branches[offset % 12])

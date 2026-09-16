@@ -319,7 +319,8 @@ def _validate_solar_term_instants(data: dict[str, Any], dataset_id: str) -> None
             _invalid(dataset_id, "solar-term instants must be strictly chronological and unique")
         if instants[0] > coverage_start or instants[-1] > coverage_end:
             _invalid(dataset_id, "terms must include the boundary active at coverage_start and stay within coverage_end")
-        if coverage_start - max(instant for instant in instants if instant <= coverage_start) > timedelta(days=20):
+        active_boundary = max((instant for instant in instants if instant <= coverage_start), default=None)
+        if active_boundary is None or coverage_start - active_boundary > timedelta(days=20):
             _invalid(dataset_id, "terms must include a recent boundary active at coverage_start")
         if any(later - earlier > timedelta(days=20) for earlier, later in zip(instants, instants[1:])):
             _invalid(dataset_id, "consecutive solar-term instants must be no more than 20 days apart")

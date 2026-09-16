@@ -28,11 +28,12 @@ boundaries consistently:
 
 ```python
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 from destiny_saju import RuleRegistry, four_pillars_for_datetime
 
 KST = timezone(timedelta(hours=9))
-registry = RuleRegistry(data_dir=production_verified_rule_directory)
+registry = RuleRegistry(data_dir=Path("/path/to/production-verified-rules"))
 pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), registry)
 ```
 

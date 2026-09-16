@@ -5,10 +5,11 @@ from __future__ import annotations
 from datetime import date
 from dataclasses import dataclass
 
+from .branches import EarthlyBranch
 from .data_registry import DatasetError, RuleRegistry
 from .diagnostics import DiagnosticCode
-from .branches import EarthlyBranch
 from .stems import HeavenlyStem
+from .tables import ordered_branches, ordered_stems
 
 
 _ANCHOR_DATASET_ID = "day_pillar_anchor_v1"
@@ -36,7 +37,6 @@ def day_pillar_for_date(civil_date: date, registry: RuleRegistry) -> DayPillar:
     anchor_date = date.fromisoformat(anchor["anchor_date"])
     offset = (civil_date - anchor_date).days
     index = anchor["sexagenary_index_1_based"] - 1 + offset
-    core = registry.load("core_tables_v1")["data"]
-    stems = sorted(core["heavenly_stems"], key=lambda row: row["order"])
-    branches = sorted(core["earthly_branches"], key=lambda row: row["order"])
-    return DayPillar(HeavenlyStem(stems[index % 10]["id"]), EarthlyBranch(branches[index % 12]["id"]))
+    stems = ordered_stems(registry)
+    branches = ordered_branches(registry)
+    return DayPillar(stems[index % 10], branches[index % 12])

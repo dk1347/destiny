@@ -29,9 +29,10 @@ def test_four_pillars_preserves_the_solar_term_coverage_gate() -> None:
         )
 
 
-def test_four_pillars_uses_the_next_day_pillar_at_ja_hour() -> None:
+@pytest.mark.parametrize("minute", [0, 30, 59])
+def test_four_pillars_uses_the_next_day_pillar_at_ja_hour(minute: int) -> None:
     result = four_pillars_for_datetime(
-        datetime(2026, 2, 4, 23, 30, tzinfo=KST), RuleRegistry(allow_unverified=True)
+        datetime(2026, 2, 4, 23, minute, tzinfo=KST), RuleRegistry(allow_unverified=True)
     )
 
     assert (result.day.stem, result.day.branch) == (HeavenlyStem.GYEONG, EarthlyBranch.SUL)

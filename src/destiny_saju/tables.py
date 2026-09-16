@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from .branches import EarthlyBranch
 from .data_registry import RuleRegistry
 from .stems import HeavenlyStem
 
@@ -14,6 +15,13 @@ class StemAttributes:
 def ordered_stems(registry: RuleRegistry) -> tuple[HeavenlyStem, ...]:
     rows = registry.load("core_tables_v1")["data"]["heavenly_stems"]
     return tuple(HeavenlyStem(row["id"]) for row in sorted(rows, key=lambda row: row["order"]))
+
+
+def ordered_branches(registry: RuleRegistry) -> tuple[EarthlyBranch, ...]:
+    """Return earthly branches in the data-defined canonical order."""
+
+    rows = registry.load("core_tables_v1")["data"]["earthly_branches"]
+    return tuple(EarthlyBranch(row["id"]) for row in sorted(rows, key=lambda row: row["order"]))
 
 
 def stem_attributes(stem: HeavenlyStem, registry: RuleRegistry) -> StemAttributes:
