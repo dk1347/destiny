@@ -38,8 +38,14 @@ def _registry_with_relations() -> RuleRegistry:
 
 def test_relation_lookup_requires_a_dataset() -> None:
     pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), RuleRegistry(allow_unverified=True))
-    with pytest.raises(DatasetError):
-        relations_for_pillars(pillars, RuleRegistry(allow_unverified=True))
+    with pytest.raises(DatasetError, match="DATASET_NOT_PRODUCTION_VERIFIED"):
+        relations_for_pillars(pillars, RuleRegistry())
+
+
+def test_pending_relations_dataset_is_available_only_in_explicit_test_mode() -> None:
+    pillars = four_pillars_for_datetime(datetime(2026, 2, 4, 5, 2, tzinfo=KST), RuleRegistry(allow_unverified=True))
+    findings = relations_for_pillars(pillars, RuleRegistry(allow_unverified=True))
+    assert {finding.relation_id for finding in findings} == {"branch-half-in-o", "branch-clash-myo-yu"}
 
 
 def test_relation_lookup_returns_detected_facts_only() -> None:

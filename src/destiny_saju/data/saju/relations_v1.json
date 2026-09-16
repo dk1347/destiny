@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "relations_v1",
+  "dataset_version": "1.0.0",
+  "status": "pending_verification",
+  "source": {
+    "type": "classical-text-plus-academic-candidates",
+    "references": [
+      "https://zh.wikisource.org/zh-hant/%E4%B8%89%E5%91%BD%E9%80%9A%E6%9C%83/%E5%8D%B7%E4%BA%8C",
+      "docs/17_RELATIONS_V1_SOURCE_AUDIT.md"
+    ],
+    "verification_status": "needs_second_row_level_source"
+  },
+  "license": "derived-facts-pending-reuse-review",
+  "generated_at": "2026-09-16T00:00:00+09:00",
+  "generated_by": "manual",
+  "data": {
+    "stem_combinations": [
+      {"relation_id":"stem-gap-gi","relation_type":"stem_combination","participants":["stem:gap","stem:gi"],"resulting_element":"earth"},
+      {"relation_id":"stem-eul-gyeong","relation_type":"stem_combination","participants":["stem:eul","stem:gyeong"],"resulting_element":"metal"},
+      {"relation_id":"stem-byeong-sin","relation_type":"stem_combination","participants":["stem:byeong","stem:sin"],"resulting_element":"water"},
+      {"relation_id":"stem-jeong-im","relation_type":"stem_combination","participants":["stem:jeong","stem:im"],"resulting_element":"wood"},
+      {"relation_id":"stem-mu-gye","relation_type":"stem_combination","participants":["stem:mu","stem:gye"],"resulting_element":"fire"}
+    ],
+    "branch_relations": [
+      {"relation_id":"branch-six-ja-chuk","relation_type":"branch_six_combination","participants":["branch:ja","branch:chuk"],"resulting_element":"earth"},
+      {"relation_id":"branch-six-in-hae","relation_type":"branch_six_combination","participants":["branch:in","branch:hae"],"resulting_element":"wood"},
+      {"relation_id":"branch-six-myo-sul","relation_type":"branch_six_combination","participants":["branch:myo","branch:sul"],"resulting_element":"fire"},
+      {"relation_id":"branch-six-jin-yu","relation_type":"branch_six_combination","participants":["branch:jin","branch:yu"],"resulting_element":"metal"},
+      {"relation_id":"branch-six-sa-sin","relation_type":"branch_six_combination","participants":["branch:sa","branch:sin"],"resulting_element":"water"},
+      {"relation_id":"branch-six-o-mi","relation_type":"branch_six_combination","participants":["branch:o","branch:mi"],"resulting_element":"earth"},
+      {"relation_id":"branch-three-sin-ja-jin","relation_type":"branch_three_harmony","participants":["branch:sin","branch:ja","branch:jin"],"resulting_element":"water"},
+      {"relation_id":"branch-three-sa-yu-chuk","relation_type":"branch_three_harmony","participants":["branch:sa","branch:yu","branch:chuk"],"resulting_element":"metal"},
+      {"relation_id":"branch-three-in-o-sul","relation_type":"branch_three_harmony","participants":["branch:in","branch:o","branch:sul"],"resulting_element":"fire"},
+      {"relation_id":"branch-three-hae-myo-mi","relation_type":"branch_three_harmony","participants":["branch:hae","branch:myo","branch:mi"],"resulting_element":"wood"},
+      {"relation_id":"branch-half-sin-ja","relation_type":"branch_half_three_harmony_candidate","participants":["branch:sin","branch:ja"],"resulting_element":"water"},
+      {"relation_id":"branch-half-ja-jin","relation_type":"branch_half_three_harmony_candidate","participants":["branch:ja","branch:jin"],"resulting_element":"water"},
+      {"relation_id":"branch-half-sin-jin","relation_type":"branch_half_three_harmony_candidate","participants":["branch:sin","branch:jin"],"resulting_element":"water"},
+      {"relation_id":"branch-half-sa-yu","relation_type":"branch_half_three_harmony_candidate","participants":["branch:sa","branch:yu"],"resulting_element":"metal"},
+      {"relation_id":"branch-half-yu-chuk","relation_type":"branch_half_three_harmony_candidate","participants":["branch:yu","branch:chuk"],"resulting_element":"metal"},
+      {"relation_id":"branch-half-sa-chuk","relation_type":"branch_half_three_harmony_candidate","participants":["branch:sa","branch:chuk"],"resulting_element":"metal"},
+      {"relation_id":"branch-half-in-o","relation_type":"branch_half_three_harmony_candidate","participants":["branch:in","branch:o"],"resulting_element":"fire"},
+      {"relation_id":"branch-half-o-sul","relation_type":"branch_half_three_harmony_candidate","participants":["branch:o","branch:sul"],"resulting_element":"fire"},
+      {"relation_id":"branch-half-in-sul","relation_type":"branch_half_three_harmony_candidate","participants":["branch:in","branch:sul"],"resulting_element":"fire"},
+      {"relation_id":"branch-half-hae-myo","relation_type":"branch_half_three_harmony_candidate","participants":["branch:hae","branch:myo"],"resulting_element":"wood"},
+      {"relation_id":"branch-half-myo-mi","relation_type":"branch_half_three_harmony_candidate","participants":["branch:myo","branch:mi"],"resulting_element":"wood"},
+      {"relation_id":"branch-half-hae-mi","relation_type":"branch_half_three_harmony_candidate","participants":["branch:hae","branch:mi"],"resulting_element":"wood"},
+      {"relation_id":"branch-clash-ja-o","relation_type":"branch_clash","participants":["branch:ja","branch:o"]},
+      {"relation_id":"branch-clash-chuk-mi","relation_type":"branch_clash","participants":["branch:chuk","branch:mi"]},
+      {"relation_id":"branch-clash-in-sin","relation_type":"branch_clash","participants":["branch:in","branch:sin"]},
+      {"relation_id":"branch-clash-myo-yu","relation_type":"branch_clash","participants":["branch:myo","branch:yu"]},
+      {"relation_id":"branch-clash-jin-sul","relation_type":"branch_clash","participants":["branch:jin","branch:sul"]},
+      {"relation_id":"branch-clash-sa-hae","relation_type":"branch_clash","participants":["branch:sa","branch:hae"]}
+    ]
+  }
+}
