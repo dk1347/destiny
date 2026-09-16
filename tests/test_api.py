@@ -18,11 +18,13 @@ def test_api_rejects_unknown_profile() -> None:
     assert error.value.status_code == 422
 
 
-def test_api_fails_closed_when_production_data_is_not_verified() -> None:
-    with pytest.raises(HTTPException) as error:
-        calculate(CalculationRequest(birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9)))) )
-    assert error.value.status_code == 503
-    assert error.value.detail["code"] == "DATASET_NOT_PRODUCTION_VERIFIED"
+def test_api_returns_a_production_result_when_required_pillar_data_is_verified() -> None:
+    result = calculate(CalculationRequest(
+        birth_local_datetime=datetime(2026, 2, 4, 5, 2, tzinfo=timezone(timedelta(hours=9))),
+    ))
+    assert result["status"] == "complete"
+    assert result["pillars"]["year"] == {"stem": "byeong", "branch": "o"}
+    assert result["provenance"]["month_stem_rules_v1"] == "1.0.0"
 
 
 def test_seun_api_rejects_a_non_kst_target_datetime() -> None:

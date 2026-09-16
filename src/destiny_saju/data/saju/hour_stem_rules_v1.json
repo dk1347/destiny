@@ -2,14 +2,21 @@
     "schema_version": "1.0",
     "dataset_id": "hour_stem_rules_v1",
     "dataset_version": "1.0.0",
-    "status": "pending_verification",
+    "status": "production_verified",
     "source": {
-        "type": "classical_rule",
-        "reference": "docs/06_ENGINE_CONTRACTS_AND_CORE_RULES.md \u00a73.2"
+        "type": "multi_source_rule_audit",
+        "audit_record": "docs/21_MONTH_AND_HOUR_STEM_SOURCE_AUDIT.md",
+        "references": [
+            "https://www.shidianguji.com/zh/mid-page/7556734501952077834",
+            "https://www.shidianguji.com/zh/mid-page/7504041099071242267"
+        ],
+        "reviewed_at": "2026-09-16",
+        "review_decision": "approved_for_hour_stem_calculation"
     },
-    "license": "internal-derived-no-third-party-copy",
+    "license": "derived factual rule data; source attribution retained; no third-party prose copied",
     "generated_at": "2026-09-14T00:00:00Z",
     "generated_by": "manual",
+    "status_history": [{"status": "pending_verification", "at": "2026-09-14T00:00:00Z", "by": "manual"}, {"status": "production_verified", "at": "2026-09-16T00:00:00+09:00", "by": "product-owner approval recorded in Codex task"}],
     "data": {
         "rat_start_by_day_stem_group": [
             {

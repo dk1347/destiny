@@ -12,6 +12,9 @@ REGISTRY = RuleRegistry(allow_unverified=True)
 GOLDEN = json.loads((ROOT / "tests" / "fixtures" / "saju" / "core-rule-golden-v1.json").read_text(encoding="utf-8"))
 
 class HourStemTests(unittest.TestCase):
+    def test_production_registry_loads_hour_stem_rules(self) -> None:
+        self.assertEqual(hour_stem_for(HeavenlyStem.GAP, EarthlyBranch.JA, RuleRegistry()), HeavenlyStem.GAP)
+
     def test_golden_cases(self) -> None:
         for day, branch, expected in GOLDEN["hour_stem_cases"]:
             with self.subTest(day=day, branch=branch):

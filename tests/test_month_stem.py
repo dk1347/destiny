@@ -12,6 +12,9 @@ REGISTRY = RuleRegistry(allow_unverified=True)
 GOLDEN = json.loads((ROOT / "tests" / "fixtures" / "saju" / "core-rule-golden-v1.json").read_text(encoding="utf-8"))
 
 class MonthStemTests(unittest.TestCase):
+    def test_production_registry_loads_month_stem_rules(self) -> None:
+        self.assertEqual(month_stem_for(HeavenlyStem.GAP, EarthlyBranch.IN, RuleRegistry()), HeavenlyStem.BYEONG)
+
     def test_golden_cases(self) -> None:
         for year, branch, expected in GOLDEN["month_stem_cases"]:
             with self.subTest(year=year, branch=branch):

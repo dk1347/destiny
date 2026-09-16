@@ -36,8 +36,6 @@ class DatasetAndHiddenStemTests(unittest.TestCase):
         production = RuleRegistry()
         calls = (
             lambda: hidden_stems_for(EarthlyBranch.JA, production),
-            lambda: hour_stem_for(HeavenlyStem.GAP, EarthlyBranch.JA, production),
-            lambda: month_stem_for(HeavenlyStem.GAP, EarthlyBranch.IN, production),
             lambda: ten_god_for(HeavenlyStem.GAP, HeavenlyStem.GAP, production),
         )
         for call in calls:
