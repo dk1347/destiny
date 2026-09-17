@@ -1,8 +1,9 @@
 # 사주와 별자리는 같은 운명 이야기일까?
 
 > Category: 동서양 운명 이야기  
-> Status: 초안  
+> Status: 게시 완료 (2026-09-17)  
 > Target: 네이버 블로그 「운명과 숙명 | Destiny」
+> Published URL: https://blog.naver.com/dk1347/224415101440
 
 ## 별을 보면 나를 알 수 있을까?
 
