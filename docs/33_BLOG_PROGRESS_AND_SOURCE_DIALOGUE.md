@@ -9,7 +9,7 @@
 - Episode 3, `MBTI와 사주, 둘 다 ‘나’를 설명할 수 있을까?`, is publicly published in `나를 알아가는 이야기`.
 - Episode 3 URL: https://blog.naver.com/dk1347/224414836866
 - Episode 3 has an original generated cover image at the top of the post.
-- The next milestone is Episode 4. Short-form video, toon/carousel cards, Instagram, TikTok, and additional platforms are intentionally deferred until the main blog workflow is stable.
+- The next milestone is Episode 4 in the `동서양 운명 이야기` category: **「사주와 별자리는 같은 운명 이야기일까?」**. The article will compare the two traditions as different explanatory languages, not declare which one is more accurate. Short-form video, toon/carousel cards, Instagram, TikTok, and additional platforms are intentionally deferred until the main blog workflow is stable.
 
 ## 2. Production and research status
 
