@@ -85,3 +85,51 @@ MBTI와 사주는 한 사람을 완성된 문장으로 끝내기보다, 스스�
   plain Korean rather than turning it into a citation list.
 - Run a final human Korean-style pass for repetitive phrasing, image rights,
   and the channel’s established voice before posting.
+
+## 5. Publishing package
+
+### Recommended title
+
+`MBTI와 사주, 둘 다 ‘나’를 설명할 수 있을까?`
+
+Keep the question form. It matches the article’s exploratory tone and avoids
+implying that either framework can conclusively define a person.
+
+### Optional search-friendly alternatives
+
+1. `MBTI와 사주가 모두 ‘나 같다’고 느껴지는 이유`
+2. `MBTI와 사주, 나를 이해하는 두 가지 언어`
+
+Use an alternative only if the final published copy changes materially toward
+that emphasis. Do not use click-oriented variants such as “MBTI와 사주 중
+정답은?” or “내 운명을 정확히 알려주는 방법”.
+
+### Cover text
+
+**Primary:** `‘나’를 설명하는 말은 어디까지일까?`
+
+**Small supporting line:** `MBTI와 사주, 자기이해의 언어를 생각하다`
+
+Use a restrained text card or a simple original diagram rather than a mystical
+prediction image. Avoid faces, birth-chart examples, personality-type labels,
+or visual claims of predictive accuracy.
+
+### Suggested tags
+
+`#MBTI #사주 #자기이해 #성격유형 #운명과숙명 #Destiny`
+
+Use no more than six tags. Do not add search-attracting tags such as
+`#무료사주`, `#정확한사주`, `#운명예측`, or personal-decision tags such as
+`#재회운`.
+
+### Final posting checklist
+
+- [ ] The published title and body still distinguish facts from interpretation.
+- [ ] External links, if used, point to the sources in the claim ledger.
+- [ ] The cover uses only original or licensed assets.
+- [ ] No reader is invited to share birth data or receive a personal reading in
+      comments.
+- [ ] The blog preview (mobile and desktop) has no unintended line break in
+      the Korean title or cover text.
+- [ ] Record the publication date, final text revision, cover-source note, and
+      CTA version in this file after publishing.
