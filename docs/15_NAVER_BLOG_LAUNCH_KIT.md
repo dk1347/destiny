@@ -11,6 +11,10 @@ Channel: **네이버 블로그 `운명과 숙명 | Destiny`**
 
 1. **1화 — 「운명과 숙명은 무엇이 다를까?」**: published.
 2. **2화 — 「사주팔자는 왜 8글자일까?」**: published.
+3. **3화 — 「MBTI와 사주, 둘 다 ‘나’를 설명할 수 있을까?」**: published.
+   - Category: `나를 알아가는 이야기`
+   - Public URL: https://blog.naver.com/dk1347/224414836866
+   - A newly generated original cover image is placed at the top of the post.
 
 The first two posts are the established public baseline and should remain in
 place unless a concrete, material error is found. Routine wording preferences,
@@ -44,8 +48,10 @@ post to use the full pipeline as the standard process. Its workflow is:
    sourced, uncertainty is stated, and the post does not overstate what MBTI
    or Saju can establish about a person.
 
-This section is the current handoff point for blog operations. Update it when
-the publication status, operating roles, or validation standard changes.
+This section is the current handoff point for blog operations. Episode 3 is now
+the first completed publication under the full pipeline. Episode 4 is the next
+content milestone; derivative card, short-form, and social-media formats remain
+deferred until the main blog workflow is stable.
 
 ---
 

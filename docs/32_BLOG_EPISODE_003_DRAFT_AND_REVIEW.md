@@ -1,9 +1,14 @@
 # Destiny — Blog Episode 003 Draft and Review Record
 
-> Status: editorial draft; not published.
+> Status: published and archived as the final editorial record.
 > Channel: 네이버 블로그 `운명과 숙명 | Destiny`
 > Title: **「MBTI와 사주, 둘 다 ‘나’를 설명할 수 있을까?」**
 > Review completed: 2026-09-17
+
+Published URL: https://blog.naver.com/dk1347/224414836866
+
+Published category: `나를 알아가는 이야기`
+The published post includes an original generated cover image above the body.
 
 ## 1. Workflow record
 
