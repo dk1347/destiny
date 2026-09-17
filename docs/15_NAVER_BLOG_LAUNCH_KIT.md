@@ -1,8 +1,57 @@
 # Destiny — Naver Blog Launch Kit
 
-> Draft only. Requires product-owner approval before public posting.
-> The posts describe product principles; they do not promise a launch date,
-> beta access, or completed user-facing service.
+> Status: Active channel record. The original launch drafts below are retained
+> as planning material; the publishing baseline in this section is current.
+
+## Current publishing baseline
+
+Channel: **네이버 블로그 `운명과 숙명 | Destiny`**
+
+### Published
+
+1. **1화 — 「운명과 숙명은 무엇이 다를까?」**: published.
+2. **2화 — 「사주팔자는 왜 8글자일까?」**: published.
+
+The first two posts are the established public baseline and should remain in
+place unless a concrete, material error is found. Routine wording preferences,
+new production-process changes, or retrospective style differences are not by
+themselves reasons to revise or remove them.
+
+### Production and verification pipeline
+
+Starting with episode 3, every post follows this multi-AI workflow. Model
+outputs are working material, not authority; final publication remains subject
+to editorial judgment and source verification.
+
+| Participant | Primary responsibility |
+| --- | --- |
+| ChatGPT | Overall coordination and final editing |
+| Claude | Logic review, independent draft, and review |
+| Gemini | Alternative perspectives and independent draft |
+| Perplexity | Source research and fact-checking |
+
+### Next formal application
+
+**3화 — 「MBTI와 사주, 둘 다 ‘나’를 설명할 수 있을까?」** is the first
+post to use the full pipeline as the standard process. Its workflow is:
+
+1. Perplexity gathers sources and checks factual claims.
+2. Claude and Gemini independently develop drafts or reasoning from distinct
+   perspectives.
+3. ChatGPT separates verifiable facts from interpretation, reconciles the
+   input, and performs the final edit.
+4. Before publication, the editor confirms that claims are appropriately
+   sourced, uncertainty is stated, and the post does not overstate what MBTI
+   or Saju can establish about a person.
+
+This section is the current handoff point for blog operations. Update it when
+the publication status, operating roles, or validation standard changes.
+
+---
+
+> Historical launch-planning draft. Requires product-owner approval before
+> public posting. The posts describe product principles; they do not promise a
+> launch date, beta access, or completed user-facing service.
 
 ## 1. Profile setup
 
