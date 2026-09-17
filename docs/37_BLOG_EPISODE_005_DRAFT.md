@@ -1,8 +1,10 @@
 # 인연과 궁합은 무엇이 다를까?
 
 > Category: 인연·궁합  
-> Status: 초안  
+> Status: 게시 완료 (2026-09-17)  
 > Target: 네이버 블로그 「운명과 숙명 | Destiny」
+> Published URL: https://blog.naver.com/dk1347/224415254696
+> Cover image: generated relationship illustration uploaded at the top of the post.
 
 ## 좋은 궁합이면 다투지 않을까?
 
