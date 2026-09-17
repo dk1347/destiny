@@ -4,6 +4,7 @@
 > Status: 게시 완료 (2026-09-17)  
 > Target: 네이버 블로그 「운명과 숙명 | Destiny」
 > Published URL: https://blog.naver.com/dk1347/224415101440
+> Cover image: generated editorial illustration uploaded at the top of the post.
 
 ## 별을 보면 나를 알 수 있을까?
 
