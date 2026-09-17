@@ -347,9 +347,11 @@ _SOLAR_TERM_IDS = (
     "hallo", "sanggang", "ipdong", "soseol", "daeseol", "dongji",
 )
 
+_SOLAR_TERM_PROVENANCE_FIELDS = {"publisher", "reference", "retrieved_on", "precision"}
+
 
 def _validate_solar_term_instants(data: dict[str, Any], dataset_id: str) -> None:
-    required = {"time_zone", "instant_precision", "coverage_start", "coverage_end", "terms"}
+    required = {"time_zone", "instant_precision", "coverage_ranges", "terms"}
     if set(data) != required:
         _invalid(dataset_id, "data must contain exactly the solar-term fields")
     try:
@@ -357,10 +359,25 @@ def _validate_solar_term_instants(data: dict[str, Any], dataset_id: str) -> None
             _invalid(dataset_id, "time_zone must be Asia/Seoul")
         if data["instant_precision"] != "minute":
             _invalid(dataset_id, "instant_precision must be minute")
-        coverage_start = datetime.fromisoformat(data["coverage_start"])
-        coverage_end = datetime.fromisoformat(data["coverage_end"])
-        if coverage_start.tzinfo is None or coverage_end.tzinfo is None or coverage_start.utcoffset() != timedelta(hours=9) or coverage_end.utcoffset() != timedelta(hours=9) or coverage_start >= coverage_end:
-            _invalid(dataset_id, "coverage bounds must be chronological Asia/Seoul instants")
+        ranges = data["coverage_ranges"]
+        if not isinstance(ranges, list) or not ranges:
+            _invalid(dataset_id, "coverage_ranges must be a non-empty list")
+        parsed_ranges: list[tuple[datetime, datetime]] = []
+        for index, row in enumerate(ranges):
+            if not isinstance(row, dict) or set(row) != {"coverage_start", "coverage_end", "provenance"}:
+                _invalid(dataset_id, f"coverage_ranges[{index}] must contain exactly coverage_start, coverage_end, provenance")
+            coverage_start = datetime.fromisoformat(row["coverage_start"])
+            coverage_end = datetime.fromisoformat(row["coverage_end"])
+            if coverage_start.tzinfo is None or coverage_end.tzinfo is None or coverage_start.utcoffset() != timedelta(hours=9) or coverage_end.utcoffset() != timedelta(hours=9) or coverage_start >= coverage_end:
+                _invalid(dataset_id, f"coverage_ranges[{index}] bounds must be chronological Asia/Seoul instants")
+            provenance = row["provenance"]
+            if not isinstance(provenance, dict) or set(provenance) != _SOLAR_TERM_PROVENANCE_FIELDS:
+                _invalid(dataset_id, f"coverage_ranges[{index}] provenance must contain exactly the required fields")
+            if any(not isinstance(provenance[field], str) or not provenance[field].strip() for field in _SOLAR_TERM_PROVENANCE_FIELDS):
+                _invalid(dataset_id, f"coverage_ranges[{index}] provenance values must be non-empty strings")
+            parsed_ranges.append((coverage_start, coverage_end))
+        if any(later_start <= earlier_end for (_, earlier_end), (later_start, _) in zip(parsed_ranges, parsed_ranges[1:])):
+            _invalid(dataset_id, "coverage ranges must be strictly ordered and non-overlapping")
         terms = data["terms"]
         if not terms:
             _invalid(dataset_id, "terms must not be empty")
@@ -378,13 +395,27 @@ def _validate_solar_term_instants(data: dict[str, Any], dataset_id: str) -> None
             instants.append(instant)
         if instants != sorted(instants) or len(set(instants)) != len(instants):
             _invalid(dataset_id, "solar-term instants must be strictly chronological and unique")
-        if instants[0] > coverage_start or instants[-1] > coverage_end:
-            _invalid(dataset_id, "terms must include the boundary active at coverage_start and stay within coverage_end")
-        active_boundary = max((instant for instant in instants if instant <= coverage_start), default=None)
-        if active_boundary is None or coverage_start - active_boundary > timedelta(days=20):
-            _invalid(dataset_id, "terms must include a recent boundary active at coverage_start")
-        if any(later - earlier > timedelta(days=20) for earlier, later in zip(instants, instants[1:])):
-            _invalid(dataset_id, "consecutive solar-term instants must be no more than 20 days apart")
+        for index, (coverage_start, coverage_end) in enumerate(parsed_ranges):
+            active_boundary = max((instant for instant in instants if instant <= coverage_start), default=None)
+            if active_boundary is None or coverage_start - active_boundary > timedelta(days=20):
+                _invalid(dataset_id, f"coverage_ranges[{index}] must include a recent active boundary")
+            terms_in_range = [instant for instant in instants if coverage_start <= instant <= coverage_end]
+            if not terms_in_range:
+                _invalid(dataset_id, f"coverage_ranges[{index}] must contain solar-term instants")
+            range_sequence = [active_boundary, *terms_in_range]
+            if any(later - earlier > timedelta(days=20) for earlier, later in zip(range_sequence, range_sequence[1:])):
+                _invalid(dataset_id, f"coverage_ranges[{index}] has a solar-term gap greater than 20 days")
+        first_start = parsed_ranges[0][0]
+        for instant in instants:
+            if instant < first_start:
+                continue
+            if any(start <= instant <= end for start, end in parsed_ranges):
+                continue
+            # A later range needs its immediately preceding boundary even when
+            # that boundary falls in an unavailable gap.
+            if any(instant == max((candidate for candidate in instants if candidate <= start), default=None) for start, _ in parsed_ranges[1:]):
+                continue
+            _invalid(dataset_id, "term falls outside declared coverage ranges")
     except DatasetError:
         raise
     except (KeyError, TypeError, ValueError) as error:

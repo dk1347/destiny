@@ -36,7 +36,7 @@ def test_seun_relations_identify_the_annual_pillar_location_without_interpretati
     serialized = annual.as_dict()
     assert serialized["pillar"] == {"stem": "byeong", "branch": "o"}
     assert any("seun_branch" in relation["participants"] for relation in serialized["relations"])
-    assert serialized["provenance"]["solar_term_instants_v1"] == "1.0.0"
+    assert serialized["provenance"]["solar_term_instants_v1"] == "2.0.0"
     assert serialized["provenance"]["relations_v1"] == "1.0.0"
 
 

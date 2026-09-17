@@ -12,9 +12,9 @@ def test_result_preserves_profile_and_loaded_rule_versions() -> None:
     assert result.status == "complete"
     assert result.calculation_profile_id == "kr_standard_v1"
     assert ("core_tables_v1", "1.0.0") in result.dataset_versions
-    assert ("solar_term_instants_v1", "1.0.0") in result.dataset_versions
+    assert ("solar_term_instants_v1", "2.0.0") in result.dataset_versions
     assert result.as_dict()["pillars"]["year"] == {"stem": "byeong", "branch": "o"}
-    assert result.as_dict()["provenance"]["solar_term_instants_v1"] == "1.0.0"
+    assert result.as_dict()["provenance"]["solar_term_instants_v1"] == "2.0.0"
 
 
 def test_date_only_result_omits_hour_without_inventing_a_time() -> None:

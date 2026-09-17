@@ -35,9 +35,11 @@ def solar_term_for_datetime(resolved_local_datetime: datetime, registry: RuleReg
             "production-verified solar-term instants are required",
         ) from error
     data = registry.load(_SOLAR_TERM_DATASET_ID)["data"]
-    coverage_start = datetime.fromisoformat(data["coverage_start"])
-    coverage_end = datetime.fromisoformat(data["coverage_end"])
-    if not coverage_start <= resolved_local_datetime <= coverage_end:
+    coverage_ranges = [
+        (datetime.fromisoformat(row["coverage_start"]), datetime.fromisoformat(row["coverage_end"]))
+        for row in data["coverage_ranges"]
+    ]
+    if not any(start <= resolved_local_datetime <= end for start, end in coverage_ranges):
         raise DatasetError(
             DiagnosticCode.SOLAR_TERM_DATA_UNAVAILABLE,
             "no production-verified solar-term instant covers this datetime",

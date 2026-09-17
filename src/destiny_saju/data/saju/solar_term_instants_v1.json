@@ -1,21 +1,31 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "dataset_id": "solar_term_instants_v1",
-  "dataset_version": "1.0.0",
+  "dataset_version": "2.0.0",
   "status": "production_verified",
   "source": {
     "type": "official_korean_almanac",
-    "reference": "Korea AeroSpace Administration, 2026 Monthly Almanac (official publication); KASI calendar data cross-check: https://astro.kasi.re.kr/life/post/calendardata"
+    "reference": "Each verified coverage range carries its own provenance."
   },
   "license": "Official public calendar data; preserve source attribution and verify each annual expansion against the official Monthly Almanac.",
-  "generated_at": "2026-09-16T00:00:00Z",
-  "generated_by": "manual_from_2026_monthly_almanac",
-  "scope": "KST solar-term instants at minute precision for every 2026 local datetime. Lookups outside this verified coverage fail closed.",
+  "generated_at": "2026-09-18T00:00:00Z",
+  "generated_by": "manual_from_official_sources",
+  "scope": "KST solar-term instants at minute precision. Lookups outside verified coverage ranges, including gaps, fail closed.",
   "data": {
     "time_zone": "Asia/Seoul",
     "instant_precision": "minute",
-    "coverage_start": "2026-01-01T00:00:00+09:00",
-    "coverage_end": "2026-12-31T23:59:00+09:00",
+    "coverage_ranges": [
+      {
+        "coverage_start": "2026-01-01T00:00:00+09:00",
+        "coverage_end": "2026-12-31T23:59:00+09:00",
+        "provenance": {
+          "publisher": "Korea Astronomy and Space Science Institute (KASI)",
+          "reference": "2026 Monthly Almanac; cross-check: https://astro.kasi.re.kr/life/post/calendardata",
+          "retrieved_on": "2026-09-16",
+          "precision": "minute"
+        }
+      }
+    ],
     "terms": [
       {"id": "daeseol", "occurs_at": "2025-12-07T06:05:00+09:00"},
       {"id": "dongji", "occurs_at": "2025-12-22T00:03:00+09:00"},

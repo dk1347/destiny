@@ -74,7 +74,7 @@ def test_every_verified_solar_term_observes_its_boundary() -> None:
     registry = RuleRegistry(allow_unverified=True)
     data = registry.load("solar_term_instants_v1")["data"]
     terms = data["terms"]
-    coverage_start = datetime.fromisoformat(data["coverage_start"])
+    coverage_start = datetime.fromisoformat(data["coverage_ranges"][0]["coverage_start"])
 
     for index, row in enumerate(terms):
         instant = datetime.fromisoformat(row["occurs_at"])
@@ -156,3 +156,90 @@ def test_solar_term_dataset_rejects_a_stale_pre_coverage_boundary() -> None:
 def test_solar_term_lookup_rejects_non_datetime_input() -> None:
     with pytest.raises(TypeError, match="resolved_local_datetime"):
         solar_term_for_datetime("2026-02-04T00:00:00", RuleRegistry(allow_unverified=True))  # type: ignore[arg-type]
+
+
+def _payload_with_second_range() -> dict:
+    source = files("destiny_saju.data.saju").joinpath("solar_term_instants_v1.json")
+    payload = json.loads(source.read_text(encoding="utf-8"))
+    payload["data"]["coverage_ranges"].append(
+        {
+            "coverage_start": "2028-01-01T00:00:00+09:00",
+            "coverage_end": "2028-01-31T23:59:00+09:00",
+            "provenance": {
+                "publisher": "test fixture only",
+                "reference": "non-production contract fixture",
+                "retrieved_on": "2026-09-18",
+                "precision": "minute",
+            },
+        }
+    )
+    payload["data"]["terms"].extend(
+        [
+            {"id": "sohan", "occurs_at": "2027-12-20T10:00:00+09:00"},
+            {"id": "daehan", "occurs_at": "2028-01-05T10:00:00+09:00"},
+            {"id": "ipchun", "occurs_at": "2028-01-20T10:00:00+09:00"},
+        ]
+    )
+    return payload
+
+
+def _registry_for_payload(payload: dict) -> RuleRegistry:
+    source = files("destiny_saju.data.saju")
+    temporary = tempfile.TemporaryDirectory()
+    target = Path(temporary.name)
+    for resource in source.iterdir():
+        if resource.name.endswith(".json"):
+            (target / resource.name).write_bytes(resource.read_bytes())
+    (target / "solar_term_instants_v1.json").write_text(json.dumps(payload), encoding="utf-8")
+    registry = RuleRegistry(target, allow_unverified=True)
+    registry._test_temporary_directory = temporary  # type: ignore[attr-defined]
+    return registry
+
+
+def test_solar_term_dataset_rejects_missing_range_provenance() -> None:
+    payload = _payload_with_second_range()
+    del payload["data"]["coverage_ranges"][0]["provenance"]
+    with pytest.raises(DatasetError) as error:
+        _registry_for_payload(payload).load("solar_term_instants_v1")
+    assert error.value.code is DiagnosticCode.DATASET_SCHEMA_INVALID
+
+
+def test_solar_term_dataset_rejects_overlapping_ranges() -> None:
+    payload = _payload_with_second_range()
+    payload["data"]["coverage_ranges"][1]["coverage_start"] = "2026-12-31T23:59:00+09:00"
+    with pytest.raises(DatasetError) as error:
+        _registry_for_payload(payload).load("solar_term_instants_v1")
+    assert error.value.code is DiagnosticCode.DATASET_SCHEMA_INVALID
+
+
+def test_solar_term_dataset_rejects_non_kst_range_bounds() -> None:
+    payload = _payload_with_second_range()
+    payload["data"]["coverage_ranges"][1]["coverage_start"] = "2028-01-01T00:00:00+00:00"
+    with pytest.raises(DatasetError) as error:
+        _registry_for_payload(payload).load("solar_term_instants_v1")
+    assert error.value.code is DiagnosticCode.DATASET_SCHEMA_INVALID
+
+
+def test_solar_term_dataset_rejects_term_outside_declared_ranges() -> None:
+    payload = _payload_with_second_range()
+    payload["data"]["terms"].append({"id": "usu", "occurs_at": "2028-02-04T10:00:00+09:00"})
+    with pytest.raises(DatasetError) as error:
+        _registry_for_payload(payload).load("solar_term_instants_v1")
+    assert error.value.code is DiagnosticCode.DATASET_SCHEMA_INVALID
+
+
+def test_solar_term_lookup_fails_closed_in_a_verified_range_gap() -> None:
+    registry = _registry_for_payload(_payload_with_second_range())
+    with pytest.raises(DatasetError) as error:
+        solar_term_for_datetime(datetime(2027, 6, 15, 12, 0, tzinfo=timezone(timedelta(hours=9))), registry)
+    assert error.value.code is DiagnosticCode.SOLAR_TERM_DATA_UNAVAILABLE
+
+
+def test_second_range_ipchun_boundary_and_month_pillar() -> None:
+    from destiny_saju.month_pillar import month_pillar_for_datetime
+
+    registry = _registry_for_payload(_payload_with_second_range())
+    ipchun = datetime(2028, 1, 20, 10, 0, tzinfo=timezone(timedelta(hours=9)))
+    assert solar_term_for_datetime(ipchun - timedelta(minutes=1), registry).id == "daehan"
+    assert solar_term_for_datetime(ipchun, registry).id == "ipchun"
+    assert month_pillar_for_datetime(ipchun, registry).branch.value == "in"
