@@ -46,6 +46,13 @@ response, logs, or issue text. Use it to produce a versioned, reviewed
 conversion dataset. Destiny must use that bundled dataset at calculation time;
 it must not depend on a live external API while a user waits.
 
+`tools/kasi_lunar_snapshot.py` is the prepared acquisition tool. It fetches
+one Gregorian year through the documented `getLunCalInfo` endpoint, records
+the corresponding lunar date and ordinary/leap-month flag for every day, and
+writes a `pending_verification` JSON snapshot. It refuses to run without
+`KASI_SERVICE_KEY`, never writes the key to output, and refuses to overwrite a
+previous snapshot.
+
 The KASI conversion page and API documentation currently indicate support
 through 2050. Treat anything outside the captured dataset range as unavailable
 even if another provider claims a wider range.

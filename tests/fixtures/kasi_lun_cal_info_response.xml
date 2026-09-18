@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<response>
+  <header><resultCode>00</resultCode><resultMsg>NORMAL SERVICE.</resultMsg></header>
+  <body><items><item>
+    <lunYear>2026</lunYear><lunMonth>8</lunMonth><lunDay>8</lunDay><lunLeapmonth>평</lunLeapmonth><lunNday>30</lunNday>
+    <solYear>2026</solYear><solMonth>9</solMonth><solDay>18</solDay>
+  </item></items></body>
+</response>
