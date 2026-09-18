@@ -23,6 +23,14 @@ record the reuse/licence decision for the chosen source or dataset. Until
 then, do not scrape KASI at runtime and do not ship an unreviewed conversion
 table.
 
+KASI's [copyright policy](https://www.kasi.re.kr/kor/pageView/134) says that
+materials carrying the KOGL Type 1 mark may be used with attribution, while
+unmarked material requires prior agreement with the responsible site contact.
+Therefore the implementation gate is deliberately strict: capture the licence
+mark or obtain written permission for the *specific* conversion data source;
+the general KASI policy is not evidence that every webpage or response is
+reusable.
+
 ## API request contract
 
 Replace the ambiguous date-only shape with one calendar-specific object:
