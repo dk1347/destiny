@@ -31,6 +31,25 @@ mark or obtain written permission for the *specific* conversion data source;
 the general KASI policy is not evidence that every webpage or response is
 reusable.
 
+### Selected data path
+
+The [KASI Lunar/Solar Calendar OpenAPI on data.go.kr](https://www.data.go.kr/data/15012679/openapi.do)
+is the selected acquisition path. Its current listing identifies KASI as the
+provider, documents lunar-date, solar-date, and leap-month fields, lists an
+unrestricted permission scope, and says that development and operating use
+applications are automatically approved. It still requires an account-specific
+service key.
+
+The service key is an acquisition credential only: keep it in an operator's
+local secret store or CI secret, never in the repository, browser bundle, API
+response, logs, or issue text. Use it to produce a versioned, reviewed
+conversion dataset. Destiny must use that bundled dataset at calculation time;
+it must not depend on a live external API while a user waits.
+
+The KASI conversion page and API documentation currently indicate support
+through 2050. Treat anything outside the captured dataset range as unavailable
+even if another provider claims a wider range.
+
 ## API request contract
 
 Replace the ambiguous date-only shape with one calendar-specific object:
