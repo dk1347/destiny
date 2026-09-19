@@ -14,18 +14,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install anthropic --break-system-packages
-          pip install -e ".[dev,api]" --break-system-packages
+          pip3 install anthropic --break-system-packages
+          pip3 install -e ".[dev,api]" --break-system-packages
 
       - name: Run Claude implementation
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          python docs/scripts/claude_implement.py
+          python3 docs/scripts/claude_implement.py
 
       - name: Run pytest
         run: |
-          pytest tests/ -v --tb=short 2>&1 | tee pytest_result.txt
+          python3 -m pytest tests/ -v --tb=short 2>&1 | tee pytest_result.txt
 
       - name: Commit results
         run: |
