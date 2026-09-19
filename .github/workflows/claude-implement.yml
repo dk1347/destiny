@@ -19,7 +19,7 @@ jobs:
 
       - name: Run Claude implementation
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN_PAT : ${{ secrets.GITHUB_TOKEN_PAT  }}
         run: |
           python3 docs/scripts/claude_implement.py
 
@@ -33,4 +33,5 @@ jobs:
           git config user.name "GitHub Actions"
           git add -A
           git diff --staged --quiet || git commit -m "chore: auto-implementation $(date +%Y-%m-%d)"
-          git push
+          git pull --rebase origin fix/v3-data-integrity
+          git push origin fix/v3-data-integrity
