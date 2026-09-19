@@ -1,0 +1,36 @@
+name: Claude Implementation
+
+on:
+  push:
+    paths:
+      - 'docs/daily/**/instructions.md'
+
+jobs:
+  implement:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          pip install anthropic --break-system-packages
+          pip install -e ".[dev,api]" --break-system-packages
+
+      - name: Run Claude implementation
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python docs/scripts/claude_implement.py
+
+      - name: Run pytest
+        run: |
+          pytest tests/ -v --tb=short 2>&1 | tee pytest_result.txt
+
+      - name: Commit results
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+          git add -A
+          git diff --staged --quiet || git commit -m "chore: auto-implementation $(date +%Y-%m-%d)"
+          git push
