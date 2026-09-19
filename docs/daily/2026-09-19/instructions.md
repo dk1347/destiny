@@ -1,20 +1,5 @@
-# 개발 지시서 2026-09-19
+# Execution Instructions for Claude & Self-Hosted Runner
 
-## 목표
-워크플로 테스트 - 실제 코드 변경 없음
-
-## 작업 내용
-이 지시서는 GitHub Actions + Claude API 자동화 워크플로가
-정상 동작하는지 확인하기 위한 테스트입니다.
-
-## 완료 기준
-- Claude API 호출 성공
-- docs/implementation/2026-09-19-report.md 생성
-- GitHub Actions 워크플로 green
-
-## 참고
-- 실제 코드 변경은 하지 않습니다
-- 리포트만 생성하면 됩니다
-
-## 재테스트 Sat Sep 19 12:39:21 AM UTC 2026
-## 권한 수정 후 재테스트
+1. `src/engine/jdn.py` 파일 생성 후 사양에 맞는 계산 함수를 작성하세요.
+2. `tests/test_jdn.py` 작성 후 로컬 VM에서 `pytest tests/` 명령을 수행하세요.
+3. 모든 테스트가 통과하면 결과 요약을 `docs/implementation/2026-09-19-report.md`에 작성하고, `src/`, `tests/`, `docs/implementation/` 디렉터리를 Git에 커밋/푸시하세요.
