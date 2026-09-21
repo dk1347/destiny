@@ -35,3 +35,4 @@ knowledge/private/
 
 # Local AI settings
 .claude/
+tools/out/
