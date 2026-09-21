@@ -31,4 +31,11 @@ test('midnight 정책 23:30 출생 → 당일 일주 유지', () => {
   const sameDay        = analyzeSaju('2024-03-01T12:00:00+09:00', 'male');
   expect(midnightResult.dayPillar.ji).toBe(sameDay.dayPillar.ji);
   });
+
+test('대운수 소수 정밀 값 보존', () => {
+  const result = analyzeSaju('2024-02-04T17:28:00+09:00', 'male');
+  expect(result.daewun).toHaveProperty('rawDaewunNumber');
+  expect(typeof result.daewun.rawDaewunNumber).toBe('number');
+  expect(Number.isInteger(result.daewun.rawDaewunNumber)).toBe(false);
+  });
 });

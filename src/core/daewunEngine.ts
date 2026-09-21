@@ -37,7 +37,9 @@ export function calculateDaewun(
     : birthUtcMs - solarTerms.currentMajorTerm.utcTime;
 
   const totalDays = Math.abs(timeDiffMs) / (1000 * 60 * 60 * 24);
-  let daewunNum = Math.round(totalDays / 3);
+  const rawDaewunNumber = totalDays / 3;
+  //let daewunNum = Math.round(totalDays / 3);
+  let daewunNum = Math.round(rawDaewunNumber);
   if (daewunNum < 1) daewunNum = 1;
   if (daewunNum > 10) daewunNum = 10;
 
@@ -57,5 +59,6 @@ export function calculateDaewun(
     });
   }
 
-  return { direction, daewunNumber: daewunNum, steps };
+  //return { direction, daewunNumber: daewunNum, steps };
+  return { direction, daewunNumber: daewunNum, rawDaewunNumber, steps };
 }
