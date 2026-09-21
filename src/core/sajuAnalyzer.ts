@@ -20,7 +20,8 @@ export function analyzeSaju(
   const birthUtcMs = timeCorrection.solarDate.getTime();
   const terms = findSolarTerms(birthUtcMs);
 
-  const year = getYearPillar(timeCorrection.solarDate, new Date(terms.ipchunTerm.utcTime));
+  //const year = getYearPillar(timeCorrection.solarDate, new Date(terms.ipchunTerm.utcTime));
+  const year = getYearPillar(timeCorrection.utcDate, new Date(terms.ipchunTerm.utcTime));
   const month = getMonthPillar(year.ganIdx, terms.currentMajorTerm.monthJiIdx || 2);
   const day = getDayPillar(timeCorrection.solarDate);
   const time = getTimePillar(timeCorrection.solarDate, day.ganIdx, dayBoundary);

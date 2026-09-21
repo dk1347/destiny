@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "destiny-saju-engine",
   "version": "1.0.0",
   "description": "Deterministic Saju calculation engine with KASI solar terms and true solar time correction",
@@ -8,14 +8,19 @@
     "test": "jest --verbose",
     "test:watch": "jest --watch"
   },
-  "keywords": ["saju", "manseryeok", "astronomy", "kasi"],
+  "keywords": [
+    "saju",
+    "manseryeok",
+    "astronomy",
+    "kasi"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.11.24",
     "jest": "^29.7.0",
-    "ts-jest": "^29.1.2",
+    "ts-jest": "^29.4.12",
     "typescript": "^5.3.3"
   }
 }
