@@ -1,0 +1,13 @@
+# Offline generation/acquisition tools only. Not a runtime dependency of
+# src/destiny_saju, which has no third-party requirements.
+#
+# These versions are pinned by docs/55_SOLAR_TERM_GENERATION_POLICY.md §4.
+# tools/generate_solar_terms.py aborts if the installed versions differ, so
+# changing a pin here without updating that document will stop the generator.
+#
+# The JPL ephemeris (de440s.bsp, 32,726,016 bytes) is NOT committed. Fetch it
+# from https://ssd.jpl.nasa.gov/ftp/eph/planets/bsp/de440s.bsp and verify
+# sha256 c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2
+skyfield==1.55
+jplephem==2.24
+numpy==2.5.3
