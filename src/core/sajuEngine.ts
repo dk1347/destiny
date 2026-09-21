@@ -8,7 +8,8 @@ const EPOCH_GAN_IDX = 0;
 const EPOCH_JI_IDX = 10;
 
 export function getDayPillar(date: Date, offsetDays: number = 0) {
-  const targetUtc = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  //const targetUtc = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
+  const targetUtc = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
   const diffDays = Math.floor((targetUtc - EPOCH_DATE.getTime()) / 86400000) + offsetDays;
 
   const ganIdx = (EPOCH_GAN_IDX + (diffDays % 10) + 10) % 10;
@@ -18,8 +19,10 @@ export function getDayPillar(date: Date, offsetDays: number = 0) {
 }
 
 export function getTimePillar(solarDate: Date, dayGanIdx: number, policy: DayBoundaryPolicy) {
-  const hours = solarDate.getHours();
-  const minutes = solarDate.getMinutes();
+  //const hours = solarDate.getHours();
+  const hours = solarDate.getUTCHours();
+  //const minutes = solarDate.getMinutes();
+  const minutes = solarDate.getUTCMinutes();
   const totalMinutes = hours * 60 + minutes;
 
   let jiIdx = Math.floor(((totalMinutes + 60) % 1440) / 120);
