@@ -23,7 +23,12 @@ export function analyzeSaju(
   //const year = getYearPillar(timeCorrection.solarDate, new Date(terms.ipchunTerm.utcTime));
   const year = getYearPillar(timeCorrection.utcDate, new Date(terms.ipchunTerm.utcTime));
   const month = getMonthPillar(year.ganIdx, terms.currentMajorTerm.monthJiIdx || 2);
-  const day = getDayPillar(timeCorrection.solarDate);
+  //const day = getDayPillar(timeCorrection.solarDate);
+  //const isLateNight = timeCorrection.solarDate.getUTCHours() === 23;
+  const isLateNight = timeCorrection.localHour === 23;
+  //const isLateNight = timeCorrection.civilKST.getUTCHours() === 14; // KST 23시 = UTC 14시
+  const dayOffset = (isLateNight && (dayBoundary === 'jasi' || dayBoundary === 'splitJasi')) ? 1 : 0;
+  const day = getDayPillar(timeCorrection.solarDate, dayOffset);
   const time = getTimePillar(timeCorrection.solarDate, day.ganIdx, dayBoundary);
 
   const buildPillar = (ganIdx: number, jiIdx: number, isDayGan: boolean = false) => ({

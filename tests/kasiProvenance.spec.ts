@@ -19,4 +19,16 @@ describe('KASI 회귀 검증 테스트', () => {
   const after  = analyzeSaju('2024-03-02T00:00:00Z', 'male');
   expect(before.dayPillar.ji).not.toBe(after.dayPillar.ji);
   });
+
+  test('splitJasi 23:30 출생 → 다음날 일주와 동일', () => {
+  const splitResult = analyzeSaju('2024-03-01T23:30:00+09:00', 'male', { dayBoundary: 'splitJasi' });
+  const nextDay     = analyzeSaju('2024-03-02T12:00:00+09:00', 'male');
+  expect(splitResult.dayPillar.ji).toBe(nextDay.dayPillar.ji);
+  });
+
+test('midnight 정책 23:30 출생 → 당일 일주 유지', () => {
+  const midnightResult = analyzeSaju('2024-03-01T23:30:00+09:00', 'male', { dayBoundary: 'midnight' });
+  const sameDay        = analyzeSaju('2024-03-01T12:00:00+09:00', 'male');
+  expect(midnightResult.dayPillar.ji).toBe(sameDay.dayPillar.ji);
+  });
 });

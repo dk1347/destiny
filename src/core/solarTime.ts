@@ -6,6 +6,7 @@ export interface SolarCorrectionResult {
   solarDate: Date;
   offsetMinutes: number;
   correctionLine: string;
+  localHour: number; // <- 이거 추가
 }
 
 export function calculateEoT(date: Date): number {
@@ -28,12 +29,14 @@ export function resolveSolarTime(
   const solarDate = new Date(inputDate.getTime() + totalCorrectionMin * 60 * 1000);
   const sign = totalCorrectionMin >= 0 ? '+' : '';
   const correctionLine = `입력: ${localDateTimeStr} | 경도보정: ${longitudeCorrectionMin.toFixed(2)}분 | 균시차: ${eotMin.toFixed(2)}분 | 총보정: ${sign}${totalCorrectionMin.toFixed(2)}분 -> 진태양시: ${solarDate.toISOString()}`;
-
+  const localHour = parseInt(localDateTimeStr.substring(11, 13), 10); // 추가
+  
   return {
     utcDate: inputDate,
     civilKST: inputDate,
     solarDate,
     offsetMinutes: totalCorrectionMin,
     correctionLine,
+    localHour, // 추가
   };
 }
