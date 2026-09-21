@@ -1,6 +1,6 @@
 ﻿import { resolveSolarTime, DayBoundaryPolicy } from './solarTime';
 import { getDayPillar, getTimePillar, CHEONGAN, JIJI } from './sajuEngine';
-import { findSolarTerms } from './solarTermsFinder';
+import { findSolarTerms, isSameUtcDay } from './solarTermsFinder';
 import { getYearPillar, getMonthPillar } from './solarTermsEngine';
 import { calculateDaewun, Gender } from './daewunEngine';
 import { getSipsin, getJijiSipsin, CHEONGAN_META, JIJI_META } from './sipsinEngine';
@@ -17,16 +17,12 @@ export function analyzeSaju(
   const { longitude = 126.978, applySolarTime = true, dayBoundary = 'midnight' } = options;
 
   const timeCorrection = resolveSolarTime(birthDateTimeIso, longitude, applySolarTime);
-  const birthUtcMs = timeCorrection.solarDate.getTime();
+  const birthUtcMs = timeCorrection.utcDate.getTime();
   const terms = findSolarTerms(birthUtcMs);
 
-  //const year = getYearPillar(timeCorrection.solarDate, new Date(terms.ipchunTerm.utcTime));
   const year = getYearPillar(timeCorrection.utcDate, new Date(terms.ipchunTerm.utcTime));
   const month = getMonthPillar(year.ganIdx, terms.currentMajorTerm.monthJiIdx || 2);
-  //const day = getDayPillar(timeCorrection.solarDate);
-  //const isLateNight = timeCorrection.solarDate.getUTCHours() === 23;
   const isLateNight = timeCorrection.localHour === 23;
-  //const isLateNight = timeCorrection.civilKST.getUTCHours() === 14; // KST 23시 = UTC 14시
   const dayOffset = (isLateNight && (dayBoundary === 'jasi' || dayBoundary === 'splitJasi')) ? 1 : 0;
   const day = getDayPillar(timeCorrection.solarDate, dayOffset);
   const time = getTimePillar(timeCorrection.solarDate, day.ganIdx, dayBoundary);
@@ -49,5 +45,60 @@ export function analyzeSaju(
     timePillar: buildPillar(time.ganIdx, time.jiIdx),
     daewun,
     correctionLine: timeCorrection.correctionLine,
+  };
+}
+
+export interface SajuCandidate {
+  label: '절기 이전' | '절기 이후';
+  result: ReturnType<typeof analyzeSaju>;
+}
+
+export function analyzeSajuWithCandidates(
+  birthDateIso: string,
+  gender: Gender,
+  options: {
+    longitude?: number;
+    applySolarTime?: boolean;
+    dayBoundary?: DayBoundaryPolicy;
+    unknownTime?: boolean;
+  } = {}
+): { candidates: SajuCandidate[]; isAmbiguous: boolean } {
+  const { unknownTime = false, ...restOptions } = options;
+
+  if (!unknownTime) {
+    return {
+      candidates: [{ label: '절기 이후', result: analyzeSaju(birthDateIso, gender, restOptions) }],
+      isAmbiguous: false,
+    };
+  }
+
+  // 시간 미상: 날짜만 추출해 UTC 정오(KST 12:00 = UTC 03:00) 기준으로 절기 당일 여부 판단
+  const datePart = birthDateIso.substring(0, 10);
+  const noonUtcMs = new Date(`${datePart}T03:00:00Z`).getTime();
+  const noonIso = `${datePart}T03:00:00Z`;
+  const terms = findSolarTerms(noonUtcMs);
+  //const termUtcMs = terms.currentMajorTerm.utcTime;
+  //const isTermDay = isSameUtcDay(noonUtcMs, termUtcMs);
+  const currentTermUtcMs = terms.currentMajorTerm.utcTime;
+  const nextTermUtcMs = terms.nextMajorTerm.utcTime;
+  const isTermDay = isSameUtcDay(noonUtcMs, currentTermUtcMs) || isSameUtcDay(noonUtcMs, nextTermUtcMs);
+  const termUtcMs = isSameUtcDay(noonUtcMs, nextTermUtcMs) ? nextTermUtcMs : currentTermUtcMs;
+
+  if (!isTermDay) {
+    return {
+      candidates: [{ label: '절기 이후', result: analyzeSaju(noonIso, gender, restOptions) }],
+      isAmbiguous: false,
+    };
+  }
+
+  const beforeIso = new Date(termUtcMs - 60 * 1000).toISOString();
+  const afterIso  = new Date(termUtcMs + 60 * 1000).toISOString();
+
+  return {
+    candidates: [
+      { label: '절기 이전', result: analyzeSaju(beforeIso, gender, { ...restOptions, applySolarTime: false }) },
+      { label: '절기 이후', result: analyzeSaju(afterIso,  gender, { ...restOptions, applySolarTime: false }) },
+    ],
+    isAmbiguous: true,
   };
 }

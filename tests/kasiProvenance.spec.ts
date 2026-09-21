@@ -39,3 +39,36 @@ test('대운수 소수 정밀 값 보존', () => {
   expect(Number.isInteger(result.daewun.rawDaewunNumber)).toBe(false);
   });
 });
+
+import { analyzeSajuWithCandidates } from '../src/core/sajuAnalyzer';
+
+describe('절기 경계 후보 및 이진탐색 검증', () => {
+  test('입춘 당일 시간 미상 → isAmbiguous true, 후보 2개 반환', () => {
+    const res = analyzeSajuWithCandidates('2024-02-04T12:00:00+09:00', 'male', { unknownTime: true });
+    expect(res.isAmbiguous).toBe(true);
+    expect(res.candidates).toHaveLength(2);
+    expect(res.candidates[0].label).toBe('절기 이전');
+    expect(res.candidates[1].label).toBe('절기 이후');
+  });
+
+  test('절기 당일 아님 + 시간 미상 → isAmbiguous false, 후보 1개 반환', () => {
+    const res = analyzeSajuWithCandidates('2024-03-15T12:00:00+09:00', 'male', { unknownTime: true });
+    expect(res.isAmbiguous).toBe(false);
+    expect(res.candidates).toHaveLength(1);
+  });
+
+  test('절기 이전 후보는 계묘년, 절기 이후 후보는 갑진년', () => {
+    const res = analyzeSajuWithCandidates('2024-02-04T12:00:00+09:00', 'male', { unknownTime: true });
+    const before = res.candidates[0].result;
+    const after  = res.candidates[1].result;
+    expect(`${before.yearPillar.gan}${before.yearPillar.ji}`).toBe('계묘');
+    expect(`${after.yearPillar.gan}${after.yearPillar.ji}`).toBe('갑진');
+  });
+
+  test('unknownTime false → isAmbiguous false, 단일 결과', () => {
+    const res = analyzeSajuWithCandidates('2024-02-04T17:28:00+09:00', 'male', { unknownTime: false });
+    expect(res.isAmbiguous).toBe(false);
+    expect(res.candidates).toHaveLength(1);
+  });
+});
+
