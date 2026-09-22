@@ -91,8 +91,13 @@ export function analyzeSajuWithCandidates(
     };
   }
 
-  const beforeIso = new Date(termUtcMs - 60 * 1000).toISOString();
-  const afterIso  = new Date(termUtcMs + 60 * 1000).toISOString();
+  //const beforeIso = new Date(termUtcMs - 60 * 1000).toISOString();
+  //const afterIso  = new Date(termUtcMs + 60 * 1000).toISOString();
+  const termDate = new Date(termUtcMs);
+  const beforeDate = new Date(termUtcMs - 24 * 60 * 60 * 1000); // 입절 하루 전
+  const beforeIso = `${beforeDate.getUTCFullYear()}-${String(beforeDate.getUTCMonth()+1).padStart(2,'0')}-${String(beforeDate.getUTCDate()).padStart(2,'0')}T12:00:00Z`;
+  const afterIso  = `${termDate.getUTCFullYear()}-${String(termDate.getUTCMonth()+1).padStart(2,'0')}-${String(termDate.getUTCDate()).padStart(2,'0')}T23:00:00Z`;
+
 
   return {
     candidates: [

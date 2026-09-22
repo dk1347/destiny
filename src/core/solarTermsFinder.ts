@@ -24,8 +24,8 @@ function binarySearchFloor(arr: SolarTermEntry[], targetUtcTime: number): number
 }
 
 export function findSolarTerms(targetUtcTime: number, table: SolarTermEntry[] = EMBEDDED_SOLAR_TERMS): SolarTermMatch {
-  const majorTerms = table.filter(t => t.isMajor);
-  const ipchunTerms = table.filter(t => t.name === '입춘');
+  const majorTerms = table.filter(t => t.isMajor).sort((a, b) => a.utcTime - b.utcTime);
+  const ipchunTerms = table.filter(t => t.name === '입춘').sort((a, b) => a.utcTime - b.utcTime);
 
   const majorIdx = binarySearchFloor(majorTerms, targetUtcTime);
   const currentMajorTerm = majorIdx !== -1 ? majorTerms[majorIdx] : majorTerms[0];

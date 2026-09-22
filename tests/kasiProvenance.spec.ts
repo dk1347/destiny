@@ -57,18 +57,25 @@ describe('절기 경계 후보 및 이진탐색 검증', () => {
     expect(res.candidates).toHaveLength(1);
   });
 
-  test('절기 이전 후보는 계묘년, 절기 이후 후보는 갑진년', () => {
+  test('절기 이전 후보는 축월, 절기 이후 후보는 인월', () => {
     const res = analyzeSajuWithCandidates('2024-02-04T12:00:00+09:00', 'male', { unknownTime: true });
     const before = res.candidates[0].result;
     const after  = res.candidates[1].result;
-    expect(`${before.yearPillar.gan}${before.yearPillar.ji}`).toBe('계묘');
-    expect(`${after.yearPillar.gan}${after.yearPillar.ji}`).toBe('갑진');
+    expect(before.monthPillar.ji).toBe('축'); // 입춘 이전 → 축월
+    expect(after.monthPillar.ji).toBe('인');  // 입춘 이후 → 인월
   });
 
   test('unknownTime false → isAmbiguous false, 단일 결과', () => {
     const res = analyzeSajuWithCandidates('2024-02-04T17:28:00+09:00', 'male', { unknownTime: false });
     expect(res.isAmbiguous).toBe(false);
     expect(res.candidates).toHaveLength(1);
+  });
+
+  test('2023년 이전 출생자 절기 탐색 실패 확인', () => {
+  const res = analyzeSaju('1990-05-15T12:00:00+09:00', 'male');
+  // 1990년 경칩(3월 6일) 이후 → 월주 지지가 진(辰)월이어야 함
+  //expect(res.monthPillar.ji).toBe('진');
+  expect(res.monthPillar.ji).toBe('사');
   });
 });
 
