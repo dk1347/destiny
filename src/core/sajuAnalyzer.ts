@@ -3,7 +3,8 @@ import { getDayPillar, getTimePillar, CHEONGAN, JIJI } from './sajuEngine';
 import { findSolarTerms, isSameUtcDay } from './solarTermsFinder';
 import { getYearPillar, getMonthPillar } from './solarTermsEngine';
 import { calculateDaewun, Gender } from './daewunEngine';
-import { getSipsin, getJijiSipsin, CHEONGAN_META, JIJI_META } from './sipsinEngine';
+//import { getSipsin, getJijiSipsin, CHEONGAN_META, JIJI_META } from './sipsinEngine';
+import { getSipsin, getJijiSipsin, getJijangganSipsin, getUnseong, CHEONGAN_META, JIJI_META } from './sipsinEngine';
 
 export function analyzeSaju(
   birthDateTimeIso: string,
@@ -28,13 +29,15 @@ export function analyzeSaju(
   const time = getTimePillar(timeCorrection.solarDate, day.ganIdx, dayBoundary);
 
   const buildPillar = (ganIdx: number, jiIdx: number, isDayGan: boolean = false) => ({
-    gan: CHEONGAN[ganIdx],
-    ji: JIJI[jiIdx],
-    ganSipsin: isDayGan ? '일원' : getSipsin(day.ganIdx, ganIdx),
-    jiSipsin: getJijiSipsin(day.ganIdx, jiIdx),
-    ganElement: CHEONGAN_META[ganIdx].element,
-    jiElement: JIJI_META[jiIdx].element,
-  });
+  gan: CHEONGAN[ganIdx],
+  ji: JIJI[jiIdx],
+  ganSipsin: isDayGan ? '일원' : getSipsin(day.ganIdx, ganIdx),
+  jiSipsin: getJijiSipsin(day.ganIdx, jiIdx),
+  ganElement: CHEONGAN_META[ganIdx].element,
+  jiElement: JIJI_META[jiIdx].element,
+  jijanggan: getJijangganSipsin(day.ganIdx, jiIdx),
+  unseong: getUnseong(ganIdx, jiIdx),
+});
 
   const daewun = calculateDaewun(birthUtcMs, gender, year.ganIdx, month.ganIdx, month.jiIdx, terms);
 
