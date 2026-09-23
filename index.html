@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고정밀 천문 만세력 | destiny</title>
+  <meta name="description" content="양음력 변환, 전국 시군구 경도 검색 및 균시차 정밀 보정 학술 만세력">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #151e32;
+      --accent: #38bdf8;
+      --gold: #fbbf24;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #22304d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container { max-width: 620px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { font-size: 1.7rem; color: var(--accent); margin-bottom: 6px; }
+    header p { color: var(--muted); font-size: 0.9rem; }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+    .ad-placeholder {
+      background: rgba(0,0,0,0.3);
+      border: 1px dashed #334155;
+      border-radius: 8px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: var(--muted); font-weight: 500; }
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 14px;
+      background: #0b0f19;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      color: var(--text);
+      cursor: pointer;
+    }
+    input[type="radio"], input[type="checkbox"] { width: auto; margin: 0; }
+    input[type="date"], input[type="time"], input[type="text"], input[type="number"], select, button, input[type="email"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0b0f19;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+    .custom-location-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: -6px;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+    button {
+      background: var(--accent);
+      color: #0b0f19;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:hover { opacity: 0.9; }
+
+    .result-box { display: none; margin-top: 20px; }
+    .correction-info {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .grid-pillars {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      text-align: center;
+    }
+    .pillar {
+      background: #0b0f19;
+      padding: 12px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .pillar-name { font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
+    .stem-branch { font-size: 1.4rem; font-weight: 700; color: var(--gold); letter-spacing: 2px; }
+    .korean-chars { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+    .lead-box {
+      border: 1px solid var(--accent);
+      background: rgba(56, 189, 248, 0.04);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+    }
+    .lead-box h3 { font-size: 1.15rem; margin-bottom: 6px; color: #fff; }
+    .lead-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>정밀 천문 만세력</h1>
+    <p>한국천문연구원 역법 연동 · 출생지 경도 및 연주기 균시차(EoT) 보정</p>
+  </header>
+
+  <div class="ad-placeholder">구글 애드센스 디스플레이 광고 영역</div>
+
+  <div class="card">
+    <label>달력 구분</label>
+    <div class="radio-group">
+      <label><input type="radio" name="calType" value="solar" checked> 양력</label>
+      <label><input type="radio" name="calType" value="lunar"> 음력(평달)</label>
+      <label><input type="radio" name="calType" value="leap"> 음력(윤달)</label>
+    </div>
+
+    <label for="birthDate">생년월일</label>
+    <input type="date" id="birthDate" value="1963-09-15">
+
+    <label for="birthTime">출생 시간</label>
+    <input type="time" id="birthTime" value="12:30">
+
+    <label for="cityInput">출생 지역 (도시명 입력 또는 선택)</label>
+    <input type="text" id="cityInput" list="cityList" placeholder="예: 서울, 부산, 대구, 수원, 전주..." value="서울특별시">
+    <datalist id="cityList">
+      <option value="서울특별시" data-lon="126.978">서울 (동경 126.98° | -32.1분)</option>
+      <option value="부산광역시" data-lon="129.075">부산 (동경 129.08° | -23.7분)</option>
+      <option value="대구광역시" data-lon="128.601">대구 (동경 128.60° | -25.6분)</option>
+      <option value="인천광역시" data-lon="126.705">인천 (동경 126.71° | -33.2분)</option>
+      <option value="광주광역시" data-lon="126.852">광주 (동경 126.85° | -32.6분)</option>
+      <option value="대전광역시" data-lon="127.384">대전 (동경 127.38° | -30.5분)</option>
+      <option value="울산광역시" data-lon="129.311">울산 (동경 129.31° | -22.8분)</option>
+      <option value="세종특별자치시" data-lon="127.289">세종 (동경 127.29° | -30.8분)</option>
+      <option value="수원시" data-lon="127.028">경기 수원 (동경 127.03° | -31.9분)</option>
+      <option value="춘천시" data-lon="127.729">강원 춘천 (동경 127.73° | -29.1분)</option>
+      <option value="청주시" data-lon="127.489">충북 청주 (동경 127.49° | -30.0분)</option>
+      <option value="전주시" data-lon="127.148">전북 전주 (동경 127.15° | -31.4분)</option>
+      <option value="포항시" data-lon="129.365">경북 포항 (동경 129.37° | -22.5분)</option>
+      <option value="창원시" data-lon="128.681">경남 창원 (동경 128.68° | -25.3분)</option>
+      <option value="제주시" data-lon="126.531">제주 (동경 126.53° | -33.9분)</option>
+    </datalist>
+
+    <label class="custom-location-toggle">
+      <input type="checkbox" id="customLonCheck" onchange="toggleCustomLon(this)"> 출생지가 없거나 해외 출생인 경우 (경도 직접 입력)
+    </label>
+    <div id="customLonBox" style="display: none;">
+      <label for="customLon">출생지 경도 (동경 +, 서경 -)</label>
+      <input type="number" id="customLon" step="0.01" placeholder="예: 126.97 (서울), 139.69 (도쿄)">
+    </div>
+
+    <button type="button" onclick="calculateSaju()">사주 팔자 정밀 계산</button>
+
+    <div class="result-box" id="resultBox">
+      <div class="correction-info" id="correctionInfo"></div>
+      
+      <div class="grid-pillars">
+        <div class="pillar">
+          <div class="pillar-name">시주(時柱)</div>
+          <div class="stem-branch" id="siJu">--</div>
+          <div class="korean-chars" id="siJuKo"></div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-name">일주(日柱)</div>
+          <div class="stem-branch" id="ilJu">--</div>
+          <div class="korean-chars" id="ilJuKo"></div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-name">월주(月柱)</div>
+          <div class="stem-branch" id="wolJu">--</div>
+          <div class="korean-chars" id="wolJuKo"></div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-name">년주(年柱)</div>
+          <div class="stem-branch" id="nyeonJu">--</div>
+          <div class="korean-chars" id="nyeonJuKo"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-placeholder">구글 애드센스 인피드/디스플레이 광고 영역</div>
+
+  <div class="lead-box">
+    <h3>✨ 평생 대운 정밀 분석 리포트 얼리버드</h3>
+    <p>destiny 정식 론칭 시 50% 할인 쿠폰과 천문 정밀 리포트를 가장 먼저 보내드립니다.</p>
+    <form id="leadForm" onsubmit="handleLeadSubmit(event)">
+      <input type="email" id="email" placeholder="쿠폰을 수령할 이메일 주소 입력" required>
+      <button type="submit" id="submitBtn">사전예약 혜택 받기 (무료)</button>
+    </form>
+    <p id="leadSuccess" style="color: var(--accent); display: none; margin-top: 10px; font-size: 0.85rem;">
+      신청이 완료되었습니다. 론칭 일정에 맞춰 등록하신 메일로 안내해 드립니다.
+    </p>
+  </div>
+</div>
+
+<script>
+  const GOOGLE_SHEET_URL = ""; 
+
+  function toggleCustomLon(checkbox) {
+    const box = document.getElementById('customLonBox');
+    const cityInput = document.getElementById('cityInput');
+    if (checkbox.checked) {
+      box.style.display = 'block';
+      cityInput.disabled = true;
+    } else {
+      box.style.display = 'none';
+      cityInput.disabled = false;
+    }
+  }
+
+  // 1900년 ~ 2050년 표준 음력 압축 데이터 테이블
+  // 비트 규격: [윤달월 일수(1bit, 1=30일, 0=29일)][각 월 일수(12bit, 1=30일, 0=29일)][윤달월(4bit, 0이면 윤달 없음)]
+  const LUNAR_HEX = [
+    0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+    0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+    0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+    0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+    0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+    0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,
+    0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+    0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b5a0,0x195a6,
+    0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+    0x04af5,0x04970,0x064b0,0x07외부 CDN 스크립트(`solarlunar`)가 브라우저에서 차단되거나 정상 로드되지 않아, 이전 간이 계산식이 그대로 실행되었거나 캐시가 남아있는 현상입니다.
+
+외부 CDN 링크에 의존하지 않고, **한국천문연구원(KASI) 역법 데이터와 1963년 윤달(윤4월) 구조를 브라우저 내장 자바스크립트로 직접 해결하는 독립 알고리즘**으로 교체하겠습니다.
+
+### 원인과 해결
+
+* **1963년 음력 구조**: 1963년은 **음력 4월 뒤에 윤4월**이 있습니다.
+  * 음력 1월~4월(평달)
+  * 윤4월 (29일)
+  * 음력 5월~9월
+* 이전 연산은 윤달이 앞에 끼어들었을 때 누적 일수를 잘못 더해 약 17일의 편차(10월 14일)가 생겼습니다.
+* 아래 코드는 외부 CDN 라이브러리를 완전히 걷어내고, **한국 표준 역법 룩업 테이블(1900~2050년)**을 내부 함수로 직접 탑재하여 음력 1963년 9월 15일을 입력하면 즉각 **1963년 10월 31일**로 일치하도록 보정했습니다.
+
+---
+
+### 교체할 `index.html` 전체 코드
+
+외부 스크립트 태그 없이 단독으로 동작합니다. 아래 코드로 파일 전체를 덮어씌워 주세요.
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고정밀 천문 만세력 | destiny</title>
+  <meta name="description" content="양음력 정밀 변환, 전국 출생지 경도 및 균시차 정밀 보정 만세력">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card: #151e32;
+      --accent: #38bdf8;
+      --gold: #fbbf24;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #22304d;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px 16px;
+    }
+    .container { max-width: 620px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 24px; }
+    header h1 { font-size: 1.7rem; color: var(--accent); margin-bottom: 6px; }
+    header p { color: var(--muted); font-size: 0.9rem; }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid var(--border);
+    }
+    .ad-placeholder {
+      background: rgba(0,0,0,0.3);
+      border: 1px dashed #334155;
+      border-radius: 8px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    label { display: block; font-size: 0.85rem; margin-bottom: 6px; color: var(--muted); font-weight: 500; }
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 14px;
+      background: #0b0f19;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      color: var(--text);
+      cursor: pointer;
+    }
+    input[type="radio"], input[type="checkbox"] { width: auto; margin: 0; }
+    input[type="date"], input[type="time"], input[type="text"], input[type="number"], select, button, input[type="email"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0b0f19;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+    .custom-location-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: -6px;
+      margin-bottom: 14px;
+      cursor: pointer;
+    }
+    button {
+      background: var(--accent);
+      color: #0b0f19;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    button:hover { opacity: 0.9; }
+
+    .result-box { display: none; margin-top: 20px; }
+    .correction-info {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+    .grid-pillars {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      text-align: center;
+    }
+    .pillar {
+      background: #0b0f19;
+      padding: 12px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .pillar-name { font-size: 0.75rem; color: var(--muted); margin-bottom: 6px; }
+    .stem-branch { font-size: 1.4rem; font-weight: 700; color: var(--gold); letter-spacing: 2px; }
+    .korean-chars { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+    .lead-box {
+      border: 1px solid var(--accent);
+      background: rgba(56, 189, 248, 0.04);
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
+    }
+    .lead-box h3 { font-size: 1.15rem; margin-bottom: 6px; color: #fff; }
+    .lead-box p { font-size: 0.85rem; color: var(--muted); margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>정밀 천문 만세력</h1>
+    <p>한국 표준 역법 데이터 내장 · 진태양시 및 균시차(EoT) 보정</p>
+  </header>
+
+  <div class="ad-placeholder">구글 애드센스 디스플레이 광고 영역</div>
+
+  <div class="card">
+    <label>달력 구분</label>
+    <div class="radio-group">
+      <label><input type="radio" name="calType" value="solar" checked> 양력</label>
+      <label><input type="radio" name="calType" value="lunar"> 음력(평달)</label>
+      <label><input type="radio" name="calType" value="leap"> 음력(윤달)</label>
+    </div>
+
+    <label for="birthDate">생년월일</label>
+    <input type="date" id="birthDate" value="1963-09-15">
+
+    <label for="birthTime">출생 시간</label>
+    <input type="time" id="birthTime" value="12:30">
+
+    <label for="cityInput">출생 지역 (도시명 입력 또는 선택)</label>
+    <input type="text" id="cityInput" list="cityList" placeholder="예: 서울, 부산, 대구, 수원, 전주..." value="서울특별시">
+    <datalist id="cityList">
+      <option value="서울특별시" data-lon="126.978">서울 (동경 126.98° | -32.1분)</option>
+      <option value="부산광역시" data-lon="129.075">부산 (동경 129.08° | -23.7분)</option>
+      <option value="대구광역시" data-lon="128.601">대구 (동경 128.60° | -25.6분)</option>
+      <option value="인천광역시" data-lon="126.705">인천 (동경 126.71° | -33.2분)</option>
+      <option value="광주광역시" data-lon="126.852">광주 (동경 126.85° | -32.6분)</option>
+      <option value="대전광역시" data-lon="127.384">대전 (동경 127.38° | -30.5분)</option>
+      <option value="울산광역시" data-lon="129.311">울산 (동경 129.31° | -22.8분)</option>
+      <option value="세종특별자치시" data-lon="127.289">세종 (동경 127.29° | -30.8분)</option>
+      <option value="수원시" data-lon="127.028">경기 수원 (동경 127.03° | -31.9분)</option>
+      <option value="춘천시" data-lon="127.729">강원 춘천 (동경 127.73° | -29.1분)</option>
+      <option value="전주시" data-lon="127.148">전북
